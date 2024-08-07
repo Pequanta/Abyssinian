@@ -1,0 +1,64 @@
+@font-face {
+  font-family: "Poppins";
+  src: url("/src/fonts/Poppins-SemiBold.ttf");
+}
+:root {
+  --current_theme: black;
+}
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins";
+}
+
+button {
+  cursor: pointer;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  align-items: center;
+  background: url("/src/assets/bp4.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 0;
+}
+
+.container .main_header {
+  height: 10vh;
+  width: 99%;
+  border: none;
+  display: flex;
+  align-items: center;
+}
+
+.main_header a:hover {
+  transition: all 0.3s;
+  box-shadow: 1px 3px 10px rgb(171, 172, 111);
+  background-color: rgb(214, 238, 182);
+  color: rgb(39, 36, 36);
+  border-radius: 10px;
+  font-size: 2rem;
+}
+.main_header nav {
+  width: 95%;
+}
+.container .main_header ul {
+  display: flex;
+  justify-content: space-around;
+}
+
+.main_header img {
+  width: 5%;
+  border-radius: 50%;
+  transition: all 0.3s;
+}
+
+.container .main_page {
+  height: 90vh;
+}

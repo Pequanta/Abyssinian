@@ -1,0 +1,38 @@
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore node_modules directory
+node_modules/
+
+# Ignore log files
+logs/
+*.log
+
+# Ignore build outputs
+dist/
+build/
+
+# Ignore environment variables file
+.env
+
+# Ignore IDE/editor specific files
+.vscode/
+*.code-workspace
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Ignore Python compiled files
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Ignore Java compiled files
+*.class
+
+# Ignore temporary files
+*.tmp
+*.swp
+
+aby/
