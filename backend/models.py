@@ -28,4 +28,14 @@ class ChatBase(MongoBaseModel):
         sent_time: str=Field(...)
 class ChatDB(ChatBase):
         pass
+class DirectMBase(MongoBaseModel):
+        dm_user: UserDB=Field(...)
+class GroupBase(MongoBaseModel):
+        group_name: str=Field(...)
+        group_size: int=Field(...)
+        created_time: int=Field(...)
+        creator: UserDB=Field(...)
+        chats: ChatDB=Field(...)
 
+class GroupDB(GroupBase):
+        pass
