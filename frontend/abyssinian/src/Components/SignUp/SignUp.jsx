@@ -1,6 +1,6 @@
+import styles from "./SignUp.module.css";
 import { useState } from "react";
-import styles from "./loginStyles.module.css";
-function LoginPage() {
+function SignUpPage() {
   const [userInfo, setUserInfo] = useState({});
   async function logInRequest(event) {
     const inputData = event.target.name;
@@ -9,9 +9,9 @@ function LoginPage() {
     const status = await fetch("http://localhost");
   }
   return (
-    <div className={styles.loginCard}>
-      <h1>Log In</h1>
-      <form method="logIn()">
+    <div className={styles.signUpCard}>
+      <h1>Sign Up</h1>
+      <form method="signUp()">
         <div className="formElements">
           <label className="password_label">User Name</label>
           <input
@@ -30,17 +30,20 @@ function LoginPage() {
             name="password"
           />
         </div>
-        <a href="#">forgot your password?</a>
         <div className={styles.submit_button_div}>
-          <input type="submit" value="Login" className={styles.submit_button} />
+          <input
+            type="submit"
+            value="Sign up"
+            className={styles.submit_button}
+          />
         </div>
         <div>
-          <span>Don't have an account ?</span>
-          <a href="signup">Sign Up</a>
+          <span>Already have an account ?</span>
+          <a href="/">Sign in</a>
         </div>
       </form>
     </div>
   );
 }
 
-export default LoginPage;
+export default SignUpPage;

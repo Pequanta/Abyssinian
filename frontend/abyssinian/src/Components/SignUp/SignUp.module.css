@@ -1,0 +1,67 @@
+* {
+  transition: all 0.3s;
+}
+.signUpCard {
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  height: 60vh;
+  border: 1px solid #dddddd2c;
+  align-items: center;
+  flex-direction: column;
+  background-color: hsla(180, 79%, 11%, 0.897);
+  color: white;
+  font-size: 2em;
+  border-radius: 20px;
+}
+
+.signUpCard form {
+  display: flex;
+  flex-direction: column;
+  padding: 3rem;
+  justify-content: center;
+}
+
+.signUpCard form label {
+  margin-right: 3%;
+}
+.signUpCard form input {
+  width: 100%;
+  height: 2rem;
+  padding: 0.5rem;
+  border-radius: 10px;
+  margin-left: 1.3rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.signUpCard form .submit_button_div {
+  display: flex;
+  justify-content: center;
+}
+
+.signUpCard form .submit_button {
+  width: 35%;
+  height: 4rem;
+  font-size: 2.5rem;
+  padding: 2px;
+  align-items: center;
+  cursor: pointer;
+  background-color: hsl(0, 0%, 9%);
+  color: rgb(130, 238, 233);
+}
+
+.signUpCard form .submit_button:hover {
+  font-size: 2.7rem;
+  width: 50%;
+  background-color: rgb(130, 238, 233);
+  color: hsl(0, 0%, 9%);
+}
+
+.signUpCard form span {
+  margin-right: 1.5rem;
+}
+.signUpCard form a {
+  margin-bottom: 3rem;
+  text-decoration: none;
+}

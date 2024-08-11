@@ -13,19 +13,18 @@ origins = [
     "http://localhost:5173"
 ]
 def lifespan(app: FastAPI):
-    app.mongodb.client = AsyncIOMotorClient(DB_URL)
-    app.mongodb = app.mongodb.client[DB_NAME]
+    app.mongodb_client = AsyncIOMotorClient(DB_URL)
+    app.mongodb = app.mongodb_client[DB_NAME]
     yield
     app.mongodb.client.close()
 
 app = FastAPI(lifespan=lifespan)
 app.include_router(chat_router, prefix="/chats", tags=["chats"])
 app.include_router(user_router, prefix="/users", tags=["users"])
-app.add_route(route=user_router)
 app.add_middleware(
     CORSMiddleware, 
     allow_origins = origins, 
-    allow_crdentials = True,
+    allow_credentials = True,
     allow_methods = ["*"],
     allow_headers = ["*"]
 )

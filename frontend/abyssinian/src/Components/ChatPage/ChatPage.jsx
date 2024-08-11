@@ -1,7 +1,7 @@
 import styles from "./chatpagestyles.module.css";
 import { MdDarkMode } from "react-icons/md";
 import { CiLight } from "react-icons/ci";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 function ChatPage() {
   const [theme, setTheme] = useState("light");
