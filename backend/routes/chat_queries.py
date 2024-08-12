@@ -27,6 +27,30 @@ async def return_dm_chat(request: Request, user_name: str):
         return cont_returned["chats"]
     except:
      raise HTTPException(status_code=404, detail="dm_not_found")
+#the next route will return the list of dm contacts --name and --avatar(for now just the name)
+@router.get("/access/groups/all/dms")
+async def return_all_dms(request: Request):
+    try:
+        current_user = "quantap" #this field will be updated with current user finding methods from authentication part
+        cont_returned = request.app.mongodb.groups.find({"members": {"$in": [current_user]}}, {"_id": 0, "chats": 0})
+        contain_results = []
+        async for item in cont_returned:
+             contain_results.append(item)
+        return contain_results
+    except:
+        return HTTPException(status_code=401)
+#the next route will return the list of groups --name and --avatar(for now just the name)
+@router.get("/access/groups/all/groups")
+async def return_all_groups(request: Request):
+    try:
+        current_user = "quantap" #this field will be updated with current user finding methods from authentication part
+        cont_returned = request.app.mongodb.groups.find({"group_type": "GROUP", "members": {"$in": [current_user]}}, {"_id": 0, "chats": 0})
+        contain_results = []
+        async for item in cont_returned:
+             contain_results.append(item)
+        return contain_results
+    except:
+        return HTTPException(status_code=401)
 #create operations
 #group
 @router.post("/add_chat/groups/group/{group_name}" , description="adds a chat to a specified group")

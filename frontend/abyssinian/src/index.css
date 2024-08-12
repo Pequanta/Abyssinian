@@ -62,3 +62,7 @@ button {
 .container .main_page {
   height: 90vh;
 }
+
+#links_ a.active {
+  color: white;
+}

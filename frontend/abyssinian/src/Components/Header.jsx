@@ -1,6 +1,6 @@
 import logoPic from "../assets/logo.jpg";
-import React from "react";
-import { Link } from "react-router-dom";
+import Reactnpm from "react";
+import { NavLink, Outlet } from "react-router-dom";
 function Header() {
   return (
     <header className="main_header">
@@ -9,18 +9,35 @@ function Header() {
         <ul>
           <div>
             <li>
-              <Link to="/">Home</Link>
+              <NavLink
+                id="links_"
+                to="/home"
+                className={({ isActive }) => (isActive ? "active" : "")}
+              >
+                Home
+              </NavLink>
             </li>
           </div>
           <div>
             <li>
-              <Link to="/chat">chat</Link>
+              <NavLink
+                id="links_"
+                to="/chat"
+                className={({ isActive }) => (isActive ? "active" : "")}
+              >
+                chat
+              </NavLink>
             </li>
           </div>
           <li>
-            <Link to="#">About</Link>
+            <NavLink
+              id="links_"
+              to="#"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              About
+            </NavLink>
           </li>
-          <div></div>
         </ul>
       </nav>
     </header>

@@ -82,3 +82,18 @@ async def create_new_user(request: Request, user_name: str, password: str):
         raise HTTPException(status_code=501)
 
 
+#login request
+
+@router.get("/access/user/login")
+
+async def log_in_request(request: Request, user_name: str, password: str):
+    try:
+        cont_user = await request.app.mongodb["users"].find_one({"user_name": user_name})
+        if cont_user != None:
+            if cont_user["password"] == password:
+                return {"message": "found"}
+            else:
+                return {"message": "incorrect password"}
+        return {"message": "not found"}
+    except:
+        raise HTTPException(status_code=401)

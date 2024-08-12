@@ -126,3 +126,21 @@ li {
   margin: 2px;
   padding: auto;
 }
+
+.dm_list {
+  background-color: aqua;
+  height: 100%;
+  width: 100%;
+}
+
+.group_page {
+  height: 100%;
+  width: 100%;
+  background-color: bisque;
+}
+
+.user_list {
+  height: 100%;
+  width: 100%;
+  background-color: brown;
+}

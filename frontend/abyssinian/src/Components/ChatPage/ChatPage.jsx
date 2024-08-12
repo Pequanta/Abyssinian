@@ -2,6 +2,7 @@ import styles from "./chatpagestyles.module.css";
 import { MdDarkMode } from "react-icons/md";
 import { CiLight } from "react-icons/ci";
 import React, { useEffect, useState } from "react";
+import { Outlet, NavLink } from "react-router-dom";
 
 function ChatPage() {
   const [theme, setTheme] = useState("light");
@@ -24,13 +25,13 @@ function ChatPage() {
               <nav>
                 <ul>
                   <li>
-                    <a>DMs</a>
+                    <NavLink to="/chat/">DMs</NavLink>
                   </li>
                   <li>
-                    <a>ChatRooms</a>
+                    <NavLink to="/chat/group-page">ChatRooms</NavLink>
                   </li>
                   <li>
-                    <a>Profile</a>
+                    <NavLink to="/chat/user-profile">Profile</NavLink>
                   </li>
                   <li>
                     <button
@@ -48,7 +49,9 @@ function ChatPage() {
             </header>
           </div>
           <div className={styles.pageHandlerComponents}>
-            <div className={styles.content_displayer}></div>
+            <div className={styles.content_displayer}>
+              <Outlet />
+            </div>
           </div>
         </div>
         <div className={styles.chat_area}>

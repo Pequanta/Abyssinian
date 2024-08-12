@@ -5,7 +5,7 @@
   width: 40%;
   display: flex;
   justify-content: center;
-  height: 60vh;
+  height: 75vh;
   border: 1px solid #dddddd2c;
   align-items: center;
   flex-direction: column;
@@ -64,4 +64,11 @@
 .loginCard form a {
   margin-bottom: 3rem;
   text-decoration: none;
+}
+
+.loginCard .errorMessage {
+  color: rgb(250, 0, 0);
+  font-size: 1.4rem;
+  margin-left: 30px;
+  margin-top: -3px;
 }
