@@ -2,16 +2,29 @@ import { useState } from "react";
 import styles from "./loginStyles.module.css";
 function LoginPage() {
   const [userInfo, setUserInfo] = useState({});
-  async function logInRequest(event) {
-    const inputData = event.target.name;
-    const inputVal = event.target.value;
-    setUserInfo((values) => ({ ...values, [inputData]: inputVal }));
-    const status = await fetch("http://localhost");
-  }
+
+  const [formElements, setFormElements] = useState({
+    user_name: "",
+    password: "",
+  });
+
+  const handleUserName = (event) => {
+    const userName = event.target.textContent;
+    setFormElements({ user_name: userName });
+  };
+  const handlePassword = (event) => {
+    const password = event.target.textContent;
+    setFormElements({ password: userName });
+  };
+  const sendLogInRequest = async (event) => {
+    event.preventDefault();
+    console.log("tried this");
+    return <h1>successful</h1>;
+  };
   return (
     <div className={styles.loginCard}>
       <h1>Log In</h1>
-      <form method="logIn()">
+      <form onSubmit={sendLogInRequest}>
         <div className="formElements">
           <label className="password_label">User Name</label>
           <input

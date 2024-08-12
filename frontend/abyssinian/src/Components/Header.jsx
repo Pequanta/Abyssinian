@@ -1,4 +1,6 @@
 import logoPic from "../assets/logo.jpg";
+import React from "react";
+import { Link } from "react-router-dom";
 function Header() {
   return (
     <header className="main_header">
@@ -7,36 +9,16 @@ function Header() {
         <ul>
           <div>
             <li>
-              <a
-                onClick={(event) => {
-                  handleClicks(event);
-                }}
-                href="/"
-              >
-                Home
-              </a>
+              <Link to="/">Home</Link>
             </li>
           </div>
           <div>
             <li>
-              <a
-                onClick={(event) => {
-                  handleClicks(event);
-                }}
-                href="/chat"
-              >
-                chat
-              </a>
+              <Link to="/chat">chat</Link>
             </li>
           </div>
           <li>
-            <a
-              onClick={(event) => {
-                handleClicks(event);
-              }}
-            >
-              About
-            </a>
+            <Link to="#">About</Link>
           </li>
           <div></div>
         </ul>

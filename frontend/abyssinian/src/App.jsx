@@ -14,40 +14,41 @@ import {
   Link,
 } from "react-router-dom";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <LoginPage />,
-  },
-  {
-    path: "home",
-    element: (
-      <>
-        <Header />
-        <WebDescription />,
-      </>
-    ),
-  },
-  {
-    path: "chat",
-    element: (
-      <>
-        <Header />
-        <ChatPage />,
-      </>
-    ),
-  },
-  {
-    path: "signup",
-    element: <SignUpPage />,
-  },
-]);
+// const router = createBrowserRouter([
+//   {
+//     path: "/",
+//     element: <LoginPage />,
+//   },
+//   {
+//     path: "home",
+//     element: (
+//       <>
+//         <Header />
+//         <WebDescription />,
+//       </>
+//     ),
+//   },
+//   {
+//     path: "chat",
+//     element: (
+//       <>
+//         <Header />
+//         <ChatPage />,
+//       </>
+//     ),
+//   },
+//   {
+//     path: "signup",
+//     element: <SignUpPage />,
+//   },
+// ]);
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
   return (
     <div className="container">
-      <RouterProvider router={router} />
+      <Header />
+      <WebDescription />
     </div>
   );
 }
