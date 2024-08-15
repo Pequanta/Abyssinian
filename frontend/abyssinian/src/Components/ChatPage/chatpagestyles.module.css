@@ -131,16 +131,55 @@ li {
   background-color: aqua;
   height: 100%;
   width: 100%;
+  padding: 3px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 .group_page {
   height: 100%;
   width: 100%;
   background-color: bisque;
+  padding: 3px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  overflow: auto;
 }
 
-.user_list {
+.user_profile {
   height: 100%;
   width: 100%;
-  background-color: brown;
+  background-color: rgb(255, 255, 255);
+  padding: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.AvatarTab {
+  width: 97%;
+  background: rgb(101, 180, 154);
+  height: 4rem;
+  display: flex;
+  justify-content: space-around;
+  margin: 3px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.AvatarTab:hover {
+  background-color: beige;
+}
+.AvatarTab img {
+  border-radius: 50%;
+  height: 3rem;
+}
+
+.user_profile img {
+  border-radius: 50%;
+  height: 7rem;
 }

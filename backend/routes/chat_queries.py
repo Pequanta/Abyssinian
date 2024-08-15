@@ -32,7 +32,7 @@ async def return_dm_chat(request: Request, user_name: str):
 async def return_all_dms(request: Request):
     try:
         current_user = "quantap" #this field will be updated with current user finding methods from authentication part
-        cont_returned = request.app.mongodb.groups.find({"members": {"$in": [current_user]}}, {"_id": 0, "chats": 0})
+        cont_returned = request.app.mongodb["groups"].find({"group_type":"DM", "members": {"$in": [current_user]}}, {"_id": 0, "chats": 0})
         contain_results = []
         async for item in cont_returned:
              contain_results.append(item)
@@ -44,7 +44,7 @@ async def return_all_dms(request: Request):
 async def return_all_groups(request: Request):
     try:
         current_user = "quantap" #this field will be updated with current user finding methods from authentication part
-        cont_returned = request.app.mongodb.groups.find({"group_type": "GROUP", "members": {"$in": [current_user]}}, {"_id": 0, "chats": 0})
+        cont_returned = request.app.mongodb.groups.find({"group_type": "GROUP", "members": {"$in": [current_user]}}, {"_id": 0})
         contain_results = []
         async for item in cont_returned:
              contain_results.append(item)

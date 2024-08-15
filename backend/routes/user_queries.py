@@ -7,14 +7,14 @@ router = APIRouter()
 
 #--> single user data
 
-@router.get("/access/single_user/{user_name}" , description="single user information using username")
+@router.get("/access/single-user/" , description="single user information using username")
 async def return_user_data(user_name: str, request: Request):
-    if not (user_ := await request.app.mongodb["users"].find_one({"username":user_name}, {"_id":0})):
-        raise HTTPException(status_code=404, details=f"User name {user_name} was not found")
+    if not (user_ := await request.app.mongodb["users"].find_one({"user_name":user_name}, {"_id":0, "password": 0})):
+        raise HTTPException(status_code=404, detail=f"User name {user_name} was not found")
     return user_
 
 #--> All users data
-@router.get("/access/all_users", description="returns all users data")
+@router.get("/access/all-users", description="returns all users data")
 async def return_all_users(request: Request, group_name: str):
     try:
         users_collection = {}
@@ -25,7 +25,7 @@ async def return_all_users(request: Request, group_name: str):
     except:
         raise HTTPException(status_code=401)
 #--> group data
-@router.get("/access/group_data", description="returns the group data")
+@router.get("/access/group-data", description="returns the group data")
 async def return_group_information(request: Request, group_name: str):
     try:
         cont_information = await request.app.mongodb["groups"].find_one({"group_name": group_name}, {"chats": 0 ,"_id": 0})
@@ -50,7 +50,7 @@ async def create_new_group(request: Request, group_name: str, ):
     except: 
         raise HTTPException(status_code=501)
 #new user joining a group
-@router.post("/create/group/new_user")
+@router.post("/create/group/new-user")
 async def joining_user(request: Request, group_name: str, user_name: str):
     try:
         await request.app.mongodb["groups"].update_one({"group_name": group_name},

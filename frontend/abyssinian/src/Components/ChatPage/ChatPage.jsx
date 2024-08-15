@@ -6,9 +6,7 @@ import { Outlet, NavLink } from "react-router-dom";
 
 function ChatPage() {
   const [theme, setTheme] = useState("light");
-  const [contacts, setContacts] = useState({});
-  const [chatRooms, setChatRooms] = useState({});
-  const [selectedUser, setSelectedUser] = useState({});
+  const [selectedChat, setSelectedChat] = useState([]);
   const changeTheme = (event) => {
     if (theme === "light") {
       setTheme("dark");
