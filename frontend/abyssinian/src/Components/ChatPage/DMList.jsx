@@ -20,7 +20,12 @@ function DMList() {
     };
     fetchData();
   }, []);
-  const startConverstation = (event) => {};
+  // const startConverstation = (event, user) => {
+  //   const response =
+  // };
+  function returnDMUser(arr){
+    
+  }
   return (
     <div className={styles.dm_list}>
       {userList.map((user) => (
@@ -28,7 +33,7 @@ function DMList() {
           profileImage={pic}
           userName={user.group_name}
           key={userList.indexOf(user)}
-          onClick={(event) => startConverstation(event)}
+          onClick={(event, user) => startConverstation(event, user.group_name)}
         />
       ))}
     </div>

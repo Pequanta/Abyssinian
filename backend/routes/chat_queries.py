@@ -78,3 +78,7 @@ async def add_chat_dm(request: Request, chat: str, user_name: str):
         return {"message": "inserted successfully"}
 
 
+
+
+# @router.post("/create-new-chat/groups/dm/")
+# async def create_new_chat(request: Request, chat: str, user_name)

@@ -10,7 +10,8 @@ DB_NAME= config('DB_NAME', str)
 
 origins = [
     "http://localhost",
-    "http://localhost:5174"
+    "http://localhost:5174",
+    "http://localhost:5173"
 ]
 def lifespan(app: FastAPI):
     app.mongodb_client = AsyncIOMotorClient(DB_URL)

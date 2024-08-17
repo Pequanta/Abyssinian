@@ -15,51 +15,52 @@ import {
   Link,
 } from "react-router-dom";
 
-const router = createBrowserRouter([
-  {
-    index: true,
-    element: <LoginPage />,
-  },
-  {
-    path: "/home",
-    element: (
-      <>
-        <Header />
-        <WebDescription />,
-      </>
-    ),
-  },
-  {
-    path: "/chat",
-    element: (
-      <>
-        <Header />
-        <ChatPage />,
-      </>
-    ),
-    children: [
-      {
-        index: true,
-        element: <DMList />,
-      },
-      {
-        path: "/chat/user-profile",
-        element: <UserProfile />,
-      },
-      {
-        path: "/chat/group-page",
-        element: <Groups />,
-      },
-    ],
-  },
-  {
-    path: "signup",
-    element: <SignUpPage />,
-  },
-]);
-
 function App() {
   const [isLogin, setIsLogin] = useState(false);
+  const [chatDisplayed, setChatDisplayed] = useState();
+  const router = createBrowserRouter([
+    {
+      index: true,
+      element: <LoginPage />,
+    },
+    {
+      index: true,
+      path: "/home",
+      element: (
+        <>
+          <Header />
+          <WebDescription />,
+        </>
+      ),
+    },
+    {
+      path: "/chat",
+      element: (
+        <>
+          <Header />
+          <ChatPage chatToDisplay={chatDisplayed} />,
+        </>
+      ),
+      children: [
+        {
+          index: true,
+          element: <DMList chatSetterFunction={setChatDisplayed} />,
+        },
+        {
+          path: "/chat/user-profile",
+          element: <UserProfile chatSetterFunction={setChatDisplayed} />,
+        },
+        {
+          path: "/chat/group-page",
+          element: <Groups chatSetterFunction={setChatDisplayed} />,
+        },
+      ],
+    },
+    {
+      path: "signup",
+      element: <SignUpPage />,
+    },
+  ]);
   return (
     <div className="container">
       <RouterProvider router={router} />
