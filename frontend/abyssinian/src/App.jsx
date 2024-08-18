@@ -17,7 +17,7 @@ import {
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
-  const [chatDisplayed, setChatDisplayed] = useState();
+  const [chatDisplayed, setChatDisplayed] = useState([]);
   const router = createBrowserRouter([
     {
       index: true,
@@ -44,7 +44,12 @@ function App() {
       children: [
         {
           index: true,
-          element: <DMList chatSetterFunction={setChatDisplayed} />,
+          element: (
+            <DMList
+              chatToDisplay={chatDisplayed}
+              chatSetterFunction={setChatDisplayed}
+            />
+          ),
         },
         {
           path: "/chat/user-profile",

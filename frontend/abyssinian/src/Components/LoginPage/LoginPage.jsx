@@ -21,22 +21,26 @@ function LoginPage() {
   };
   const sendLogInRequest = async (event) => {
     event.preventDefault();
-    const response = await fetch(
-      `http://localhost:8002/users/access/user/login?user_name=${formElements.username}&password=${formElements.password}`
-    );
-    if (response.ok) {
-      const result = await response.json();
-      if (result["message"] === "found") {
-        navigate("home");
+    try {
+      const response = await fetch(
+        `http://localhost:8002/users/access/user/login?user_name=${formElements.username}&password=${formElements.password}`
+      );
+      if (response.ok) {
+        const result = await response.json();
+        if (result["message"] === "found") {
+          navigate("home");
+        }
+        if (result["message"] === "incorrect password") {
+          setWrongPassword(true);
+        }
+        if (result["message"] === "not found") {
+          setUserNameNotFound(true);
+        }
+      } else {
+        console.log("Server error");
       }
-      if (result["message"] === "incorrect password") {
-        setWrongPassword(true);
-      }
-      if (result["message"] === "not found") {
-        setUserNameNotFound(true);
-      }
-    } else {
-      console.log("Server error");
+    } catch (e) {
+      console.log(e);
     }
   };
   return (
@@ -44,6 +48,12 @@ function LoginPage() {
       <h1>Log In</h1>
       <form onSubmit={sendLogInRequest}>
         <div className="formElements">
+          {(userNameNotFound || wrongPassword) && (
+            <label className={styles.errorMessage}>
+              User Name and Password combination is wrong
+            </label>
+          )}
+          <br></br>
           <label className="password_label">User Name</label>
           <input
             type="name"
@@ -52,9 +62,6 @@ function LoginPage() {
             name="username"
             onChange={(event) => handleUserName(event)}
           />
-          {userNameNotFound && (
-            <label className={styles.errorMessage}>User Name not found</label>
-          )}
         </div>
         <div className="forElements">
           <label className="password_label">Password</label>
@@ -65,9 +72,6 @@ function LoginPage() {
             name="password"
             onChange={(event) => handlePassword(event)}
           />
-          {wrongPassword && (
-            <label className={styles.errorMessage}>Wrong Password</label>
-          )}
         </div>
         <a href="#">forgot your password?</a>
         <div className={styles.submit_button_div}>

@@ -23,7 +23,7 @@ async def return_group_chat( request: Request, group_name: str):
 @router.get("/access/groups/dms/{user_name}")
 async def return_dm_chat(request: Request, user_name: str):
     try: 
-        cont_returned = await request.app.mongodb["groups"].find_one({"admins": [user_name,'peniel']},{"_id": 0})
+        cont_returned = await request.app.mongodb["groups"].find_one({"group_type": "DM" , "members": [user_name,'peniel']},{"_id": 0})
         return cont_returned["chats"]
     except:
      raise HTTPException(status_code=404, detail="dm_not_found")
@@ -51,34 +51,73 @@ async def return_all_groups(request: Request):
         return contain_results
     except:
         return HTTPException(status_code=401)
-#create operations
+#operations to add new data to the existing document elements
 #group
 @router.post("/add_chat/groups/group/{group_name}" , description="adds a chat to a specified group")
 async def add_chat_group(request: Request, chat: str, group_name: str):
         
-        if not (await request.app.mongodb["groups"].update_one({"group_name": group_name}, 
-                                                            {"$push" : {"chats": jsonable_encoder({
-                                                                "sender_user_name":"quantap",
-                                                                "content": chat, 
-                                                                "sent_time": "08: 20: 01"
-                                                                }
-                                                                )}})):
+        if not (await request.app.mongodb["groups"].update_one(
+            {"group_name": group_name}, 
+            {"$push" : {"chats": jsonable_encoder({
+                "sender_user_name":"quantap",
+                "content": chat, 
+                "sent_time": "08: 20: 01"
+                }
+                )}})):
              raise HTTPException(status_code=401, detail="task not found")
         return {"message": "inserted successfully"}
 @router.post("/add_chat/groups/dm/{user_name}", description="adds a chat to a dm with a specified user_name")
 async def add_chat_dm(request: Request, chat: str, user_name: str):
-        if not (await request.app.mongodb["groups"].update_one({"members": [user_name, 'peniel']}, 
-                                                                {"$push" : {"chats": jsonable_encoder({
-                                                                    "sender_user_name":"quantap",
-                                                                    "content": chat, 
-                                                                    "sent_time": "08: 20: 01"
-                                                                    }
-                                                                    )}})):
+        if not (await request.app.mongodb["groups"].update_one(
+            {"members": sorted([user_name, 'peniel'])}, 
+            {"$push" : {"chats": jsonable_encoder({
+                "sender_user_name":user_name,
+                "content": chat, 
+                "sent_time": "08: 20: 01"
+                }
+                )}})):
              raise HTTPException(status_code=401, detail="task not found")
         return {"message": "inserted successfully"}
 
 
+#creating new document members
 
 
-# @router.post("/create-new-chat/groups/dm/")
-# async def create_new_chat(request: Request, chat: str, user_name)
+#dm
+@router.post("/create-new-chat/dm/{user_name}")
+async def create_new_chat(request: Request, user_name : str):
+    #checking if the connection already exists
+    try:
+        if not (cont_returned := await request.app.mongodb["groups"].find_one({"members": sorted([user_name, "peniel"])})):
+            await request.app.mongodb["groups"].insert_one({
+                    "group_type": 'DM',
+                    "created_time": '08: 16: 01',
+                    "members": [ user_name, 'peniel' ],
+                    "chats": []
+            })
+            return {"message": "successful"}
+        else:
+            return {"message": "exists"}
+    except:
+        raise HTTPException(status_code=401)
+    
+#group
+@router.post("/create-new-chat/group/{group_name}")
+async def create_new_chat(request: Request, group_name: str):
+    #checking if the group already exists
+    try:
+
+        if not (cont_returned := await request.app.mongodb["groups"].find_one({"group_name": group_name})):
+            await request.app.mongodb["groups"].insert_one({
+                    "group_type": 'GROUP',
+                    "group_name": group_name,
+                    "created_time": '13:01:01',
+                    "admins": ['peniel'],
+                    "members": ['peniel'],
+                    "chats": []
+            })
+            return {"message": "successful"}
+        else:
+            return {"message": "exists"}
+    except:
+        raise HTTPException(status_code=401)

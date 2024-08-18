@@ -1,19 +1,10 @@
 import styles from "./chatpagestyles.module.css";
-import { MdDarkMode } from "react-icons/md";
-import { CiLight } from "react-icons/ci";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Outlet, NavLink } from "react-router-dom";
+import ChatCard from "./ChatCard";
 
-function ChatPage() {
-  const [theme, setTheme] = useState("light");
+function ChatPage(props) {
   const [selectedChat, setSelectedChat] = useState([]);
-  const changeTheme = (event) => {
-    if (theme === "light") {
-      setTheme("dark");
-    } else if (theme === "dark") {
-      setTheme("light");
-    }
-  };
   return (
     <>
       <div className={styles.chat_container}>
@@ -31,17 +22,6 @@ function ChatPage() {
                   <li>
                     <NavLink to="/chat/user-profile">Profile</NavLink>
                   </li>
-                  <li>
-                    <button
-                      onClick={(event) => {
-                        changeTheme(event);
-                      }}
-                      className="theme_button"
-                    >
-                      {theme === "dark" && <MdDarkMode />}
-                      {theme === "light" && <CiLight />}
-                    </button>
-                  </li>
                 </ul>
               </nav>
             </header>
@@ -53,7 +33,18 @@ function ChatPage() {
           </div>
         </div>
         <div className={styles.chat_area}>
-          <div className={styles.chat_display_area}></div>
+          <div className={styles.chat_display_area}>
+            {props.chatToDisplay.map((chat) => (
+              <ChatCard
+                key={props.chatToDisplay.indexOf(chat)}
+                content={
+                  props.chatToDisplay[props.chatToDisplay.indexOf(chat)][
+                    "content"
+                  ]
+                }
+              />
+            ))}
+          </div>
           <div className={styles.chat_text_input}>
             <textarea className={styles.text_area} />
             <button>send</button>

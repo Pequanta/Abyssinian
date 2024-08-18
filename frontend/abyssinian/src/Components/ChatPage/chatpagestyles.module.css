@@ -37,7 +37,7 @@ li {
 }
 .chat_page_handler header {
   border: none;
-  background-color: rgba(175, 187, 161, 0.315);
+  background-color: rgba(15, 27, 0, 0.315);
 }
 
 .chat_page_handler ul {
@@ -78,9 +78,10 @@ li {
 .chat_area .chat_display_area {
   width: 100%;
   height: 90%;
-  background-color: #81a79e;
+  background-color: #202209;
   margin-bottom: 1%;
   border-radius: 10px;
+  overflow: auto;
 }
 
 .chat_area .chat_text_input {
@@ -97,6 +98,8 @@ li {
   border-radius: 10px;
   resize: none;
   overflow-y: hidden;
+  background-color: #202209;
+  color: rgb(255, 255, 255);
 }
 
 .chat_area .chat_text_input button {
@@ -107,11 +110,13 @@ li {
   margin: 0;
   border-radius: 20px;
   align-items: center;
-  background-color: rgb(151, 223, 70);
+  color: yellow;
+  background-color: rgb(58, 145, 87);
 }
 
 .chat_area .chat_text_input button:hover {
   color: white;
+  background-color: rgb(0, 0, 0);
 }
 .chat_page_handler .pageHandlerComponents {
   display: flex;
@@ -125,10 +130,12 @@ li {
   border-radius: 10px;
   margin: 2px;
   padding: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .dm_list {
-  background-color: aqua;
+  background-color: rgb(0, 0, 0);
   height: 100%;
   width: 100%;
   padding: 3px;
@@ -140,7 +147,7 @@ li {
 .group_page {
   height: 100%;
   width: 100%;
-  background-color: bisque;
+  background-color: rgb(39, 35, 31);
   padding: 3px;
   display: flex;
   align-items: center;
@@ -151,35 +158,97 @@ li {
 .user_profile {
   height: 100%;
   width: 100%;
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(48, 40, 40);
   padding: 3px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   overflow: auto;
+  color: yellow;
 }
 
 .AvatarTab {
-  width: 97%;
-  background: rgb(101, 180, 154);
+  width: 90%;
+  background: rgb(23, 27, 26);
   height: 4rem;
   display: flex;
-  justify-content: space-around;
   margin: 3px;
   border-radius: 10px;
   cursor: pointer;
+  color: yellow;
+  border: none;
+  gap: 2rem;
 }
 
 .AvatarTab:hover {
-  background-color: beige;
+  border: 1px slid greenyellow;
+}
+.AvatarTab:active {
+  background-color: aqua;
+  color: black;
+  border: 1px solid black;
 }
 .AvatarTab img {
   border-radius: 50%;
   height: 3rem;
 }
 
-.user_profile img {
+.user_profile .user_pic img {
   border-radius: 50%;
   height: 7rem;
+}
+
+.search_button {
+  margin: 20px 10px;
+}
+.search_button .text_input {
+  width: 90%;
+  height: 3rem;
+  font-size: 2rem;
+  font-weight: 800;
+  border: none;
+  border-radius: 20px;
+}
+
+.search_button .submit {
+  width: 10%;
+  height: 3rem;
+  font-size: 2rem;
+  font-weight: 800;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+.search_button .submit:hover {
+  background-color: black;
+  color: white;
+}
+
+.chatCard {
+  display: flex;
+  flex: 1;
+  margin: 20px;
+  color: white;
+  border-radius: 25px;
+}
+
+.chatCard .user_profile {
+  background: transparent;
+  margin-bottom: 0;
+  width: 15rem;
+  height: 100%;
+}
+.chatCard .content {
+  background-color: black;
+  color: rgb(255, 253, 154);
+  font-size: 1.2rem;
+  padding: 20px;
+  border-radius: 20px;
+}
+.chatCard img {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  margin-bottom: 0;
 }

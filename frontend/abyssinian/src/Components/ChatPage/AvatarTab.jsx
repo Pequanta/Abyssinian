@@ -1,14 +1,17 @@
 import styles from "./chatpagestyles.module.css";
 function AvatarTab(props) {
   return (
-    <div className={styles.AvatarTab}>
+    <button
+      className={styles.AvatarTab}
+      onClick={props.startConversationFunction}
+    >
       <div className={styles.profilePic}>
         <img src={props.profileImage} />
       </div>
       <div>
-        <h1>{props.userName}</h1>
+        <h1>{props.Name}</h1>
       </div>
-    </div>
+    </button>
   );
 }
 export default AvatarTab;
