@@ -13,7 +13,10 @@ function Groups(props) {
       const result = response.json();
       result.then((content) => {
         console.log(content);
-        setGroupsList([...groupsList, content[0]]);
+        if (!(content[0] in groupsList)) {
+          console.log(groupsList);
+          setGroupsList([...groupsList, content[0]]);
+        }
       });
     };
     fetchData();
@@ -26,11 +29,13 @@ function Groups(props) {
       `http://localhost:8002/chats/access/groups/group/${groupName}?group_name=${groupName}`
     );
     const result = response.json();
+    props.chatSelectionFunction({
+      chatType: "GROUP",
+      Name: groupName,
+    });
     result.then((content) => {
-      console.log(content);
       props.chatSetterFunction(content);
     });
-    console.log(props.chatDisplayed);
     if (!response.ok) {
       console.log("error");
     } else {

@@ -1,10 +1,69 @@
 import styles from "./chatpagestyles.module.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Outlet, NavLink } from "react-router-dom";
 import ChatCard from "./ChatCard";
 
 function ChatPage(props) {
-  const [selectedChat, setSelectedChat] = useState([]);
+  const [chatToSend, setChatToSend] = useState();
+  const handleInputChange = (event) => {
+    const textContent = event.target.value;
+    setChatToSend(textContent);
+  };
+  const startConverstation = async (name, chatType) => {
+    let response;
+    if (chatType === "DM") {
+      response = await fetch(
+        `http://localhost:8002/chats/access/groups/dms/${name}?user_name=${name}`
+      );
+      props.chatSelectionFunction({
+        chatType: "DM",
+        Name: userName,
+      });
+    } else if (chatType === "GROUP") {
+      response = await fetch(
+        `http://localhost:8002/chats/access/groups/group/${name}?group_name=${name}`
+      );
+      props.chatSelectionFunction({
+        chatType: "GROUP",
+        Name: name,
+      });
+    } else {
+      console.log("hello world");
+    }
+    const result = response.json();
+    result.then((content) => {
+      props.chatSetterFunction(content);
+    });
+
+    if (!response.ok) {
+      console.log("error");
+    } else {
+      console.log(response.data);
+    }
+  };
+  const sendChat = async (event) => {
+    let readingResponse;
+    document.getElementById("inputBox").value = "";
+    let name = props.chatSelected["Name"];
+    if (props.chatSelected["chatType"] === "DM") {
+      const response = await fetch(
+        `http://localhost:8002/chats/add_chat/groups/dm/${props.chatSelected["Name"]}?chat=${chatToSend}&user_name=${props.chatSelected["Name"]}`,
+        { method: "post" }
+      );
+
+      await startConverstation(name, "DM");
+      console.log(props.chatToDisplay);
+    } else if (props.chatSelected["chatType"] === "GROUP") {
+      const response = await fetch(
+        `http://localhost:8002/chats/add_chat/groups/group/${props.chatSelected["Name"]}?chat=${chatToSend}&group_name=${props.chatSelected["Name"]}`,
+        { method: "post" }
+      );
+      await startConverstation(name, "GROUP");
+      console.log(props.chatToDisplay);
+    } else {
+      console.log("chat not selected");
+    }
+  };
   return (
     <>
       <div className={styles.chat_container}>
@@ -42,12 +101,27 @@ function ChatPage(props) {
                     "content"
                   ]
                 }
+                sentTime={
+                  props.chatToDisplay[props.chatToDisplay.indexOf(chat)][
+                    "sent_time"
+                  ]
+                }
+                senderName={
+                  props.chatToDisplay[props.chatToDisplay.indexOf(chat)][
+                    "sender_user_name"
+                  ]
+                }
               />
             ))}
+            <div id="endOfText"></div>
           </div>
           <div className={styles.chat_text_input}>
-            <textarea className={styles.text_area} />
-            <button>send</button>
+            <textarea
+              className={styles.text_area}
+              onChange={(event) => handleInputChange(event)}
+              id="inputBox"
+            />
+            <button onClick={(event) => sendChat(event)}>send</button>
           </div>
         </div>
       </div>

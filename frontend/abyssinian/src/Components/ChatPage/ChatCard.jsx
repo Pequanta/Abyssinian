@@ -7,8 +7,13 @@ function ChatCard(props) {
         <img alt="profile" src={profilePic} />
       </div>
       <div className={styles.content}>
+        <div>
+          <span className={styles.userName}>{props.senderName}</span>
+        </div>
         <p className={styles.chatContent}>{props.content}</p>
-        <div className={styles.sentTime}>00:00:00</div>
+        <div>
+          <span className={styles.sentTime}>{props.sentTime}</span>
+        </div>
       </div>
     </div>
   );

@@ -5,7 +5,7 @@
   width: 40%;
   display: flex;
   justify-content: center;
-  height: 60vh;
+  height: 75vh;
   border: 1px solid #dddddd2c;
   align-items: center;
   flex-direction: column;
@@ -41,7 +41,7 @@
 }
 
 .signUpCard form .submit_button {
-  width: 35%;
+  width: 40%;
   height: 4rem;
   font-size: 2.5rem;
   padding: 2px;
@@ -53,7 +53,7 @@
 
 .signUpCard form .submit_button:hover {
   font-size: 2.7rem;
-  width: 50%;
+  width: 45%;
   background-color: rgb(130, 238, 233);
   color: hsl(0, 0%, 9%);
 }
@@ -64,4 +64,9 @@
 .signUpCard form a {
   margin-bottom: 3rem;
   text-decoration: none;
+}
+
+.errorMessage {
+  color: red;
+  font-size: 1.5rem;
 }

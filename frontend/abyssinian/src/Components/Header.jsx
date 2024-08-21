@@ -6,6 +6,10 @@ import { MdDarkMode } from "react-icons/md";
 import { CiLight } from "react-icons/ci";
 function Header() {
   const [theme, setTheme] = useState("light");
+  const [activeHome, setActiveHome] = useState(false);
+  const [activeChat, setActiveChat] = useState(false);
+  const [activeVlog, setActiveVlog] = useState(false);
+  const [activeAbout, setActiveAbout] = useState(false);
   const changeTheme = (event) => {
     if (theme === "light") {
       setTheme("dark");
@@ -23,7 +27,13 @@ function Header() {
               <NavLink
                 id="links_"
                 to="/home"
-                className={({ isActive }) => (isActive ? "active" : "")}
+                className={`${activeHome ? "active" : ""}`}
+                onClick={(event) => {
+                  setActiveHome(true);
+                  setActiveChat(false);
+                  setActiveVlog(false);
+                  setActiveAbout(false);
+                }}
               >
                 Home
               </NavLink>
@@ -34,7 +44,13 @@ function Header() {
               <NavLink
                 id="links_"
                 to="/chat"
-                className={({ isActive }) => (isActive ? "active" : "")}
+                className={`${activeChat ? "active" : ""}`}
+                onClick={(event) => {
+                  setActiveChat(true);
+                  setActiveHome(false);
+                  setActiveVlog(false);
+                  setActiveAbout(false);
+                }}
               >
                 chat
               </NavLink>
@@ -44,8 +60,14 @@ function Header() {
             <li>
               <NavLink
                 id="links_"
-                to="/chat"
-                className={({ isActive }) => (isActive ? "active" : "")}
+                to="/vlog"
+                className={`${activeVlog ? "active" : ""}`}
+                onClick={(event) => {
+                  setActiveHome(false);
+                  setActiveChat(false);
+                  setActiveVlog(true);
+                  setActiveAbout(false);
+                }}
               >
                 Vlogs
               </NavLink>
@@ -54,8 +76,14 @@ function Header() {
           <li>
             <NavLink
               id="links_"
-              to="#"
-              className={({ isActive }) => (isActive ? "active" : "")}
+              to="/about"
+              className={`${activeAbout ? "active" : ""}`}
+              onClick={(event) => {
+                setActiveHome(false);
+                setActiveChat(false);
+                setActiveVlog(false);
+                setActiveAbout(true);
+              }}
             >
               About
             </NavLink>

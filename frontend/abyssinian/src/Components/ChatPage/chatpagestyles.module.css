@@ -7,6 +7,9 @@
   padding: 0;
   margin: 0;
 }
+::-webkit-scrollbar {
+  display: none;
+}
 a {
   text-decoration: none;
 }
@@ -32,12 +35,11 @@ li {
   height: 100%;
 }
 
-.chat_page_handler .header {
-  height: 10hv;
-}
 .chat_page_handler header {
+  width: 97%;
   border: none;
   background-color: rgba(15, 27, 0, 0.315);
+  border-radius: 1rem;
 }
 
 .chat_page_handler ul {
@@ -76,11 +78,15 @@ li {
 }
 
 .chat_area .chat_display_area {
-  width: 100%;
-  height: 90%;
-  background-color: #202209;
+  width: 97%;
+  height: 85%;
+  background-color: #1d1d1b;
   margin-bottom: 1%;
+  margin-top: 2%;
   border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   overflow: auto;
 }
 
@@ -99,7 +105,15 @@ li {
   resize: none;
   overflow-y: hidden;
   background-color: #202209;
-  color: rgb(255, 255, 255);
+}
+
+.chat_area .chat_text_input .text_area:active {
+  background-color: #1d1d1b;
+}
+
+.chat_area .chat_text_input .text_area:focus {
+  color: black;
+  background-color: rgb(255, 255, 255);
 }
 
 .chat_area .chat_text_input button {
@@ -111,12 +125,12 @@ li {
   border-radius: 20px;
   align-items: center;
   color: yellow;
-  background-color: rgb(58, 145, 87);
+  background-color: rgb(6, 26, 12);
 }
 
 .chat_area .chat_text_input button:hover {
   color: white;
-  background-color: rgb(0, 0, 0);
+  background-color: rgb(112, 117, 40);
 }
 .chat_page_handler .pageHandlerComponents {
   display: flex;
@@ -125,7 +139,7 @@ li {
 
 .chat_page_handler .pageHandlerComponents .content_displayer {
   height: 100%;
-  background-color: black;
+  background-color: rgba(46, 46, 46, 0.722);
   width: 100%;
   border-radius: 10px;
   margin: 2px;
@@ -135,19 +149,19 @@ li {
 }
 
 .dm_list {
-  background-color: rgb(0, 0, 0);
   height: 100%;
   width: 100%;
-  padding: 3px;
   display: flex;
   align-items: center;
   flex-direction: column;
+  margin-bottom: 3rem;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .group_page {
   height: 100%;
   width: 100%;
-  background-color: rgb(39, 35, 31);
   padding: 3px;
   display: flex;
   align-items: center;
@@ -158,7 +172,7 @@ li {
 .user_profile {
   height: 100%;
   width: 100%;
-  background-color: rgb(48, 40, 40);
+  background-color: rgb(0, 0, 0);
   padding: 3px;
   display: flex;
   justify-content: center;
@@ -168,24 +182,36 @@ li {
   color: yellow;
 }
 
+.itemList {
+  width: 100%;
+  height: 80%;
+}
+
+.itemList:last-child {
+  margin-bottom: 3rem;
+}
+
 .AvatarTab {
-  width: 90%;
-  background: rgb(23, 27, 26);
+  width: 100%;
+  background: rgb(163, 163, 163);
+  box-shadow: 1px 1px 5px rgb(97, 97, 97);
+  border: 3px solid rgb(74, 74, 74);
+  border-radius: 1rem;
   height: 4rem;
   display: flex;
+  align-items: center;
   margin: 3px;
-  border-radius: 10px;
   cursor: pointer;
   color: yellow;
-  border: none;
   gap: 2rem;
+  padding: 2rem;
 }
 
 .AvatarTab:hover {
-  border: 1px slid greenyellow;
+  border: 1px solid greenyellow;
 }
 .AvatarTab:active {
-  background-color: aqua;
+  background-color: rgb(238, 255, 0);
   color: black;
   border: 1px solid black;
 }
@@ -227,28 +253,48 @@ li {
 
 .chatCard {
   display: flex;
-  flex: 1;
   margin: 20px;
+  background: transparent;
   color: white;
   border-radius: 25px;
+  width: 60%;
 }
 
 .chatCard .user_profile {
-  background: transparent;
   margin-bottom: 0;
-  width: 15rem;
+  width: 5rem;
   height: 100%;
+  background: transparent;
+  display: flex;
+  justify-content: end;
 }
 .chatCard .content {
-  background-color: black;
-  color: rgb(255, 253, 154);
-  font-size: 1.2rem;
+  width: 85%;
+  background-color: rgb(43, 27, 27);
+  color: rgb(180, 160, 95);
+  font-size: 1.3rem;
   padding: 20px;
-  border-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-top-left-radius: 40px;
+  display: flex;
+  flex-direction: column;
+  text-align: start;
 }
 .chatCard img {
   width: 3.5rem;
   height: 3.5rem;
   border-radius: 50%;
-  margin-bottom: 0;
+}
+
+.chatCard .userName {
+  color: rgb(117, 115, 115);
+  float: right;
+  font-size: 1rem;
+}
+
+.chatCard .sentTime {
+  color: #928e8e;
+  font-size: 1rem;
+  float: right;
 }

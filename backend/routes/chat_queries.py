@@ -1,9 +1,39 @@
 from fastapi import APIRouter, Request, HTTPException, Path
 from fastapi.encoders import jsonable_encoder
 from models import GroupDB, ChatDB, GroupBase
-
+from datetime import datetime
 router = APIRouter()
 
+
+def formated_time(time_):
+    hours = ""
+    minutes = ""
+    seconds = ""
+    prime = ""
+    get_hour = time_.hour
+
+    if get_hour > 12:
+        get_hour = get_hour - 12
+        prime="PM"
+    else:
+        prime= "AM"
+
+    get_minutes = time_.minute
+    get_seconds = time_.second
+    if get_hour < 10:
+        hours = "0" + str(get_hour)
+    else:
+        hours=str(get_hour)
+    if get_minutes < 10:
+        minutes = "0" + str(get_hour)
+    else:
+        minutes=str(get_minutes)
+    if get_seconds < 10:
+        seconds = "0" + str(get_hour)
+    else:
+        seconds=str(get_seconds)
+    
+    return f"{hours}:{minutes}:{seconds}{prime}"
 @router.get("/access" , description = "access level notification")
 async def notify_access():
     return {"message": "chat functionality is accessed"}
@@ -23,7 +53,7 @@ async def return_group_chat( request: Request, group_name: str):
 @router.get("/access/groups/dms/{user_name}")
 async def return_dm_chat(request: Request, user_name: str):
     try: 
-        cont_returned = await request.app.mongodb["groups"].find_one({"group_type": "DM" , "members": [user_name,'peniel']},{"_id": 0})
+        cont_returned = await request.app.mongodb["groups"].find_one({"group_type": "DM" , "members": sorted([user_name,'peniel'])},{"_id": 0})
         return cont_returned["chats"]
     except:
      raise HTTPException(status_code=404, detail="dm_not_found")
@@ -61,23 +91,24 @@ async def add_chat_group(request: Request, chat: str, group_name: str):
             {"$push" : {"chats": jsonable_encoder({
                 "sender_user_name":"quantap",
                 "content": chat, 
-                "sent_time": "08: 20: 01"
+                "sent_time": formated_time(datetime.now())
                 }
                 )}})):
              raise HTTPException(status_code=401, detail="task not found")
         return {"message": "inserted successfully"}
 @router.post("/add_chat/groups/dm/{user_name}", description="adds a chat to a dm with a specified user_name")
 async def add_chat_dm(request: Request, chat: str, user_name: str):
-        if not (await request.app.mongodb["groups"].update_one(
+        if not (cont := await request.app.mongodb["groups"].update_one(
             {"members": sorted([user_name, 'peniel'])}, 
-            {"$push" : {"chats": jsonable_encoder({
+            {"$push" : {"chats": {
                 "sender_user_name":user_name,
                 "content": chat, 
-                "sent_time": "08: 20: 01"
+                "sent_time": formated_time(datetime.now())
                 }
-                )}})):
+                }} )):
              raise HTTPException(status_code=401, detail="task not found")
-        return {"message": "inserted successfully"}
+        else:
+            return {"message": "inserted successfully"}
 
 
 #creating new document members
@@ -91,7 +122,7 @@ async def create_new_chat(request: Request, user_name : str):
         if not (cont_returned := await request.app.mongodb["groups"].find_one({"members": sorted([user_name, "peniel"])})):
             await request.app.mongodb["groups"].insert_one({
                     "group_type": 'DM',
-                    "created_time": '08: 16: 01',
+                    "created_time": formated_time(datetime.now()),
                     "members": [ user_name, 'peniel' ],
                     "chats": []
             })
@@ -111,7 +142,7 @@ async def create_new_chat(request: Request, group_name: str):
             await request.app.mongodb["groups"].insert_one({
                     "group_type": 'GROUP',
                     "group_name": group_name,
-                    "created_time": '13:01:01',
+                    "created_time": formated_time(datetime.now()),
                     "admins": ['peniel'],
                     "members": ['peniel'],
                     "chats": []

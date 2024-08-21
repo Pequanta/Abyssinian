@@ -21,7 +21,7 @@ footer {
 }
 
 main {
-  background: url("background.png");
+  background: transparent;
   background-position: fixed;
   background-size: cover;
   display: flex;
@@ -29,7 +29,7 @@ main {
   align-items: center;
   flex-direction: column;
   height: 75vh;
-  background-color: rgb(153, 145, 70);
+  margin-bottom: 1%;
 }
 
 .page_container {
@@ -60,9 +60,13 @@ main {
 }
 
 footer {
-  position: relative;
-  height: 10vh;
+  height: 5rem;
+  display: flex;
+  align-items: center;
   margin-bottom: 0;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
 }
 
 footer .footerContacts {
@@ -75,7 +79,7 @@ footer .footerContacts {
 
 footer ul {
   display: flex;
-  gap: 10px;
+  gap: 20px;
 }
 footer .footerContacts .icons {
   margin-right: 0.7rem;

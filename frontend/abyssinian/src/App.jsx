@@ -18,6 +18,10 @@ import {
 function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [chatDisplayed, setChatDisplayed] = useState([]);
+  const [selectedChat, setSelectedChat] = useState({
+    chatType: "",
+    Name: "",
+  });
   const router = createBrowserRouter([
     {
       index: true,
@@ -38,7 +42,13 @@ function App() {
       element: (
         <>
           <Header />
-          <ChatPage chatToDisplay={chatDisplayed} />,
+          <ChatPage
+            chatToDisplay={chatDisplayed}
+            chatSelected={selectedChat}
+            chatSelectionFunction={setSelectedChat}
+            chatSetterFunction={setChatDisplayed}
+          />
+          ,
         </>
       ),
       children: [
@@ -48,6 +58,7 @@ function App() {
             <DMList
               chatToDisplay={chatDisplayed}
               chatSetterFunction={setChatDisplayed}
+              chatSelectionFunction={setSelectedChat}
             />
           ),
         },
@@ -57,7 +68,12 @@ function App() {
         },
         {
           path: "/chat/group-page",
-          element: <Groups chatSetterFunction={setChatDisplayed} />,
+          element: (
+            <Groups
+              chatSetterFunction={setChatDisplayed}
+              chatSelectionFunction={setSelectedChat}
+            />
+          ),
         },
       ],
     },

@@ -21,7 +21,6 @@ function DMList(props) {
     fetchData();
   }, []);
   const startConverstation = async (event, userName) => {
-    console.log(userName);
     const response = await fetch(
       `http://localhost:8002/chats/access/groups/dms/${userName}?user_name=${userName}`
     );
@@ -29,7 +28,11 @@ function DMList(props) {
     result.then((content) => {
       props.chatSetterFunction(content);
     });
-    console.log(props.chatDisplayed);
+    props.chatSelectionFunction({
+      chatType: "DM",
+      Name: userName,
+    });
+
     if (!response.ok) {
       console.log("error");
     } else {
@@ -48,16 +51,18 @@ function DMList(props) {
           <input type="submit" value="s" className={styles.submit} />
         </form>
       </div>
-      {userList.map((user) => (
-        <AvatarTab
-          profileImage={pic}
-          Name={"quantap"}
-          key={userList.indexOf(user)}
-          startConversationFunction={(event) =>
-            startConverstation(event, "quantap")
-          }
-        />
-      ))}
+      <div className={styles.itemList}>
+        {userList.map((user) => (
+          <AvatarTab
+            profileImage={pic}
+            Name={"quantap"}
+            key={userList.indexOf(user)}
+            startConversationFunction={(event) =>
+              startConverstation(event, "quantap")
+            }
+          />
+        ))}
+      </div>
     </div>
   );
 }

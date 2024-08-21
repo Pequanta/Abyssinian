@@ -68,7 +68,7 @@ async def admin_granting(request: Request, group_name: str, user_name: str):
         raise HTTPException(status_code=501)
 
 #single user
-@router.post("/create/user")
+@router.post("/create/user/{user_name}")
 
 async def create_new_user(request: Request, user_name: str, password: str):
     try:

@@ -1,10 +1,15 @@
+import { Link, NavLink } from "react-router-dom";
 import styles from "./SignUp.module.css";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 function SignUpPage() {
+  const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({
     userName: "",
     password: "",
   });
+  const [redirectPage, setRedirectPage] = useState("");
+  const [signUpState, setSignUpState] = useState(true);
   const handleUserNameChanges = (event) => {
     const user_ = event.target.value;
     setUserInfo({ ...userInfo, userName: user_ });
@@ -14,15 +19,24 @@ function SignUpPage() {
     setUserInfo({ ...userInfo, password: password_ });
   };
   const sendSignUpRequest = async (event) => {
+    console.log(userInfo);
+    event.preventDefault();
     const response = await fetch(
-      `http://localhost:8002/access/user?user_name=${userInfo.userName}&password=${userInfo.password}`
+      `http://localhost:8002/users/create/user/${userInfo.userName}?user_name=${userInfo.userName}&password=${userInfo.password}`,
+      { method: "post" }
     );
-    if (response.ok) {
+    if (!response.ok) {
+      setSignUpState(false);
+    } else {
+      navigate("/");
     }
   };
   return (
     <div className={styles.signUpCard}>
       <h1>Sign Up</h1>
+      {!signUpState && (
+        <div className={styles.errorMessage}>Couldn't sign up</div>
+      )}
       <form onSubmit={sendSignUpRequest}>
         <div className="formElements">
           <label className="password_label">User Name</label>
@@ -31,9 +45,7 @@ function SignUpPage() {
             placeholder="username"
             className="username_input"
             name="username"
-            onChange={(event) => {
-              handleUserNameChanges;
-            }}
+            onChange={(event) => handleUserNameChanges(event)}
           />
         </div>
         <div className="forElements">
@@ -48,9 +60,9 @@ function SignUpPage() {
         </div>
         <div className={styles.submit_button_div}>
           <input
+            className={styles.submit_button}
             type="submit"
             value="Sign up"
-            className={styles.submit_button}
           />
         </div>
         <div>

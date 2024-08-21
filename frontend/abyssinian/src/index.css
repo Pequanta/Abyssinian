@@ -20,7 +20,6 @@ button {
   justify-content: center;
   flex-direction: column;
   width: 100%;
-  height: 100vh;
   align-items: center;
   background: url("/src/assets/bp4.png");
   background-position: center;
@@ -31,7 +30,7 @@ button {
 
 .container .main_header {
   height: 10vh;
-  width: 99%;
+  width: 100%;
   border: none;
   display: flex;
   align-items: center;
@@ -63,8 +62,8 @@ button {
   height: 90vh;
 }
 
-#links_ a.active {
-  color: white;
+nav li .active {
+  color: rgb(255, 217, 0);
 }
 
 .theme_button {
