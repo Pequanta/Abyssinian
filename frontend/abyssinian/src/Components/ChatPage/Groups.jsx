@@ -47,7 +47,7 @@ function Groups(props) {
       <div className={styles.search_button}>
         <form onSubmit={searchForDM}>
           <input type="text" className={styles.text_input} />
-          <input type="submit" value="s" className={styles.submit} />
+          <input type="submit" value="🔍" className={styles.submit} />
         </form>
       </div>
       {groupsList.map((group) => (

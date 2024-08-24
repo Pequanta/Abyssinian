@@ -30,6 +30,7 @@ main {
   flex-direction: column;
   height: 75vh;
   margin-bottom: 1%;
+  margin-top: 8rem;
 }
 
 .page_container {

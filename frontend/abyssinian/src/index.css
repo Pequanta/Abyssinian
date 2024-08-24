@@ -26,9 +26,12 @@ button {
   background-repeat: no-repeat;
   background-size: cover;
   padding: 0;
+  height: 100vh;
 }
 
 .container .main_header {
+  position: fixed;
+  top: 0;
   height: 10vh;
   width: 100%;
   border: none;

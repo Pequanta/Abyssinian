@@ -22,7 +22,7 @@
   justify-content: center;
 }
 
-.loginCard form label {
+.loginCard form label  {
   margin-right: 3%;
 }
 .loginCard form input {

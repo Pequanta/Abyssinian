@@ -60,7 +60,7 @@ function Header() {
             <li>
               <NavLink
                 id="links_"
-                to="/vlog"
+                to="/trends"
                 className={`${activeVlog ? "active" : ""}`}
                 onClick={(event) => {
                   setActiveHome(false);
@@ -69,7 +69,7 @@ function Header() {
                   setActiveAbout(false);
                 }}
               >
-                Vlogs
+                Trends
               </NavLink>
             </li>
           </div>

@@ -1,0 +1,248 @@
+.vlogPageContainer {
+  width: 97%;
+  position: fixed;
+  top: 10vh;
+  height: 85vh;
+  border-radius: 1rem;
+  background-color: rgb(14, 24, 29);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  color: rgb(200, 200, 63);
+  padding: 3rem;
+  overflow: auto;
+}
+
+.featureVlogs {
+  width: 90%;
+  justify-content: space-around;
+  flex-direction: column;
+  margin-bottom: 10rem;
+  padding: 4rem;
+  align-items: center;
+  border-radius: 3rem;
+  border: 0.1rem solid rgb(47, 56, 72);
+}
+.featureVlogs .featureHeading {
+  font-size: 2.5rem;
+  width: fit-content;
+  padding: 0;
+  margin-top: -6%;
+  margin-bottom: 5rem;
+  background-color: rgba(14, 24, 29);
+}
+.vlogDisplay {
+  display: flex;
+  justify-content: space-around;
+}
+.pageHeading {
+  margin-top: -1rem;
+}
+
+.titleLine {
+  margin-bottom: 4rem;
+  background-color: aquamarine;
+  width: 10%;
+}
+
+.vlogsListing {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 2rem;
+}
+
+.vlogsListing h2 {
+  float: left;
+  margin-top: -5%;
+  margin-bottom: 5rem;
+}
+
+.featuringCard {
+  width: 15rem;
+  height: 15rem;
+  border-radius: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 3rem;
+}
+.featuringCard:hover {
+  margin-top: -1.5rem;
+  width: 17rem;
+  height: 18rem;
+  box-shadow: 1px 1px 10px rgb(230, 230, 225);
+}
+.featuringCard img {
+  border-radius: 50%;
+  height: 5rem;
+  width: 5rem;
+}
+
+.userName {
+  margin: 1rem 0 1rem;
+}
+
+.readButton {
+  font-size: 1 rem;
+  border-radius: 1rem;
+  padding: 0.5rem;
+  background-color: aquamarine;
+}
+
+.readButton:hover {
+  background-color: rgb(0, 0, 0);
+  color: rgb(171, 255, 241);
+  box-shadow: inset;
+}
+
+.VlogList {
+  width: 90%;
+  background-color: rgb(10, 35, 41);
+  margin-bottom: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  border-radius: 0.5rem;
+  padding: 1rem 2rem 1rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: yellow;
+  border: none;
+}
+
+.VlogList:hover {
+  border: 1px solid white;
+  box-shadow: 1px 1px 10px yellow;
+}
+
+.VlogList .postInfo {
+  position: relative;
+  margin-right: 0;
+  color: skyblue;
+}
+.postedTime {
+  float: right;
+}
+.searchVlogs {
+  width: 60%;
+  margin-bottom: 4rem;
+  display: flex;
+  align-items: center;
+}
+.searchVlogs input {
+  width: 80%;
+  height: 3rem;
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+  border-right: none;
+  font-size: 2rem;
+  padding: 0.4rem 1.5rem 0.4rem;
+}
+.searchVlogs button {
+  font-size: 2rem;
+  height: 100%;
+  width: 15%;
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+
+.searchVlogs button:focus {
+  border: none;
+}
+
+.searchVlogs button:active {
+  border: none;
+}
+
+.postDisplayCard {
+  display: none;
+  color: rgba(215, 220, 138, 0.749);
+  text-align: justify;
+  padding: 4rem 10rem 4rem;
+  font-size: 1.3rem;
+  width: 100%;
+}
+
+.postDisplayCard .postHeadings {
+  display: flex;
+  width: 80%;
+  border: 0.1rem solid rgb(47, 56, 72);
+  padding: 2rem;
+  border-radius: 2rem;
+  color: rgb(153, 223, 22);
+}
+
+.postDisplayCard .postHeadings img {
+  height: 5rem;
+  width: 5rem;
+  border-radius: 50%;
+  margin-right: 1rem;
+}
+
+.postDisplayCard .postContent {
+  border: 0.1rem solid rgb(47, 56, 72);
+  padding: 1rem 2rem 1rem;
+  width: 80%;
+  border-radius: 0.5rem;
+}
+
+.postDisplayCard .postContent h3 {
+  color: rgb(91, 86, 14);
+  margin-bottom: 6rem;
+  text-align: center;
+}
+.backButton {
+  display: flex;
+  justify-content: start;
+  width: 100%;
+}
+.backButton button {
+  font-size: 2rem;
+  width: 10rem;
+  border-radius: 2rem;
+  color: skyblue;
+  background: transparent;
+  border: none;
+}
+
+.trendListHeaders {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 15rem;
+}
+.trendListHeaders span {
+  font-size: 3rem;
+  width: 50%;
+  display: flex;
+  justify-content: end;
+}
+.trendListHeaders .newTrendButton {
+  display: flex;
+  justify-content: end;
+  width: 50%;
+}
+
+.trendListHeaders button {
+  font-size: 1.6rem;
+  background: transparent;
+  border: 0.1rem solid yellow;
+  padding: 1rem;
+  border-radius: 2rem;
+  color: skyblue;
+}
+
+.trendListHeaders button:hover {
+  color: yellow;
+  border: 1px solid skyblue;
+  box-shadow: 2px 2px 20px white;
+}
+.newTrendPostDisplay {
+  display: none;
+  height: 100%;
+  height: 100%;
+  background-color: aqua;
+}

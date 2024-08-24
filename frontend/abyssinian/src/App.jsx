@@ -8,6 +8,8 @@ import SignUpPage from "./Components/SignUp/SignUp.jsx";
 import DMList from "./Components/ChatPage/DMList.jsx";
 import UserProfile from "./Components/ChatPage/UserProfile.jsx";
 import Groups from "./Components/ChatPage/Groups.jsx";
+import VlogsPage from "./Components/TrendPage/TrendsPage.jsx";
+import AboutPage from "./Components/AboutPage/AboutPage.jsx";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -76,6 +78,24 @@ function App() {
           ),
         },
       ],
+    },
+    {
+      path: "/trends",
+      element: (
+        <>
+          <Header />
+          <VlogsPage />,
+        </>
+      ),
+    },
+    {
+      path: "/about",
+      element: (
+        <>
+          <Header />
+          <AboutPage />,
+        </>
+      ),
     },
     {
       path: "signup",
