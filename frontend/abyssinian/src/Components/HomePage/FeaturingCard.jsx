@@ -1,5 +1,5 @@
 import authorPic from "../../assets/bp6.png";
-import styles from "./trendpage.module.css";
+import styles from "./homepage.module.css";
 function FeacturingCard(props) {
   return (
     <div className={styles.featuringCard}>

@@ -1,7 +1,10 @@
 import styles from "./trendpage.module.css";
-function VlogList(props) {
+function TrendList(props) {
   return (
-    <button className={styles.VlogList} onClick={props.openPostFunction}>
+    <button
+      className={styles.TrendList}
+      onClick={(event) => props.openTrend(event)}
+    >
       <span className={styles.userName}>author: peniel</span>
       <span className={styles.pickAtPost}>
         title: Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -17,4 +20,4 @@ function VlogList(props) {
   );
 }
 
-export default VlogList;
+export default TrendList;

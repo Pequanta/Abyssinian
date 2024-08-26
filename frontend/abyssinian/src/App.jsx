@@ -8,8 +8,8 @@ import SignUpPage from "./Components/SignUp/SignUp.jsx";
 import DMList from "./Components/ChatPage/DMList.jsx";
 import UserProfile from "./Components/ChatPage/UserProfile.jsx";
 import Groups from "./Components/ChatPage/Groups.jsx";
-import VlogsPage from "./Components/TrendPage/TrendsPage.jsx";
-import AboutPage from "./Components/AboutPage/AboutPage.jsx";
+import TrendsPage from "./Components/TrendPage/TrendsPage.jsx";
+import HomePage from "./Components/HomePage/HomePage.jsx";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -35,7 +35,7 @@ function App() {
       element: (
         <>
           <Header />
-          <WebDescription />,
+          <HomePage />,
         </>
       ),
     },
@@ -84,7 +84,7 @@ function App() {
       element: (
         <>
           <Header />
-          <VlogsPage />,
+          <TrendsPage />,
         </>
       ),
     },
@@ -93,7 +93,7 @@ function App() {
       element: (
         <>
           <Header />
-          <AboutPage />,
+          <WebDescription />,
         </>
       ),
     },
