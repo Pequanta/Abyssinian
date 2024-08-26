@@ -242,7 +242,11 @@
 }
 .newTrendPostDisplay {
   display: none;
-  height: 100%;
-  height: 100%;
-  background-color: aqua;
+  width: 100%;
+  height: 80hv;
+}
+
+.newTrendPostDisplay textarea {
+  width: 100%;
+  height: 80hv;
 }
