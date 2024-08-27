@@ -10,6 +10,7 @@ import UserProfile from "./Components/ChatPage/UserProfile.jsx";
 import Groups from "./Components/ChatPage/Groups.jsx";
 import TrendsPage from "./Components/TrendPage/TrendsPage.jsx";
 import HomePage from "./Components/HomePage/HomePage.jsx";
+import NewChat from "./Components/ChatPage/NewChat.jsx";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -76,6 +77,10 @@ function App() {
               chatSelectionFunction={setSelectedChat}
             />
           ),
+        },
+        {
+          path: "/chat/new-chat",
+          element: <NewChat />,
         },
       ],
     },

@@ -51,6 +51,11 @@ li {
 .chat_page_handler ul li a {
   color: rgb(255, 255, 255);
 }
+
+.chat_page_handler ul li button {
+  color: white;
+  text-shadow: 1px 1px 10px yellow;
+}
 .chat_page_handler ul li a:hover {
   color: rgb(151, 223, 70);
   background-color: black;
@@ -173,7 +178,6 @@ li {
 .user_profile {
   height: 100%;
   width: 100%;
-  background-color: rgb(0, 0, 0);
   padding: 3px;
   display: flex;
   justify-content: center;
@@ -298,4 +302,56 @@ li {
   color: #928e8e;
   font-size: 1rem;
   float: right;
+}
+
+.newChatContainer {
+  color: yellow;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5rem 2rem 0;
+}
+.newChatContainer option,
+.newChatContainer label,
+.newChatContainer select,
+.newChatContainer input {
+  font-size: 1.5rem;
+  margin-left: 0.5rem;
+  border-radius: 1rem;
+  padding: 0 2rem 0;
+  height: 2.5rem;
+}
+
+.newChatContainer hr {
+  width: 80%;
+  background-color: white;
+
+  margin-bottom: 4rem;
+}
+.newChatContainer form .nameContainer {
+  margin-top: 3rem;
+  display: flex;
+  align-items: center;
+}
+
+.newChatContainer .submitButton {
+  margin-top: 10rem;
+  display: flex;
+  justify-content: center;
+}
+
+.newChatContainer .submitButton input {
+  height: 3.5rem;
+  cursor: pointer;
+  font-size: 2.3rem;
+  background-color: aquamarine;
+}
+
+.newChatContainer .submitButton input:hover {
+  height: 3.5rem;
+  cursor: pointer;
+  font-size: 2.3rem;
+  background-color: rgb(0, 0, 0);
+  color: aquamarine;
 }

@@ -81,6 +81,11 @@ function ChatPage(props) {
                   <li>
                     <NavLink to="/chat/user-profile">Profile</NavLink>
                   </li>
+                  <li>
+                    <NavLink to="/chat/new-chat">
+                      <button className={styles.newButton}>➕New</button>
+                    </NavLink>
+                  </li>
                 </ul>
               </nav>
             </header>
