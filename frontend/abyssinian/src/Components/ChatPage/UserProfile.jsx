@@ -2,7 +2,7 @@ import styles from "./chatpagestyles.module.css";
 import { useEffect, useState } from "react";
 import AvatarTab from "./AvatarTab";
 import pic from "../../assets/bp6.png";
-function UserProfile() {
+function UserProfile(props) {
   const [userInformation, setUserInformation] = useState({
     userName: "",
     avatar: "",
@@ -10,7 +10,7 @@ function UserProfile() {
   useEffect(function fetchUserProfile() {
     const fetchData = async () => {
       const response = await fetch(
-        `http://localhost:8002/users/access/single-user/?user_name=peniel`
+        `http://localhost:8002/users/access/single-user/?user_name=${props.currentActiveUser}`
       );
       const result = response.json();
       result.then((content) => {
@@ -27,6 +27,10 @@ function UserProfile() {
         </div>
       </div>
       <h1>User Name: {userInformation["user_name"]}</h1>
+      <div className={styles.userData}>
+        <button>Groups</button>
+        <button>My Trends</button>
+      </div>
     </div>
   );
 }

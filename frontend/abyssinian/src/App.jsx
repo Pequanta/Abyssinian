@@ -25,10 +25,17 @@ function App() {
     chatType: "",
     Name: "",
   });
+  const [token, setToken] = useState("");
+  const [currentActiveUser, setCurrentActiveUser] = useState("");
   const router = createBrowserRouter([
     {
       index: true,
-      element: <LoginPage />,
+      element: (
+        <LoginPage
+          setToken={setToken}
+          setCurrentActiveUser={setCurrentActiveUser}
+        />
+      ),
     },
     {
       index: true,
@@ -50,6 +57,8 @@ function App() {
             chatSelected={selectedChat}
             chatSelectionFunction={setSelectedChat}
             chatSetterFunction={setChatDisplayed}
+            token={token}
+            setCurrentActiveUser={setCurrentActiveUser}
           />
           ,
         </>
@@ -62,12 +71,18 @@ function App() {
               chatToDisplay={chatDisplayed}
               chatSetterFunction={setChatDisplayed}
               chatSelectionFunction={setSelectedChat}
+              currentActiveUser={currentActiveUser}
             />
           ),
         },
         {
           path: "/chat/user-profile",
-          element: <UserProfile chatSetterFunction={setChatDisplayed} />,
+          element: (
+            <UserProfile
+              chatSetterFunction={setChatDisplayed}
+              currentActiveUser={currentActiveUser}
+            />
+          ),
         },
         {
           path: "/chat/group-page",

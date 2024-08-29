@@ -1,13 +1,36 @@
 import styles from "./chatpagestyles.module.css";
 import { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 function NewChat() {
-  const [selectedPage, setSelectedPage] = useState("newGroup");
+  const [newChat, setNewChat] = useState({
+    name: "",
+    type: "GROUP",
+  });
+
+  const navigate = useNavigate();
+  const [errorState, setErrorState] = useState(false);
   const handleSelectionChange = (event) => {
-    const selected = event.target.value;
-    setSelectedPage(selected);
+    setNewChat({ ...newChat, type: event.target.value });
   };
 
+  const handleNameValue = (event) => {
+    setNewChat({ ...newChat, name: event.target.value });
+  };
+  const handleSubmission = (event) => {
+    event.preventDefault();
+    console.log(newChat);
+    if (newChat["type"] === "GROUP") {
+      const response = fetch(
+        `http://localhost:8002/chats/create-new-chat/group/${newChat["name"]}?group_name=${newChat["name"]} `,
+        { method: "post" }
+      );
+    } else if (newChat["type"] === "DM") {
+      const response = fetch(
+        `http://localhost:8002/chats/create-new-chat/dm/${newChat["name"]}?user_name=${newChat["name"]}`,
+        { method: "post" }
+      );
+    }
+  };
   return (
     <div className={styles.newChatContainer}>
       <h1>Start New Conversation</h1>
@@ -20,18 +43,22 @@ function NewChat() {
             name="options"
             onChange={(event) => handleSelectionChange(event)}
           >
-            <option value="newGroup">Group</option>
-            <option value="newDM">Direct Message</option>
+            <option value="GROUP">Group</option>
+            <option value="DM">Direct Message</option>
           </select>
         </label>
       </div>
-      {selectedPage === "newGroup" && (
+      {newChat["type"] === "GROUP" && (
         <div>
-          <form>
+          <form onSubmit={(event) => handleSubmission(event)}>
             <div className={styles.nameContainer}>
               <label>
                 ChatRoom name
-                <input type="text" placeholder="name" />
+                <input
+                  type="text"
+                  placeholder="name"
+                  onChange={(event) => handleNameValue(event)}
+                />
               </label>
             </div>
 
@@ -41,13 +68,17 @@ function NewChat() {
           </form>
         </div>
       )}
-      {selectedPage === "newDM" && (
+      {newChat["type"] === "DM" && (
         <div>
-          <form>
+          <form onSubmit={(event) => handleSubmission(event)}>
             <div className={styles.nameContainer}>
               <label>
                 username
-                <input type="text" placeholder="Group Name" />
+                <input
+                  type="text"
+                  placeholder="User Name"
+                  onChange={(event) => handleNameValue(event)}
+                />
               </label>
             </div>
             <div className={styles.submitButton}>

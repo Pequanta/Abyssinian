@@ -5,19 +5,26 @@ import pic from "../../assets/bp4.png";
 
 function Groups(props) {
   const [groupsList, setGroupsList] = useState([]);
+  const [emptyGroupList, setEmptyGroupList] = useState(false);
   useEffect(function fetchGroupList() {
     const fetchData = async () => {
       const response = await fetch(
-        `http://localhost:8002/chats/access/groups/all/groups`
+        `http://localhost:8002/chats/access/groups/all/groups?current_user=${props.currentActiveUser}`,
+        { method: "get" }
       );
-      const result = response.json();
-      result.then((content) => {
-        console.log(content);
-        if (!(content[0] in groupsList)) {
-          console.log(groupsList);
-          setGroupsList([...groupsList, content[0]]);
-        }
-      });
+      if (response.ok) {
+        const result = response.json();
+        result.then((content) => {
+          for (let item in content) {
+            setGroupsList([...groupsList, content.result[0]]);
+          }
+          groupsList.length == 0
+            ? setEmptyGroupList(true)
+            : setEmptyGroupList(false);
+        });
+      } else {
+        console.log("helloworld");
+      }
     };
     fetchData();
   }, []);
@@ -25,6 +32,7 @@ function Groups(props) {
     event.preventDefault();
   };
   const startConverstation = async (event, groupName) => {
+    console.log(groupsList);
     const response = await fetch(
       `http://localhost:8002/chats/access/groups/group/${groupName}?group_name=${groupName}`
     );
@@ -36,6 +44,7 @@ function Groups(props) {
     result.then((content) => {
       props.chatSetterFunction(content);
     });
+    console.log(groupsList);
     if (!response.ok) {
       console.log("error");
     } else {
@@ -50,16 +59,17 @@ function Groups(props) {
           <input type="submit" value="🔍" className={styles.submit} />
         </form>
       </div>
-      {groupsList.map((group) => (
-        <AvatarTab
-          profileImage={pic}
-          Name={group.group_name}
-          key={groupsList.indexOf(group)}
-          startConversationFunction={(event) =>
-            startConverstation(event, "loosers")
-          }
-        />
-      ))}
+      {!emptyGroupList &&
+        groupsList.map((group) => (
+          <AvatarTab
+            profileImage={pic}
+            Name={group.group_name}
+            key={groupsList.indexOf(group)}
+            startConversationFunction={(event) =>
+              startConverstation(event, group.group_name)
+            }
+          />
+        ))}
     </div>
   );
 }

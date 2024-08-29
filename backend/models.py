@@ -18,10 +18,11 @@ class MongoBaseModel(BaseModel):
                 json_encoders = {ObjectId: str}
 class UserBase(MongoBaseModel):
         user_name: str=Field(...)
-        user_avatar: str=Field(...)
-        user_previlage: str=Field(...)
 class UserDB(UserBase):
-        pass
+        password: str
+class LogInBase(BaseModel):
+        user_name: str = Field(...)
+        password: str = Field(...)
 class ChatBase(MongoBaseModel):
         chat_text: str=Field(...)
         sender_username: str=Field(...)
@@ -39,3 +40,8 @@ class GroupBase(MongoBaseModel):
 
 class GroupDB(GroupBase):
         pass
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+class TokenData(BaseModel):
+    username: str | None = None

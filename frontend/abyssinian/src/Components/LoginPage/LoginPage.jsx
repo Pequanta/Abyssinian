@@ -1,11 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./loginStyles.module.css";
 import { useNavigate } from "react-router-dom";
-function LoginPage() {
+function LoginPage(props) {
   const [userInfo, setUserInfo] = useState({});
   const navigate = useNavigate();
-  const [userNameNotFound, setUserNameNotFound] = useState(false);
-  const [wrongPassword, setWrongPassword] = useState(false);
+  const [wrongCredential, setWrongCredential] = useState(false);
   const [formElements, setFormElements] = useState({
     username: "",
     password: "",
@@ -19,22 +18,43 @@ function LoginPage() {
     const password_ = event.target.value;
     setFormElements({ ...formElements, password: password_ });
   };
+  async function getCurrentUser(token) {
+    const response = await fetch(
+      `http://localhost:8002/users/access/user/current-user?token=${token}`,
+      {
+        method: "get",
+      }
+    );
+    const result = await response.json();
+    props.setCurrentActiveUser(result);
+  }
   const sendLogInRequest = async (event) => {
     event.preventDefault();
+    const userData = {
+      user_name: formElements.username,
+      password: formElements.password,
+    };
     try {
       const response = await fetch(
-        `http://localhost:8002/users/access/user/login?user_name=${formElements.username}&password=${formElements.password}`
+        "http://localhost:8002/users/access/user/login?",
+        {
+          method: "post",
+          body: JSON.stringify(userData),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
       if (response.ok) {
         const result = await response.json();
-        if (result["message"] === "found") {
+        console.log(result["token"]);
+        props.setToken(result["token"]);
+        if (result["message"] === "found" && result["token"].length != 0) {
+          getCurrentUser(result["token"]);
           navigate("home");
         }
-        if (result["message"] === "incorrect password") {
-          setWrongPassword(true);
-        }
-        if (result["message"] === "not found") {
-          setUserNameNotFound(true);
+        if (result["message"] === "incorrect credential") {
+          setWrongCredential(true);
         }
       } else {
         console.log("Server error");
@@ -48,7 +68,7 @@ function LoginPage() {
       <h1>Log In</h1>
       <form onSubmit={sendLogInRequest}>
         <div className="formElements">
-          {(userNameNotFound || wrongPassword) && (
+          {wrongCredential && (
             <label className={styles.errorMessage}>
               User Name and Password combination is wrong
             </label>

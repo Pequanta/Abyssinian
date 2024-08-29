@@ -5,14 +5,13 @@ import { useNavigate } from "react-router-dom";
 function SignUpPage() {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({
-    userName: "",
+    user_name: "",
     password: "",
   });
-  const [redirectPage, setRedirectPage] = useState("");
   const [signUpState, setSignUpState] = useState(true);
   const handleUserNameChanges = (event) => {
     const user_ = event.target.value;
-    setUserInfo({ ...userInfo, userName: user_ });
+    setUserInfo({ ...userInfo, user_name: user_ });
   };
   const handlePasswordChanges = (event) => {
     const password_ = event.target.value;
@@ -21,10 +20,13 @@ function SignUpPage() {
   const sendSignUpRequest = async (event) => {
     console.log(userInfo);
     event.preventDefault();
-    const response = await fetch(
-      `http://localhost:8002/users/create/user/${userInfo.userName}?user_name=${userInfo.userName}&password=${userInfo.password}`,
-      { method: "post" }
-    );
+    const response = await fetch("http://localhost:8002/users/create/user", {
+      method: "post",
+      body: JSON.stringify(userInfo),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     if (!response.ok) {
       setSignUpState(false);
     } else {

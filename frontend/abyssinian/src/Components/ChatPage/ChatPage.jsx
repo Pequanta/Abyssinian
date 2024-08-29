@@ -5,6 +5,10 @@ import ChatCard from "./ChatCard";
 
 function ChatPage(props) {
   const [chatToSend, setChatToSend] = useState();
+  const [activeDM, setActiveDM] = useState(true);
+  const [activeGroups, setActiveGroups] = useState(false);
+  const [activeUserProfile, setActiveProfile] = useState(false);
+  const [activeNewChat, setActiveNewChat] = useState(false);
   const handleInputChange = (event) => {
     const textContent = event.target.value;
     setChatToSend(textContent);
@@ -73,16 +77,62 @@ function ChatPage(props) {
               <nav>
                 <ul>
                   <li>
-                    <NavLink to="/chat/">DMs</NavLink>
+                    <NavLink
+                      to="/chat/"
+                      id="subLinks"
+                      className={`${activeDM ? styles.active : ""}`}
+                      onClick={(event) => {
+                        setActiveDM(true);
+                        setActiveGroups(false);
+                        setActiveNewChat(false);
+                        setActiveProfile(false);
+                      }}
+                    >
+                      DMs
+                    </NavLink>
                   </li>
                   <li>
-                    <NavLink to="/chat/group-page">ChatRooms</NavLink>
+                    <NavLink
+                      to="/chat/group-page"
+                      id="subLinks"
+                      className={`${activeGroups ? styles.active : ""}`}
+                      onClick={(event) => {
+                        setActiveDM(false);
+                        setActiveGroups(true);
+                        setActiveNewChat(false);
+                        setActiveProfile(false);
+                      }}
+                    >
+                      ChatRooms
+                    </NavLink>
                   </li>
                   <li>
-                    <NavLink to="/chat/user-profile">Profile</NavLink>
+                    <NavLink
+                      to="/chat/user-profile"
+                      id="subLinks"
+                      className={`${activeUserProfile ? styles.active : ""}`}
+                      onClick={(event) => {
+                        setActiveDM(false);
+                        setActiveGroups(false);
+                        setActiveNewChat(false);
+                        setActiveProfile(true);
+                      }}
+                    >
+                      Profile
+                    </NavLink>
                   </li>
                   <li>
-                    <NavLink to="/chat/new-chat">
+                    <NavLink
+                      to="/chat/new-chat"
+                      id="subLinks"
+                      className={`${activeNewChat ? styles.active : ""}`}
+                      onClick={(event) => {
+                        setActiveDM(false);
+                        setActiveGroups(false);
+                        setActiveNewChat(true);
+                        setActiveProfile(false);
+                      }}
+                    >
                       <button className={styles.newButton}>➕New</button>
                     </NavLink>
                   </li>
@@ -97,6 +147,13 @@ function ChatPage(props) {
           </div>
         </div>
         <div className={styles.chat_area}>
+          {useEffect(() => {
+            const place = document.getElementById("endOfText");
+            console.log("Hello");
+            if (place) {
+              place.scrollIntoView({ behavior: "smooth" });
+            }
+          }, [props.chatToDisplay])}
           <div className={styles.chat_display_area}>
             {props.chatToDisplay.map((chat) => (
               <ChatCard

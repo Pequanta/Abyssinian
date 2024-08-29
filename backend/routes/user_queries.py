@@ -1,8 +1,13 @@
-from fastapi import HTTPException, APIRouter, Request
-from models import UserDB, GroupBase
+from fastapi import HTTPException, APIRouter, Request, Body
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
+from models import UserDB, GroupBase, LogInBase
+from .auth import Authentication
+
 
 
 router = APIRouter()
+auth = Authentication()
 #access queries
 
 #--> single user data
@@ -68,32 +73,42 @@ async def admin_granting(request: Request, group_name: str, user_name: str):
         raise HTTPException(status_code=501)
 
 #single user
-@router.post("/create/user/{user_name}")
-
-async def create_new_user(request: Request, user_name: str, password: str):
+@router.post("/create/user/")
+async def create_new_user(request: Request, new_user: UserDB = Body(...)):
     try:
-        user_data = {
-            "user_name": user_name,
-            "password":password,
-            "role": "user"
-        }
-        await request.app.mongodb["users"].insert_one(user_data)
+        user_password = auth.get_password_hash(new_user.password)
+        new_user = jsonable_encoder(new_user)
+        new_user["password"] = user_password
+        if (await request.app.mongodb["users"].find_one({"user_name":new_user["user_name"]})):
+                raise HTTPException(status_code=409, detail="username already exists")
+        await request.app.mongodb["users"].insert_one(new_user)
     except: 
         raise HTTPException(status_code=501)
 
 
 #login request
-
-@router.get("/access/user/login")
-
-async def log_in_request(request: Request, user_name: str, password: str):
+@router.post("/access/user/login")
+async def log_in_request(request: Request , user : LogInBase = Body(...)):
     try:
-        cont_user = await request.app.mongodb["users"].find_one({"user_name": user_name})
-        if cont_user != None:
-            if cont_user["password"] == password:
-                return {"message": "found"}
-            else:
-                return {"message": "incorrect password"}
-        return {"message": "not found"}
+        user = jsonable_encoder(user)
+        cont_user = await request.app.mongodb["users"].find_one({"user_name": user["user_name"]}, {"user_previlage": 0})
+        if (cont_user != None) and (auth.verify_password(user["password"], cont_user["password"])):
+            data_to_encode = {'sub': cont_user["_id"]}
+            token = auth.create_access_token(data_to_encode)
+            return JSONResponse(content={"token":token, "message": "found"})
+        else:
+            return {"message":"incorrect credential"}
     except:
         raise HTTPException(status_code=401)
+
+
+#current_active_user
+
+@router.get("/access/user/current-user")
+async def current_active_user(request: Request, token: str):
+    cont_data = auth.decode_token(token)
+    user_id = cont_data["sub"]
+    if (cont_returned := await request.app.mongodb["users"].find_one({"_id": user_id})) != None:
+        return cont_returned["user_name"]
+    else:
+        raise HTTPException(status_code=401, detail="Invalid User")
