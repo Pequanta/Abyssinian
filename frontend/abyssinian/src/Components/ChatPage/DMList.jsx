@@ -8,7 +8,6 @@ function DMList(props) {
 
   useEffect(function fetchDMList() {
     const fetchData = async () => {
-      console.log(props.currentActiveUser);
       const response = await fetch(
         `http://localhost:8002/chats/access/groups/all/dms?current_user=${props.currentActiveUser}`,
         { method: "get" }
@@ -16,13 +15,11 @@ function DMList(props) {
       if (response.ok) {
         const result = response.json();
         result.then((content) => {
-          console.log(content.result[0]);
           setUserList([...userList, content.result[0]]);
         });
       } else {
         console.log("user not found");
       }
-      console.log(userList);
       userList.length == 0 ? setEmptyUserList(true) : setEmptyUserList(false);
     };
     fetchData();

@@ -44,6 +44,7 @@ async def return_all_dms(request: Request, current_user: str):
 @router.get("/access/groups/all/groups")
 async def return_all_groups(request: Request, current_user: str):
     try:
+        print("here I am")
         cont_returned = request.app.mongodb.groups.find({"group_type": "GROUP", "members": {"$in": [current_user]}}, {"_id": 0})
         contain_results = []
         async for item in cont_returned:

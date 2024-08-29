@@ -1,12 +1,13 @@
 import AvatarTab from "./AvatarTab";
 import styles from "./chatpagestyles.module.css";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import pic from "../../assets/bp4.png";
 
 function Groups(props) {
   const [groupsList, setGroupsList] = useState([]);
   const [emptyGroupList, setEmptyGroupList] = useState(false);
   useEffect(function fetchGroupList() {
+    console.log(props.currentActiveUser);
     const fetchData = async () => {
       const response = await fetch(
         `http://localhost:8002/chats/access/groups/all/groups?current_user=${props.currentActiveUser}`,
@@ -15,16 +16,16 @@ function Groups(props) {
       if (response.ok) {
         const result = response.json();
         result.then((content) => {
-          for (let item in content) {
-            setGroupsList([...groupsList, content.result[0]]);
-          }
-          groupsList.length == 0
-            ? setEmptyGroupList(true)
-            : setEmptyGroupList(false);
+          console.log(result);
+          setGroupsList(content);
         });
       } else {
         console.log("helloworld");
       }
+      console.log(groupsList);
+      groupsList.length === 0
+        ? setEmptyGroupList(true)
+        : setEmptyGroupList(false);
     };
     fetchData();
   }, []);
@@ -60,7 +61,7 @@ function Groups(props) {
         </form>
       </div>
       {!emptyGroupList &&
-        groupsList.map((group) => (
+        groupsList.map((group, index) => (
           <AvatarTab
             profileImage={pic}
             Name={group.group_name}

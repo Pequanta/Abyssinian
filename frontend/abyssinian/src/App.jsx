@@ -90,12 +90,13 @@ function App() {
             <Groups
               chatSetterFunction={setChatDisplayed}
               chatSelectionFunction={setSelectedChat}
+              currentActiveUser={currentActiveUser}
             />
           ),
         },
         {
           path: "/chat/new-chat",
-          element: <NewChat />,
+          element: <NewChat currentActiveUser={currentActiveUser} />,
         },
       ],
     },
