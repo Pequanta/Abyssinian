@@ -1,5 +1,17 @@
 import styles from "./trendpage.module.css";
+
 function NewTrend(props) {
+  const [trendContent, setTrendContent] = useState();
+  const [trendTitle, setTrendTitle] = useState();
+  const handleNewTrendContent = (event) =>{
+      const content = event.target.value;
+      setTrendContent(content);
+  }
+
+  const handleNewTrendTitle = (event) =>{
+    const title = event.target.value;
+    setTrendTitle(title);
+  }
   return (
     <div className={styles.newTrendPostDisplay}>
       <div className={styles.backButton}>
@@ -13,12 +25,13 @@ function NewTrend(props) {
       <div className={styles.postContentHandlers}>
         <textarea
           className={styles.newPostContent}
+          onChange={(event) = handleNewTrendContent(event)}
           placeholder="start your trend..."
         />
-        <form>
+        <form onSubmit={(event) => handleSubmit(event)}>
           <label>
             Title
-            <input type="text" placeholder="..." />
+            <input type="text" placeholder="..." onChange={(event) => handleNewTrendTitle(event)}/>
           </label>
           <button className={styles.newPostButton}>post</button>
         </form>

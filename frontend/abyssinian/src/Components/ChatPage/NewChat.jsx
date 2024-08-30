@@ -27,7 +27,7 @@ function NewChat(props) {
       navigate("/chat/group-page");
     } else if (newChat["type"] === "DM") {
       const response = fetch(
-        `http://localhost:8002/chats/create-new-chat/dm/${newChat["name"]}?user_name=${newChat["name"]}&current_user${props.currentActiveUser}`,
+        `http://localhost:8002/chats/create-new-chat/dm/${newChat["name"]}?user_name=${newChat["name"]}&current_user=${props.currentActiveUser}`,
         { method: "post" }
       );
     }

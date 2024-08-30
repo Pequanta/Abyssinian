@@ -87,13 +87,16 @@ async def add_chat_dm(request: Request, chat: str, user_name: str, current_user:
 
 #dm
 @router.post("/create-new-chat/dm/{user_name}")
-async def create_new_chat(request: Request, user_name, current_user: str):
+async def create_new_chat(request: Request, user_name:str, current_user: str):
     try:
         #checking if the username exists in the database
-        if not (user_ := await request.app.mongodb["users"]).find_one({"user_name":user_name}):
+        print("nowhere")
+        if (user_ := await request.app.mongodb["users"].find_one({"user_name":user_name})) is None:
             return {"message":"a user with this user name doesn't exist", "status":"error"}
+        print("one")
         #checking if the connection already exists
-        if not (cont_returned := await request.app.mongodb["groups"].find_one({"members": sorted([user_name, current_user])})):
+        if (cont_returned := await request.app.mongodb["groups"].find_one({"members": sorted([user_name, current_user])})) == None:
+            print("two")
             await request.app.mongodb["groups"].insert_one({
                     "group_type": 'DM',
                     "created_time": formated_time(datetime.now()),
@@ -101,9 +104,11 @@ async def create_new_chat(request: Request, user_name, current_user: str):
                     "chats": [],
                     "tags":[]
             })
+            print(three)
             return {"message": "successful", "status": "success"}
         else:
             return {"message": "exists", "status":"error"}
+        print("four")
     except:
         raise HTTPException(status_code=401)
     

@@ -17,11 +17,11 @@ function ChatPage(props) {
     let response;
     if (chatType === "DM") {
       response = await fetch(
-        `http://localhost:8002/chats/access/groups/dms/${name}?user_name=${name}`
+        `http://localhost:8002/chats/access/groups/dms?user_name=${name}&current_user=${props.currentActiveUser}`
       );
       props.chatSelectionFunction({
         chatType: "DM",
-        Name: userName,
+        Name: name,
       });
     } else if (chatType === "GROUP") {
       response = await fetch(
