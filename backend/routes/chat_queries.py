@@ -57,7 +57,6 @@ async def return_all_groups(request: Request, current_user: str):
 #group
 @router.post("/add_chat/groups/group/{group_name}" , description="adds a chat to a specified group")
 async def add_chat_group(request: Request, chat: str, group_name: str, current_user: str):
-        
         if not (await request.app.mongodb["groups"].update_one(
             {"group_name": group_name}, 
             {"$push" : {"chats": jsonable_encoder({
@@ -113,9 +112,10 @@ async def create_new_chat(request: Request, user_name, current_user: str):
 async def create_new_chat(request: Request, group_name: str, current_user: str):
     #checking if the group already exists
     try:
-
         if not (cont_returned := await request.app.mongodb["groups"].find_one({"group_name": group_name})):
+            print("helloworld")
             await request.app.mongodb["groups"].insert_one({
+        
                     "group_type": 'GROUP',
                     "group_name": group_name,
                     "created_time": formated_time(datetime.now()),

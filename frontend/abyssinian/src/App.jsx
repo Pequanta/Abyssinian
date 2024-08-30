@@ -59,6 +59,7 @@ function App() {
             chatSetterFunction={setChatDisplayed}
             token={token}
             setCurrentActiveUser={setCurrentActiveUser}
+            currentActiveUser={currentActiveUser}
           />
           ,
         </>

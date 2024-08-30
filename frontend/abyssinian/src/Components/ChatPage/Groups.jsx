@@ -5,7 +5,6 @@ import pic from "../../assets/bp4.png";
 
 function Groups(props) {
   const [groupsList, setGroupsList] = useState([]);
-  const [emptyGroupList, setEmptyGroupList] = useState(false);
   useEffect(function fetchGroupList() {
     console.log(props.currentActiveUser);
     const fetchData = async () => {
@@ -15,17 +14,14 @@ function Groups(props) {
       );
       if (response.ok) {
         const result = response.json();
+        console.log(result);
         result.then((content) => {
-          console.log(result);
-          setGroupsList(content);
+          console.log(content);
+          setGroupsList([...content]);
         });
       } else {
         console.log("helloworld");
       }
-      console.log(groupsList);
-      groupsList.length === 0
-        ? setEmptyGroupList(true)
-        : setEmptyGroupList(false);
     };
     fetchData();
   }, []);
@@ -33,9 +29,9 @@ function Groups(props) {
     event.preventDefault();
   };
   const startConverstation = async (event, groupName) => {
-    console.log(groupsList);
     const response = await fetch(
-      `http://localhost:8002/chats/access/groups/group/${groupName}?group_name=${groupName}`
+      `http://localhost:8002/chats/access/groups/group/${groupName}?group_name=${groupName}`,
+      { method: "get" }
     );
     const result = response.json();
     props.chatSelectionFunction({
@@ -60,12 +56,12 @@ function Groups(props) {
           <input type="submit" value="🔍" className={styles.submit} />
         </form>
       </div>
-      {!emptyGroupList &&
+      {groupsList.length != 0 &&
         groupsList.map((group, index) => (
           <AvatarTab
             profileImage={pic}
             Name={group.group_name}
-            key={groupsList.indexOf(group)}
+            key={index}
             startConversationFunction={(event) =>
               startConverstation(event, group.group_name)
             }

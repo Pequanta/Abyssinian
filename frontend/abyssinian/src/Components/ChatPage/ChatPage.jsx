@@ -46,12 +46,12 @@ function ChatPage(props) {
     }
   };
   const sendChat = async (event) => {
-    let readingResponse;
+    console.log(props.currentActiveUser);
     document.getElementById("inputBox").value = "";
     let name = props.chatSelected["Name"];
     if (props.chatSelected["chatType"] === "DM") {
       const response = await fetch(
-        `http://localhost:8002/chats/add_chat/groups/dm/${props.chatSelected["Name"]}?chat=${chatToSend}&user_name=${props.chatSelected["Name"]}`,
+        `http://localhost:8002/chats/add_chat/groups/dm/${props.chatSelected["Name"]}?chat=${chatToSend}&user_name=${props.chatSelected["Name"]}&current_user=${props.currentActiveUser}`,
         { method: "post" }
       );
 
@@ -59,7 +59,7 @@ function ChatPage(props) {
       console.log(props.chatToDisplay);
     } else if (props.chatSelected["chatType"] === "GROUP") {
       const response = await fetch(
-        `http://localhost:8002/chats/add_chat/groups/group/${props.chatSelected["Name"]}?chat=${chatToSend}&group_name=${props.chatSelected["Name"]}`,
+        `http://localhost:8002/chats/add_chat/groups/group/${props.chatSelected["Name"]}?chat=${chatToSend}&group_name=${props.chatSelected["Name"]}&current_user=${props.currentActiveUser}`,
         { method: "post" }
       );
       await startConverstation(name, "GROUP");
@@ -151,13 +151,13 @@ function ChatPage(props) {
             const place = document.getElementById("endOfText");
             console.log("Hello");
             if (place) {
-              place.scrollIntoView({ behavior: "smooth" });
+              place.scrollIntoView({});
             }
           }, [props.chatToDisplay])}
           <div className={styles.chat_display_area}>
-            {props.chatToDisplay.map((chat) => (
+            {props.chatToDisplay.map((chat, index) => (
               <ChatCard
-                key={props.chatToDisplay.indexOf(chat)}
+                key={index}
                 content={
                   props.chatToDisplay[props.chatToDisplay.indexOf(chat)][
                     "content"

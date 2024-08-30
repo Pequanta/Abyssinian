@@ -62,7 +62,7 @@ function DMList(props) {
         </form>
       </div>
       <div className={styles.itemList}>
-        {!emptyUserList &&
+        {userList.length !== 0 &&
           userList.map((user, index) => (
             <AvatarTab
               profileImage={pic}

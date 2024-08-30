@@ -1,7 +1,7 @@
 import styles from "./chatpagestyles.module.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-function NewChat() {
+function NewChat(props) {
   const [newChat, setNewChat] = useState({
     name: "",
     type: "GROUP",
@@ -21,12 +21,13 @@ function NewChat() {
     console.log(newChat);
     if (newChat["type"] === "GROUP") {
       const response = fetch(
-        `http://localhost:8002/chats/create-new-chat/group/${newChat["name"]}?group_name=${newChat["name"]} `,
+        `http://localhost:8002/chats/create-new-chat/group/${newChat["name"]}?group_name=${newChat["name"]}&current_user=${props.currentActiveUser}`,
         { method: "post" }
       );
+      navigate("/chat/group-page");
     } else if (newChat["type"] === "DM") {
       const response = fetch(
-        `http://localhost:8002/chats/create-new-chat/dm/${newChat["name"]}?user_name=${newChat["name"]}`,
+        `http://localhost:8002/chats/create-new-chat/dm/${newChat["name"]}?user_name=${newChat["name"]}&current_user${props.currentActiveUser}`,
         { method: "post" }
       );
     }
