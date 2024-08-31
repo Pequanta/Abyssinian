@@ -8,6 +8,20 @@ router = APIRouter()
 
 
 
+class WebSocketOperations:
+    def __init__(self, websocket:WebSocket , connection_type: str):
+        self.websocket = websocket
+        self.connection_type = connection_type
+        self.socket_connections = List[WebSocket]
+    def add_new_connection(self, websocket: WebSocket):
+        if self.connetion_type == "DM" and self.socket_connections >= 2:
+            return {"message": "forbidden action"}
+        self.socket_connections.append(websocket)
+    async def broadcast_new_message(self, message):
+        for connection in self.socket_connections:
+            connection.send_json({"new_message"})
+
+
 @router.get("/access" , description = "access level notification")
 async def notify_access():
     return {"message": "chat functionality is accessed"}

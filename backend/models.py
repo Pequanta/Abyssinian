@@ -1,4 +1,5 @@
 from bson import ObjectId
+from enum import Enum
 from pydantic import BaseModel, Field
 class PyObjectId(ObjectId):
         @classmethod
