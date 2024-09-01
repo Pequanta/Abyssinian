@@ -295,8 +295,8 @@ nav li .active {
 }
 .chatCard .content {
   width: 85%;
-  background-color: rgb(43, 27, 27);
-  color: rgb(180, 160, 95);
+  background-color: rgb(194, 228, 132);
+  color: rgb(18, 35, 66);
   font-size: 1.3rem;
   padding: 20px;
   border-top-right-radius: 20px;
@@ -313,13 +313,13 @@ nav li .active {
 }
 
 .chatCard .userName {
-  color: rgb(117, 115, 115);
+  color: rgb(68, 64, 64);
   float: right;
   font-size: 1rem;
 }
 
 .chatCard .sentTime {
-  color: #928e8e;
+  color:rgb(68, 64, 64);
   font-size: 1rem;
   float: right;
 }

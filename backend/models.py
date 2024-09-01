@@ -1,6 +1,7 @@
 from bson import ObjectId
 from enum import Enum
 from pydantic import BaseModel, Field
+from typing import List
 class PyObjectId(ObjectId):
         @classmethod
         def __get_validators__(cls):
@@ -28,18 +29,30 @@ class ChatBase(MongoBaseModel):
         chat_text: str=Field(...)
         sender_username: str=Field(...)
         sent_time: str=Field(...)
-class ChatDB(ChatBase):
+class ChatDataModel(ChatBase):
         pass
 class DirectMBase(MongoBaseModel):
         dm_user: UserDB=Field(...)
 class GroupBase(MongoBaseModel):
+        group_type: str=Field(...)
         group_name: str=Field(...)
         group_size: int=Field(...)
-        created_time: int=Field(...)
-        creator: UserDB=Field(...)
-        chats: ChatDB=Field(...)
+        created_time: str=Field(...)
+        creator: str=Field(...)
+        admins: List[str]
+        members: List[str]
+        chats: List[str]
+        tags: List[str]
+class GroupDataModel(GroupBase):
+        pass
+class DMBase(MongoBaseModel):
+        group_type: str=Field(...)
+        created_time : str=Field(...)
+        members: List[str]
+        chats: List[str]
+        tags: List[str]
 
-class GroupDB(GroupBase):
+class DMDataModel(DMBase):
         pass
 class Token(BaseModel):
     access_token: str

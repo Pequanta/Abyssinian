@@ -56,7 +56,7 @@ function Groups(props) {
           <input type="submit" value="🔍" className={styles.submit} />
         </form>
       </div>
-      {groupsList.length != 0 &&
+      {groupsList.length !== 0 &&
         groupsList.map((group, index) => (
           <AvatarTab
             profileImage={pic}

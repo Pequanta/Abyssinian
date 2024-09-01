@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import pic from "../../assets/bp2.png";
 function DMList(props) {
   const [userList, setUserList] = useState([]);
-  const [emptyUserList, setEmptyUserList] = useState(true);
+  let emptyUserList = false;
 
   useEffect(function fetchDMList() {
     const fetchData = async () => {
@@ -15,12 +15,15 @@ function DMList(props) {
       if (response.ok) {
         const result = response.json();
         result.then((content) => {
+          if(content.result[0]) emptyUserList = false;
+          else emptyUserList = true;
           setUserList([...userList, content.result[0]]);
         });
+        console.log(emptyUserList)
       } else {
         console.log("user not found");
-      }
-      userList.length == 0 ? setEmptyUserList(true) : setEmptyUserList(false);
+      } 
+      console.log()
     };
     fetchData();
   }, []);
@@ -48,6 +51,7 @@ function DMList(props) {
     } else {
       console.log(response.data);
     }
+    
   };
   const searchForDM = (event) => {
     event.preventDefault();
@@ -62,7 +66,7 @@ function DMList(props) {
         </form>
       </div>
       <div className={styles.itemList}>
-        {userList.length != 0 &&
+        { !emptyUserList &&
           userList.map((user, index) => (
             <AvatarTab
               profileImage={pic}

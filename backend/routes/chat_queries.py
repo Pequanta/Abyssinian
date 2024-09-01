@@ -1,16 +1,25 @@
-from fastapi import APIRouter, Request, HTTPException, Path
+from fastapi import APIRouter, Request, HTTPException, Path, WebSocket
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-from models import GroupDB, ChatDB, GroupBase
+from models import GroupDataModel, ChatDataModel, GroupBase, DMDataModel
 from .helper_tools import formated_time
 from datetime import datetime
 router = APIRouter()
 
+class SocketRooms:
+    def __init__(self):
+        self.chat_rooms = {str: WebSocket}
+    def add_new_room(self, room_id: str, websocket: WebSocket):
+        self.chat_rooms[room_id] = websocket
+    def remove_room(self, room_id):
+        self.chat_rooms.pop(room_id)
+    def clear_rooms(self):
+        self.chat_rooms.clear()
+    def return_all_rooms(self):
+        return self.chat_rooms
 
-
-class WebSocketOperations:
+class SocketRoomOperations:
     def __init__(self, websocket:WebSocket , connection_type: str):
-        self.websocket = websocket
         self.connection_type = connection_type
         self.socket_connections = List[WebSocket]
     def add_new_connection(self, websocket: WebSocket):
@@ -21,16 +30,14 @@ class WebSocketOperations:
         for connection in self.socket_connections:
             connection.send_json({"new_message"})
 
-
+################### only for the debugging purpose #################
 @router.get("/access" , description = "access level notification")
 async def notify_access():
     return {"message": "chat functionality is accessed"}
-#access operations
-
 @router.post("/create", description="create level notification")
 async def notify_create():
      return {"message": "create functionality is accessed"}
-
+####################################################################
 #group
 @router.get("/access/groups/group/{group_name}")
 async def return_group_chat( request: Request, group_name: str):
@@ -58,12 +65,10 @@ async def return_all_dms(request: Request, current_user: str):
 @router.get("/access/groups/all/groups")
 async def return_all_groups(request: Request, current_user: str):
     try:
-        print("here I am")
-        cont_returned = request.app.mongodb.groups.find({"group_type": "GROUP", "members": {"$in": [current_user]}}, {"_id": 0})
+        cont_returned = request.app.mongodb.groups.find({"group_type": "GROUP", "members": {"$in": [current_user]}})
         contain_results = []
         async for item in cont_returned:
              contain_results.append(item)
-        print(contain_results)
         return contain_results
     except:
         return HTTPException(status_code=401)
@@ -71,30 +76,23 @@ async def return_all_groups(request: Request, current_user: str):
 #group
 @router.post("/add_chat/groups/group/{group_name}" , description="adds a chat to a specified group")
 async def add_chat_group(request: Request, chat: str, group_name: str, current_user: str):
-        if not (await request.app.mongodb["groups"].update_one(
-            {"group_name": group_name}, 
-            {"$push" : {"chats": jsonable_encoder({
-                "sender_user_name":current_user,
-                "content": chat, 
-                "sent_time": formated_time(datetime.now())
-                }
-                )}})):
-             raise HTTPException(status_code=401, detail="task not found")
-        return {"message": "inserted successfully"}
+    new_chat = {"chat_text": chat, "sender_username": user_name, sent_time: formated_time(datetime.now())}
+    new_chat_db = jsonable_encoder(ChatDataModel(**new_chat))
+    if not (await request.app.mongodb["groups"].update_one(
+        {"group_name": group_name}, 
+        {"$push" : {"chats": new_chat_db}})):
+            raise HTTPException(status_code=401, detail="task not found")
+    return {"message": "inserted successfully"}
 @router.post("/add_chat/groups/dm/{user_name}", description="adds a chat to a dm with a specified user_name")
 async def add_chat_dm(request: Request, chat: str, user_name: str, current_user: str):
-        if not (cont := await request.app.mongodb["groups"].update_one(
-            {"members": sorted([user_name, current_user])}, 
-            {"$push" : {"chats": {
-                "sender_user_name":user_name,
-                "content": chat, 
-                "sent_time": formated_time(datetime.now())
-                }
-                }} )):
-             raise HTTPException(status_code=401, detail="task not found")
-        else:
-            return {"message": "inserted successfully"}
-
+    new_chat = {"chat_text": chat, "sender_username": user_name, sent_time: formated_time(datetime.now())}
+    if not (cont := await request.app.mongodb["groups"].update_one(
+        {"members": sorted([user_name, current_user])}, 
+        {"$push" : {"chats": new_chat_db}}
+        )):
+            raise HTTPException(status_code=401, detail="task not found")
+    else:
+        return {"message": "inserted successfully"}
 
 #creating new document members
 
@@ -104,25 +102,24 @@ async def add_chat_dm(request: Request, chat: str, user_name: str, current_user:
 async def create_new_chat(request: Request, user_name:str, current_user: str):
     try:
         #checking if the username exists in the database
-        print("nowhere")
         if (user_ := await request.app.mongodb["users"].find_one({"user_name":user_name})) is None:
             return {"message":"a user with this user name doesn't exist", "status":"error"}
-        print("one")
         #checking if the connection already exists
+    
         if (cont_returned := await request.app.mongodb["groups"].find_one({"members": sorted([user_name, current_user])})) == None:
-            print("two")
-            await request.app.mongodb["groups"].insert_one({
-                    "group_type": 'DM',
-                    "created_time": formated_time(datetime.now()),
-                    "members": [ user_name, current_user ],
-                    "chats": [],
-                    "tags":[]
-            })
-            print(three)
+            new_dm = {
+                "group_type": "DM",
+                "created_time": formated_time(datetime.now()),
+                "chats": [],
+                "members" : sorted([user_name, current_user]),
+                "tags": []
+                }
+            new_dm_db = jsonable_encoder(DMDataModel(**new_dm))
+            await request.app.mongodb["groups"].insert_one(new_dm_db)
             return {"message": "successful", "status": "success"}
         else:
             return {"message": "exists", "status":"error"}
-        print("four")
+
     except:
         raise HTTPException(status_code=401)
     
@@ -132,17 +129,19 @@ async def create_new_chat(request: Request, group_name: str, current_user: str):
     #checking if the group already exists
     try:
         if not (cont_returned := await request.app.mongodb["groups"].find_one({"group_name": group_name})):
-            print("helloworld")
-            await request.app.mongodb["groups"].insert_one({
-        
+            new_group = {
                     "group_type": 'GROUP',
                     "group_name": group_name,
+                    "group_size":1,
                     "created_time": formated_time(datetime.now()),
+                    "creator": current_user,#This will be updated with the datatype being UserDataModel Rather than str
                     "admins": [current_user],
                     "members": [current_user],
                     "chats": [],
                     "tags": []
-            })
+            }
+            new_group_db = jsonable_encoder(GroupDataModel(**new_group))
+            await request.app.mongodb["groups"].insert_one(new_group_db)
             return {"message": "successful", "status": "success"}
         else:
             return {"message": "exists", "status":"error"}
