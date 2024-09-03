@@ -8,28 +8,56 @@ router = APIRouter()
 
 class SocketRooms:
     def __init__(self):
-        self.chat_rooms = {str: WebSocket}
+        self.chat_rooms = {}
     def add_new_room(self, room_id: str, websocket: WebSocket):
         self.chat_rooms[room_id] = websocket
     def remove_room(self, room_id):
         self.chat_rooms.pop(room_id)
     def clear_rooms(self):
         self.chat_rooms.clear()
-    def return_all_rooms(self):
+    def get_all_rooms(self):
         return self.chat_rooms
+    def get_room(self, room_id: str):
+        return self.chat_rooms[room_id]
 
-class SocketRoomOperations:
-    def __init__(self, websocket:WebSocket , connection_type: str):
-        self.connection_type = connection_type
-        self.socket_connections = List[WebSocket]
-    def add_new_connection(self, websocket: WebSocket):
-        if self.connetion_type == "DM" and self.socket_connections >= 2:
-            return {"message": "forbidden action"}
-        self.socket_connections.append(websocket)
+
+socketrooms = SocketRooms()
+
+class SocketRoomConnection:
+    def __init__(self, websocket:WebSocket , connection_type: str , room_id: str):
+        self.connection_type: str = connection_type
+        self.room_id: str = room_id
+        self.websocket: WebSocket = websocket
+    async def add_connection_to_rooms(self):
+        await self.websocket.accept()
+        if self.room_id not in socketrooms.get_all_rooms(): socketrooms[self.room_id]: {self.websocket}
+        else: socketrooms[self.room_id].add(self.websocket)
     async def broadcast_new_message(self, message):
-        for connection in self.socket_connections:
-            connection.send_json({"new_message"})
+        for connection in socketrooms.chat_rooms[self.room_id]:
+            await connection.send_json({"new_message"})
 
+active_connetions = []
+@router.websocket("/dm/check")
+async def establish_connection(websocket: WebSocket, room_id: str):
+    # socket_inst = SocketRoomConnection(websocket, "DM", room_id)
+    # await 
+    # while True:socket_inst.add_connection_to_rooms()
+    #     sent_data = await websocket.receive_text()
+    #     await socket_inst.broadcast_new_message("Hello world")
+    #     print(sent_data)
+    # print(socketrooms.chat_rooms)
+    await websocket.accept()
+    if websocket not in active_connetions: active_connetions.append(websocket)
+    while True:
+        data = await websocket.receive_text()
+        for connection in active_connetions:
+            await websocket.send_text("message recieved")
+        print(active_connetions, len(active_connetions))
+@router.websocket("/group/check")
+async def establish_connection(websocket: WebSocket, room_id: str):
+    socket_inst = SocketRoomConnection(websocket, "GROUP", room_id)
+    await socket_inst.add_connection_to_rooms()
+    print(socketrooms)
 ################### only for the debugging purpose #################
 @router.get("/access" , description = "access level notification")
 async def notify_access():
@@ -41,20 +69,20 @@ async def notify_create():
 #group
 @router.get("/access/groups/group/{group_name}")
 async def return_group_chat( request: Request, group_name: str):
-    if not (group_ := await request.app.mongodb["groups"].find_one({"group_name": group_name}, {"_id": 0})):
+    if not (group_ := await request.app.mongodb["groups"].find_one({"group_name": group_name})):
         raise HTTPException(status_code=401, detail="group not found")
     return group_["chats"]
 #dm
 @router.get("/access/groups/dms")   
 async def return_dm_chat(request: Request, user_name: str, current_user: str):
-    if (cont_returned := await request.app.mongodb["groups"].find_one({"group_type": "DM" , "members": sorted([user_name,current_user])},{"_id": 0})) != None:
+    if (cont_returned := await request.app.mongodb["groups"].find_one({"group_type": "DM" , "members": sorted([user_name,current_user])})) != None:
         return cont_returned["chats"]
     raise HTTPException(status_code=404, detail="dm_not_found")
 #the next route will return the list of dm contacts --name and --avatar(for now just the name)
 @router.get("/access/groups/all/dms")
 async def return_all_dms(request: Request, current_user: str):
     try:
-        cont_returned = request.app.mongodb["groups"].find({"group_type":"DM", "members": {"$in": [current_user]}}, {"_id": 0, "chats": 0})
+        cont_returned = request.app.mongodb["groups"].find({"group_type":"DM", "members": {"$in": [current_user]}}, {"chats": 0})
         contain_results = []
         async for item in cont_returned:
              contain_results.append(item)

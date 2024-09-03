@@ -44,7 +44,9 @@ function LoginPage(props) {
             "Content-Type": "application/json",
           },
         }
+
       );
+      console.log("Here")
       if (response.ok) {
         const result = await response.json();
         console.log(result["token"]);

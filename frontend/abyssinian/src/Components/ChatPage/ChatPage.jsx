@@ -9,6 +9,23 @@ function ChatPage(props) {
   const [activeGroups, setActiveGroups] = useState(false);
   const [activeUserProfile, setActiveProfile] = useState(false);
   const [activeNewChat, setActiveNewChat] = useState(false);
+  const socketDm = new WebSocket("ws://localhost:8002/chats/dm/check?room_id=123");
+  const socketGroup = new WebSocket("ws://localhost:8002/chats/group/check?room_id=123");
+  
+  useEffect(()=>{
+    socketDm.onopen = async function(event){
+      console.log("connection established --dm")
+    }
+    socketGroup.onopen = async function(event){
+      console.log("connection established --group")
+    }
+  }, [])
+  socketDm.onmessage = async function(event){
+    console.log(event.data)
+  }
+  socketGroup.onmessage = async function(event){
+    console.log(event.data)
+  }
   const handleInputChange = (event) => {
     const textContent = event.target.value;
     setChatToSend(textContent);

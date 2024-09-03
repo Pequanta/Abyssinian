@@ -23,6 +23,42 @@
   font-size: 3rem;
   color: rgb(197, 251, 0);
 }
+.introCard{
+  background-color: rgb(26, 61, 75);
+  color :rgb(255, 255, 255);
+  padding: 2rem;
+  border-radius: 1rem;
+  width: 47%;
+  height: 1000rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  flex: 1;
+}
+
+.introCard h1 , h2{
+  font-size: 5rem;
+}
+
+.introCard img{
+  width: 70rem;
+  height: 70rem;
+  border-radius: 2rem;
+}
+
+
+.introCard p{
+  color: cyan;
+  font-size: 4rem;
+}
+
+.introCard li{
+  font-size: 4rem;
+  margin-bottom: 3rem;
+  color: yellow;
+}
+intro
 .readingPage {
   margin-top: -3rem;
   background-color: rgb(14, 24, 29);
