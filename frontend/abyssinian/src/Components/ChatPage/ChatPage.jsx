@@ -15,9 +15,10 @@ function ChatPage(props) {
   useEffect(()=>{
     socketDm.onopen = async function(event){
       console.log("connection established --dm")
+      socketDm.send("hello 0 0 0 0 0 0 0 ");
     }
     socketGroup.onopen = async function(event){
-      console.log("connection established --group")
+      console.log("connect  ion established --group")
     }
   }, [])
   socketDm.onmessage = async function(event){

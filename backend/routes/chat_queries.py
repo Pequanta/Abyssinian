@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request, HTTPException, Path, WebSocket
+from fastapi import APIRouter, Request, HTTPException, Path, WebSocket, WebSocketDisconnect
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from models import GroupDataModel, ChatDataModel, GroupBase, DMDataModel
@@ -8,17 +8,21 @@ router = APIRouter()
 
 class SocketRooms:
     def __init__(self):
-        self.chat_rooms = {}
-    def add_new_room(self, room_id: str, websocket: WebSocket):
-        self.chat_rooms[room_id] = websocket
+        self.chat_rooms :  Dict[int, Set(WebSocket)] = {}
+    def add_new_room(self, room_id: int, websocket: WebSocket):
+        self.chat_rooms[room_id] = {websocket}
+    def add_connection_to_room(self, room_id: int, websocket: WebSocket):
+        self.chat_rooms[room_id].add(websocket)
     def remove_room(self, room_id):
         self.chat_rooms.pop(room_id)
+    def remove_connection(self, room_id, connection):
+        if connection in self.chat_rooms[room_id]: self.chat_rooms[room_id].remove(connection)
     def clear_rooms(self):
         self.chat_rooms.clear()
     def get_all_rooms(self):
         return self.chat_rooms
-    def get_room(self, room_id: str):
-        return self.chat_rooms[room_id]
+    def get_room(self, room_id: int):
+        return self.chat_rooms.get(room_id  )
 
 
 socketrooms = SocketRooms()
@@ -26,33 +30,40 @@ socketrooms = SocketRooms()
 class SocketRoomConnection:
     def __init__(self, websocket:WebSocket , connection_type: str , room_id: str):
         self.connection_type: str = connection_type
-        self.room_id: str = room_id
+        self.room_id: int = int(room_id)
         self.websocket: WebSocket = websocket
     async def add_connection_to_rooms(self):
-        await self.websocket.accept()
-        if self.room_id not in socketrooms.get_all_rooms(): socketrooms[self.room_id]: {self.websocket}
-        else: socketrooms[self.room_id].add(self.websocket)
+
+        if self.room_id not in socketrooms.get_all_rooms():
+            await self.websocket.accept()
+            socketrooms.add_new_room(self.room_id, self.websocket)
+        else: 
+            print("checking", self.websocket.state)
+            if self.websocket not in socketrooms.get_all_rooms()[self.room_id]: await self.websocket.accept()
+            socketrooms.add_connection_to_room(self.room_id, self.websocket)
+        print(socketrooms.chat_rooms)
     async def broadcast_new_message(self, message):
-        for connection in socketrooms.chat_rooms[self.room_id]:
-            await connection.send_json({"new_message"})
+        cont_active = socketrooms.get_room(self.room_id).copy()
+        for connection in cont_active:
+            try:
+                await connection.send_json({"message":message})
+            except:
+                socketrooms.remove_connection(self.room_id, connection)
 
 active_connetions = []
 @router.websocket("/dm/check")
 async def establish_connection(websocket: WebSocket, room_id: str):
-    # socket_inst = SocketRoomConnection(websocket, "DM", room_id)
-    # await 
-    # while True:socket_inst.add_connection_to_rooms()
-    #     sent_data = await websocket.receive_text()
-    #     await socket_inst.broadcast_new_message("Hello world")
-    #     print(sent_data)
-    # print(socketrooms.chat_rooms)
-    await websocket.accept()
-    if websocket not in active_connetions: active_connetions.append(websocket)
-    while True:
-        data = await websocket.receive_text()
-        for connection in active_connetions:
-            await websocket.send_text("message recieved")
-        print(active_connetions, len(active_connetions))
+    socket_inst = SocketRoomConnection(websocket, "DM", room_id)
+    try:
+        while True:
+            await socket_inst.add_connection_to_rooms()
+            sent_data = await websocket.receive_text()
+            await socket_inst.broadcast_new_message(sent_data)
+
+        print(socketrooms.chat_rooms)
+    except WebSocketDisconnect:
+        socketrooms.remove_connection(room_id, websocket)
+
 @router.websocket("/group/check")
 async def establish_connection(websocket: WebSocket, room_id: str):
     socket_inst = SocketRoomConnection(websocket, "GROUP", room_id)
