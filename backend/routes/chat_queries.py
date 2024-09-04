@@ -38,7 +38,6 @@ class SocketRoomConnection:
             await self.websocket.accept()
             socketrooms.add_new_room(self.room_id, self.websocket)
         else: 
-            print("checking", self.websocket.state)
             if self.websocket not in socketrooms.get_all_rooms()[self.room_id]: await self.websocket.accept()
             socketrooms.add_connection_to_room(self.room_id, self.websocket)
         print(socketrooms.chat_rooms)
