@@ -29,6 +29,7 @@ function App() {
   const [currentActiveUser, setCurrentActiveUser] = useState("");
   const [socketDm , setSocketDm] = useState();
   const [socketGroup , setSocketGroup] = useState();
+  const [roomId , setRoomId] = useState("66d8a16a234e6417886c9eba")
   const router = createBrowserRouter([
     {
       index: true,
@@ -66,6 +67,7 @@ function App() {
             socketGroup={socketGroup}
             setSocketDm={setSocketDm}
             setSocketGroup={setSocketGroup}
+            roomId={roomId}
           />
           ,
         </>

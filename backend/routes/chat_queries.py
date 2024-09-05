@@ -60,7 +60,6 @@ async def establish_connection(websocket: WebSocket, room_id: str):
                 {"_id": room_id}, 
                 {"$push" : {"chats": new_chat_db}})):
                     raise HTTPException(status_code=401, detail="task not found")
-            return {"message": "inserted successfully"}
             print(sent_data)
             await socket_inst.broadcast_new_message(sent_data)
 
@@ -76,7 +75,7 @@ async def establish_connection(websocket: WebSocket, room_id):
     try:
         while True:
             sent_data = await websocket.receive_json()
-            socket_inst = SocketRoomConnection(websocket, "GROUP", sent_data["_id"])
+            
             await socket_inst.add_connection_to_rooms()
             new_chat = {"chat_text": sent_data["sent_chat"], "sender_username": sent_data["sender_username"], "sent_time": formated_time(datetime.now())}
             new_chat_db = jsonable_encoder(ChatDataModel(**new_chat))

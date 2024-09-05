@@ -9,6 +9,22 @@ function ChatPage(props) {
   const [activeGroups, setActiveGroups] = useState(false);
   const [activeUserProfile, setActiveProfile] = useState(false);
   const [activeNewChat, setActiveNewChat] = useState(false);
+  useEffect(()=>{
+    props.setSocketDm(new WebSocket(`ws://localhost:8002/chats/dm/chat?room_id=${props.roomId}`));
+  }, [])
+
+  useEffect(()=>{
+    const establishConnection  = async ()=>{
+      props.socketDm.onopen = async function(event){
+        console.log(event.data);
+      }
+      props.socketDm.onmessage = async function(event){
+        console.log(event.data);
+      }
+    }
+    establishConnection();
+  }, [props.roomId])
+  
   const handleInputChange = (event) => {
     const textContent = event.target.value;
     setChatToSend(textContent);
