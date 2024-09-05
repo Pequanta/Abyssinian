@@ -9,9 +9,9 @@ router = APIRouter()
 class SocketRooms:
     def __init__(self):
         self.chat_rooms :  Dict[int, Set(WebSocket)] = {}
-    def add_new_room(self, room_id: int, websocket: WebSocket):
+    def add_new_room(self, room_id: str, websocket: WebSocket):
         self.chat_rooms[room_id] = {websocket}
-    def add_connection_to_room(self, room_id: int, websocket: WebSocket):
+    def add_connection_to_room(self, room_id: str, websocket: WebSocket):
         self.chat_rooms[room_id].add(websocket)
     def remove_room(self, room_id):
         self.chat_rooms.pop(room_id)
@@ -21,7 +21,7 @@ class SocketRooms:
         self.chat_rooms.clear()
     def get_all_rooms(self):
         return self.chat_rooms
-    def get_room(self, room_id: int):
+    def get_room(self, room_id: str):
         return self.chat_rooms.get(room_id  )
 
 
@@ -30,7 +30,7 @@ socketrooms = SocketRooms()
 class SocketRoomConnection:
     def __init__(self, websocket:WebSocket , connection_type: str , room_id: str):
         self.connection_type: str = connection_type
-        self.room_id: int = int(room_id)
+        self.room_id: str = room_id
         self.websocket: WebSocket = websocket
     async def add_connection_to_rooms(self):
 
@@ -47,27 +47,50 @@ class SocketRoomConnection:
             try:
                 await connection.send_json({"message":message})
             except:
-                socketrooms.remove_connection(self.room_id, connection)
+                socketrooms.remove_connection(self.room_id, connection) 
 
-active_connetions = []
-@router.websocket("/dm/check")
+@router.websocket("/dm/chat")
 async def establish_connection(websocket: WebSocket, room_id: str):
     socket_inst = SocketRoomConnection(websocket, "DM", room_id)
     try:
         while True:
             await socket_inst.add_connection_to_rooms()
-            sent_data = await websocket.receive_text()
+            sent_data = await websocket.receive_json()
+            new_chat = {"chat_text": sent_data["sent_chat"], "sender_username": sent_data["sender_username"], "sent_time": formated_time(datetime.now())}
+            new_chat_db = jsonable_encoder(ChatDataModel(**new_chat))
+            if not (await websocket.app.mongodb["groups"].update_one(
+                {"_id": room_id}, 
+                {"$push" : {"chats": new_chat_db}})):
+                    raise HTTPException(status_code=401, detail="task not found")
+            return {"message": "inserted successfully"}
+            print(sent_data)
             await socket_inst.broadcast_new_message(sent_data)
 
         print(socketrooms.chat_rooms)
     except WebSocketDisconnect:
         socketrooms.remove_connection(room_id, websocket)
 
-@router.websocket("/group/check")
+@router.websocket("/group/chat")
 async def establish_connection(websocket: WebSocket, room_id: str):
     socket_inst = SocketRoomConnection(websocket, "GROUP", room_id)
-    await socket_inst.add_connection_to_rooms()
-    print(socketrooms)
+    print("hello")
+    try:
+        while True:
+            await socket_inst.add_connection_to_rooms()
+            sent_data = await websocket.receive_json()
+            print(sent_data)
+            new_chat = {"chat_text": sent_data["sent_chat"], "sender_username": sent_data["sender_username"], "sent_time": formated_time(datetime.now())}
+            new_chat_db = jsonable_encoder(ChatDataModel(**new_chat))
+            if not (await websocket.app.mongodb["groups"].update_one(
+                {"_id": room_id}, 
+                {"$push" : {"chats": new_chat_db}})):
+                    raise HTTPException(status_code=401, detail="task not found")
+            return {"message": "inserted successfully"}
+            await socket_inst.broadcast_new_message(sent_data)
+
+        print(socketrooms.chat_rooms)
+    except WebSocketDisconnect:
+        socketrooms.remove_connection(room_id, websocket)
 ################### only for the debugging purpose #################
 @router.get("/access" , description = "access level notification")
 async def notify_access():
@@ -114,7 +137,7 @@ async def return_all_groups(request: Request, current_user: str):
 #group
 @router.post("/add_chat/groups/group/{group_name}" , description="adds a chat to a specified group")
 async def add_chat_group(request: Request, chat: str, group_name: str, current_user: str):
-    new_chat = {"chat_text": chat, "sender_username": user_name, sent_time: formated_time(datetime.now())}
+    new_chat = {"chat_text": chat, "sender_username": current_user, "sent_time": formated_time(datetime.now())}
     new_chat_db = jsonable_encoder(ChatDataModel(**new_chat))
     if not (await request.app.mongodb["groups"].update_one(
         {"group_name": group_name}, 
@@ -123,7 +146,8 @@ async def add_chat_group(request: Request, chat: str, group_name: str, current_u
     return {"message": "inserted successfully"}
 @router.post("/add_chat/groups/dm/{user_name}", description="adds a chat to a dm with a specified user_name")
 async def add_chat_dm(request: Request, chat: str, user_name: str, current_user: str):
-    new_chat = {"chat_text": chat, "sender_username": user_name, sent_time: formated_time(datetime.now())}
+    new_chat = {"chat_text": chat, "sender_username": user_name, "sent_time": formated_time(datetime.now())}
+    new_chat_db = jsonable_encoder(ChatDataModel(**new_chat))
     if not (cont := await request.app.mongodb["groups"].update_one(
         {"members": sorted([user_name, current_user])}, 
         {"$push" : {"chats": new_chat_db}}
@@ -181,6 +205,15 @@ async def create_new_chat(request: Request, group_name: str, current_user: str):
             new_group_db = jsonable_encoder(GroupDataModel(**new_group))
             await request.app.mongodb["groups"].insert_one(new_group_db)
             return {"message": "successful", "status": "success"}
+        else:
+            return {"message": "exists", "status":"error"}
+    except:
+        raise HTTPException(status_code=401)
+@router.get("/access/get-group-id")
+async def get_group_id(request: Request , user_name: str, current_user: str):
+    try:
+        if (cont_returned := await request.app.mongodb["groups"].find_one({"group_type": "DM", "members": sorted([user_name, current_user])})) != None:
+            return cont_returned["_id"]
         else:
             return {"message": "exists", "status":"error"}
     except:

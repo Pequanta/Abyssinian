@@ -19,14 +19,16 @@ import {
 } from "react-router-dom";
 
 function App() {
-  const [isLogin, setIsLogin] = useState(false);
   const [chatDisplayed, setChatDisplayed] = useState([]);
   const [selectedChat, setSelectedChat] = useState({
     chatType: "",
     Name: "",
+    roomId:"",
   });
   const [token, setToken] = useState("");
   const [currentActiveUser, setCurrentActiveUser] = useState("");
+  const [socketDm , setSocketDm] = useState("ws://localhost:8002/chats/dm/chat");
+  const [socketGroup , setSocketGroup] = useState("ws://localhost:8002/chats/dm/chat");
   const router = createBrowserRouter([
     {
       index: true,
@@ -53,13 +55,15 @@ function App() {
         <>
           <Header />
           <ChatPage
-            chatToDisplay={chatDisplayed}
-            chatSelected={selectedChat}
-            chatSelectionFunction={setSelectedChat}
-            chatSetterFunction={setChatDisplayed}
+            chatDisplayed={chatDisplayed}
+            selectedChat={selectedChat}
+            setSelectedChat={setSelectedChat}
+            setChatDisplayed={setChatDisplayed}
             token={token}
             setCurrentActiveUser={setCurrentActiveUser}
             currentActiveUser={currentActiveUser}
+            socketDm={socketDm}
+            socketGroup={socketGroup}
           />
           ,
         </>
@@ -69,10 +73,13 @@ function App() {
           index: true,
           element: (
             <DMList
-              chatToDisplay={chatDisplayed}
-              chatSetterFunction={setChatDisplayed}
-              chatSelectionFunction={setSelectedChat}
+              chatDisplayed={chatDisplayed}
+              setChatDisplayed={setChatDisplayed}
+              setSelectedChat={setSelectedChat}
               currentActiveUser={currentActiveUser}
+              setSocketDm={setSocketDm}
+              socketDm={socketDm}
+
             />
           ),
         },
@@ -89,9 +96,11 @@ function App() {
           path: "/chat/group-page",
           element: (
             <Groups
-              chatSetterFunction={setChatDisplayed}
-              chatSelectionFunction={setSelectedChat}
+              setChatDisplayed={setChatDisplayed}
+              setSelectedChat={setSelectedChat}
               currentActiveUser={currentActiveUser}
+              socketGroup={socketGroup}
+              setSocketGroup={setSocketGroup}
             />
           ),
         },

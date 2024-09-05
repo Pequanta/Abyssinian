@@ -9,79 +9,24 @@ function ChatPage(props) {
   const [activeGroups, setActiveGroups] = useState(false);
   const [activeUserProfile, setActiveProfile] = useState(false);
   const [activeNewChat, setActiveNewChat] = useState(false);
-  const socketDm = new WebSocket("ws://localhost:8002/chats/dm/check?room_id=123");
-  const socketGroup = new WebSocket("ws://localhost:8002/chats/group/check?room_id=123");
-  
-  useEffect(()=>{
-    socketDm.onopen = async function(event){
-      console.log("connection established --dm")
-      socketDm.send("hello 0 0 0 0 0 0 0 ");
-    }
-    socketGroup.onopen = async function(event){
-      console.log("connect  ion established --group")
-    }
-  }, [])
-  socketDm.onmessage = async function(event){
-    console.log(event.data)
-  }
-  socketGroup.onmessage = async function(event){
-    console.log(event.data)
-  }
+
   const handleInputChange = (event) => {
     const textContent = event.target.value;
     setChatToSend(textContent);
   };
-  const startConverstation = async (name, chatType) => {
-    let response;
-    if (chatType === "DM") {
-      response = await fetch(
-        `http://localhost:8002/chats/access/groups/dms?user_name=${name}&current_user=${props.currentActiveUser}`
-      );
-      props.chatSelectionFunction({
-        chatType: "DM",
-        Name: name,
-      });
-    } else if (chatType === "GROUP") {
-      response = await fetch(
-        `http://localhost:8002/chats/access/groups/group/${name}?group_name=${name}`
-      );
-      props.chatSelectionFunction({
-        chatType: "GROUP",
-        Name: name,
-      });
-    } else {
-      console.log("hello world");
-    }
-    const result = response.json();
-    result.then((content) => {
-      props.chatSetterFunction(content);
-    });
-
-    if (!response.ok) {
-      console.log("error");
-    } else {
-      console.log(response.data);
-    }
-  };
   const sendChat = async (event) => {
-    console.log(props.currentActiveUser);
     document.getElementById("inputBox").value = "";
-    let name = props.chatSelected["Name"];
-    if (props.chatSelected["chatType"] === "DM") {
-      const response = await fetch(
-        `http://localhost:8002/chats/add_chat/groups/dm/${props.chatSelected["Name"]}?chat=${chatToSend}&user_name=${props.chatSelected["Name"]}&current_user=${props.currentActiveUser}`,
-        { method: "post" }
-      );
+    if (props.selectedChat["chatType"] === "DM") {
 
-      await startConverstation(name, "DM");
-      console.log(props.chatToDisplay);
-    } else if (props.chatSelected["chatType"] === "GROUP") {
-      const response = await fetch(
-        `http://localhost:8002/chats/add_chat/groups/group/${props.chatSelected["Name"]}?chat=${chatToSend}&group_name=${props.chatSelected["Name"]}&current_user=${props.currentActiveUser}`,
-        { method: "post" }
-      );
-      await startConverstation(name, "GROUP");
-      console.log(props.chatToDisplay);
+      props.socketDm.send(JSON.stringify({
+        "sent_chat": chatToSend,
+        "sender_username": props.currentActiveUser,
+      }))
+    } else if (props.selectedChat["chatType"] === "GROUP") {
+      props.socketGroup.send(JSON.stringify({
+        "sent_chat": chatToSend,
+        "sender_username": props.currentActiveUser,
+      }))
     } else {
       console.log("chat not selected");
     }
@@ -167,28 +112,27 @@ function ChatPage(props) {
         <div className={styles.chat_area}>
           {useEffect(() => {
             const place = document.getElementById("endOfText");
-            console.log("Hello");
             if (place) {
               place.scrollIntoView({});
             }
-          }, [props.chatToDisplay])}
+          }, [props.chatDisplayed])}
           <div className={styles.chat_display_area}>
-            {props.chatToDisplay.map((chat, index) => (
+            {props.chatDisplayed.map((chat, index) => (
               <ChatCard
                 key={index}
                 content={
-                  props.chatToDisplay[props.chatToDisplay.indexOf(chat)][
-                    "content"
+                  props.chatDisplayed[props.chatDisplayed.indexOf(chat)][
+                    "chat_text"
                   ]
                 }
                 sentTime={
-                  props.chatToDisplay[props.chatToDisplay.indexOf(chat)][
+                  props.chatDisplayed[props.chatDisplayed.indexOf(chat)][
                     "sent_time"
                   ]
                 }
                 senderName={
-                  props.chatToDisplay[props.chatToDisplay.indexOf(chat)][
-                    "sender_user_name"
+                  props.chatDisplayed[props.chatDisplayed.indexOf(chat)][
+                    "sender_username"
                   ]
                 }
               />

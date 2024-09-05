@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import pic from "../../assets/bp2.png";
 function DMList(props) {
   const [userList, setUserList] = useState([]);
-  let emptyUserList = false;
+  const [roomId, setRoomId] = useState();
 
   useEffect(function fetchDMList() {
     const fetchData = async () => {
@@ -15,11 +15,8 @@ function DMList(props) {
       if (response.ok) {
         const result = response.json();
         result.then((content) => {
-          if(content.result[0]) emptyUserList = false;
-          else emptyUserList = true;
           setUserList([...userList, content.result[0]]);
         });
-        console.log(emptyUserList)
       } else {
         console.log("user not found");
       } 
@@ -27,36 +24,36 @@ function DMList(props) {
     };
     fetchData();
   }, []);
-  const startConverstation = async (event, userName) => {
-    console.log(userList);
+
+  const getRoomId = async (userName) => {
     const response = await fetch(
-      `http://localhost:8002/chats/access/groups/dms?user_name=${userName}&current_user=${props.currentActiveUser}`,
+      `http://localhost:8002/chats/access/get-group-id?user_name=${userName}&current_user=${props.currentActiveUser}`,
       { method: "get" }
     );
     const result = response.json();
     result.then((content) => {
-      console.log(content);
-      for (let item in content) {
-        props.chatSetterFunction(content);
-      }
-      console.log(props.userList);
+        setRoomId(content);
     });
-    props.chatSelectionFunction({
+  }
+  const startConverstation = async (event, userName) => {
+    getRoomId(userName, props.currentActiveUser)
+    console.log(roomId);
+    props.setSelectedChat({
       chatType: "DM",
       Name: userName,
+      roomId: roomId,
     });
-
-    if (!response.ok) {
-      console.log("error");
-    } else {
-      console.log(response.data);
+    props.setSocketDm(new WebSocket(`ws://localhost:8002/chats/dm/chat?room_id=${roomId}`))
+    props.socketDm.onmessage = function(event){
+      console.log(event.data);
     }
-    
+    props.socketDm.onopen = function(event){
+      console.log(event.data);
+    }
   };
   const searchForDM = (event) => {
     event.preventDefault();
   };
-  function returnDMUser(arr) {}
   return (
     <div className={styles.dm_list}>
       <div className={styles.search_button}>
@@ -66,7 +63,7 @@ function DMList(props) {
         </form>
       </div>
       <div className={styles.itemList}>
-        { !emptyUserList &&
+        {(Array.isArray(userList) && userList[0] !== undefined)&&
           userList.map((user, index) => (
             <AvatarTab
               profileImage={pic}

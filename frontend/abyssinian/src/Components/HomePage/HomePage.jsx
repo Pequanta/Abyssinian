@@ -30,18 +30,19 @@ function HomePage() {
           <h1>Welcome to IziSefer</h1>
           <p>
             This is Where similar minds are gathered to
-            <ul>
-              <li>Discuss Ideas</li>
-              <img src={imga}/>
-              <li>have reasonable debate</li>
-              <img src={imgf}/>
-              <li>give advices</li>
-              <img src={imgb}/>
-              <li>share and exchange trends</li>
-              <img src={imga}/>
-            </ul>
-            <h2>So Buckle Up! its just one click away!</h2>
           </p>
+          <ul>
+            <li>Discuss Ideas</li>
+            <img src={imga}/>
+            <li>have reasonable debate</li>
+            <img src={imgf}/>
+            <li>give advices</li>
+            <img src={imgb}/>
+            <li>share and exchange trends</li>
+            <img src={imga}/>
+          </ul>
+          
+          <h2>So Buckle Up! its just one click away!</h2>
         </div>
         <div className={styles.pageCard}>
           <h2 className={styles.featureHeading}>Popular Trends</h2>

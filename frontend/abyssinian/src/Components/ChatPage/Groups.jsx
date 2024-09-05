@@ -28,18 +28,24 @@ function Groups(props) {
   const searchForDM = (event) => {
     event.preventDefault();
   };
-  const startConverstation = async (event, groupName) => {
+  const startConverstation = async (event, groupName, roomId) => {
+    console.log(roomId)
     const response = await fetch(
       `http://localhost:8002/chats/access/groups/group/${groupName}?group_name=${groupName}`,
       { method: "get" }
     );
     const result = response.json();
-    props.chatSelectionFunction({
+    props.setSelectedChat({
       chatType: "GROUP",
       Name: groupName,
+      roomId: roomId,
     });
+    props.setSocketGroup(new WebSocket(`ws://localhost:8002/chats/group/chat?room_id=${roomId}`))
+    props.socketGroup.onmessage = function(event){
+      console.log(event.data)
+    }
     result.then((content) => {
-      props.chatSetterFunction(content);
+      props.setChatDisplayed(content);
     });
     console.log(groupsList);
     if (!response.ok) {
@@ -56,14 +62,14 @@ function Groups(props) {
           <input type="submit" value="🔍" className={styles.submit} />
         </form>
       </div>
-      {groupsList.length !== 0 &&
+      {(Array.isArray(groupsList) && groupsList[0] !== undefined)&&
         groupsList.map((group, index) => (
           <AvatarTab
             profileImage={pic}
             Name={group.group_name}
             key={index}
             startConversationFunction={(event) =>
-              startConverstation(event, group.group_name)
+              startConverstation(event, group["group_name"], group["_id"])
             }
           />
         ))}
