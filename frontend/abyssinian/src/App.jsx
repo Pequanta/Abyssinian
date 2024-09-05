@@ -27,8 +27,8 @@ function App() {
   });
   const [token, setToken] = useState("");
   const [currentActiveUser, setCurrentActiveUser] = useState("");
-  const [socketDm , setSocketDm] = useState("ws://localhost:8002/chats/dm/chat");
-  const [socketGroup , setSocketGroup] = useState("ws://localhost:8002/chats/dm/chat");
+  const [socketDm , setSocketDm] = useState();
+  const [socketGroup , setSocketGroup] = useState();
   const router = createBrowserRouter([
     {
       index: true,
@@ -64,6 +64,8 @@ function App() {
             currentActiveUser={currentActiveUser}
             socketDm={socketDm}
             socketGroup={socketGroup}
+            setSocketDm={setSocketDm}
+            setSocketGroup={setSocketGroup}
           />
           ,
         </>

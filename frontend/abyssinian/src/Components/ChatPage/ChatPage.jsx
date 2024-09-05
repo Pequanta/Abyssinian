@@ -9,7 +9,6 @@ function ChatPage(props) {
   const [activeGroups, setActiveGroups] = useState(false);
   const [activeUserProfile, setActiveProfile] = useState(false);
   const [activeNewChat, setActiveNewChat] = useState(false);
-
   const handleInputChange = (event) => {
     const textContent = event.target.value;
     setChatToSend(textContent);
@@ -17,7 +16,6 @@ function ChatPage(props) {
   const sendChat = async (event) => {
     document.getElementById("inputBox").value = "";
     if (props.selectedChat["chatType"] === "DM") {
-
       props.socketDm.send(JSON.stringify({
         "sent_chat": chatToSend,
         "sender_username": props.currentActiveUser,

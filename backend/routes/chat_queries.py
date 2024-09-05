@@ -33,12 +33,10 @@ class SocketRoomConnection:
         self.room_id: str = room_id
         self.websocket: WebSocket = websocket
     async def add_connection_to_rooms(self):
-
+        await self.websocket.accept()
         if self.room_id not in socketrooms.get_all_rooms():
-            await self.websocket.accept()
             socketrooms.add_new_room(self.room_id, self.websocket)
         else: 
-            if self.websocket not in socketrooms.get_all_rooms()[self.room_id]: await self.websocket.accept()
             socketrooms.add_connection_to_room(self.room_id, self.websocket)
         print(socketrooms.chat_rooms)
     async def broadcast_new_message(self, message):
@@ -52,9 +50,9 @@ class SocketRoomConnection:
 @router.websocket("/dm/chat")
 async def establish_connection(websocket: WebSocket, room_id: str):
     socket_inst = SocketRoomConnection(websocket, "DM", room_id)
+    await socket_inst.add_connection_to_rooms()
     try:
         while True:
-            await socket_inst.add_connection_to_rooms()
             sent_data = await websocket.receive_json()
             new_chat = {"chat_text": sent_data["sent_chat"], "sender_username": sent_data["sender_username"], "sent_time": formated_time(datetime.now())}
             new_chat_db = jsonable_encoder(ChatDataModel(**new_chat))
@@ -69,20 +67,21 @@ async def establish_connection(websocket: WebSocket, room_id: str):
         print(socketrooms.chat_rooms)
     except WebSocketDisconnect:
         socketrooms.remove_connection(room_id, websocket)
+        return
 
 @router.websocket("/group/chat")
-async def establish_connection(websocket: WebSocket, room_id: str):
+async def establish_connection(websocket: WebSocket, room_id):
     socket_inst = SocketRoomConnection(websocket, "GROUP", room_id)
-    print("hello")
+    await socket_inst.add_connection_to_rooms()
     try:
         while True:
-            await socket_inst.add_connection_to_rooms()
             sent_data = await websocket.receive_json()
-            print(sent_data)
+            socket_inst = SocketRoomConnection(websocket, "GROUP", sent_data["_id"])
+            await socket_inst.add_connection_to_rooms()
             new_chat = {"chat_text": sent_data["sent_chat"], "sender_username": sent_data["sender_username"], "sent_time": formated_time(datetime.now())}
             new_chat_db = jsonable_encoder(ChatDataModel(**new_chat))
             if not (await websocket.app.mongodb["groups"].update_one(
-                {"_id": room_id}, 
+                {"_id": sent_data["_id"]}, 
                 {"$push" : {"chats": new_chat_db}})):
                     raise HTTPException(status_code=401, detail="task not found")
             return {"message": "inserted successfully"}

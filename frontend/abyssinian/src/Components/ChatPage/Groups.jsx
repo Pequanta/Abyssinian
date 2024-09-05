@@ -41,7 +41,7 @@ function Groups(props) {
       roomId: roomId,
     });
     props.setSocketGroup(new WebSocket(`ws://localhost:8002/chats/group/chat?room_id=${roomId}`))
-    props.socketGroup.onmessage = function(event){
+    props.socketGroup.onmessage = async function(event){
       console.log(event.data)
     }
     result.then((content) => {
