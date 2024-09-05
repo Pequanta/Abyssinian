@@ -117,6 +117,7 @@ async def return_all_dms(request: Request, current_user: str):
         contain_results = []
         async for item in cont_returned:
              contain_results.append(item)
+        print(contain_results)
         return JSONResponse({"result":contain_results})
     except:
         return HTTPException(status_code=401)

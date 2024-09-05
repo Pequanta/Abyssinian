@@ -83,6 +83,7 @@ function App() {
               currentActiveUser={currentActiveUser}
               setSocketDm={setSocketDm}
               socketDm={socketDm}
+              setRoomId={setRoomId}
 
             />
           ),
@@ -105,6 +106,7 @@ function App() {
               currentActiveUser={currentActiveUser}
               socketGroup={socketGroup}
               setSocketGroup={setSocketGroup}
+              setRoomId={setRoomId}
             />
           ),
         },

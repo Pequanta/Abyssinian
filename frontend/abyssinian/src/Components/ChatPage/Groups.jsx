@@ -5,6 +5,8 @@ import pic from "../../assets/bp4.png";
 
 function Groups(props) {
   const [groupsList, setGroupsList] = useState([]);
+  const [roomId, setRoomId] = useState();//though there is a general roomId variable being drilled to the components , additional roomId
+  //in both Groups.jsx and DMList.jsx is usded to lessen the complication
   useEffect(function fetchGroupList() {
     console.log(props.currentActiveUser);
     const fetchData = async () => {
@@ -29,30 +31,13 @@ function Groups(props) {
     event.preventDefault();
   };
   const startConverstation = async (event, groupName, roomId) => {
-    console.log(roomId)
-    const response = await fetch(
-      `http://localhost:8002/chats/access/groups/group/${groupName}?group_name=${groupName}`,
-      { method: "get" }
-    );
     const result = response.json();
     props.setSelectedChat({
       chatType: "GROUP",
       Name: groupName,
       roomId: roomId,
-    });
-    props.setSocketGroup(new WebSocket(`ws://localhost:8002/chats/group/chat?room_id=${roomId}`))
-    props.socketGroup.onmessage = async function(event){
-      console.log(event.data)
-    }
-    result.then((content) => {
-      props.setChatDisplayed(content);
-    });
-    console.log(groupsList);
-    if (!response.ok) {
-      console.log("error");
-    } else {
-      console.log(response.data);
-    }
+    }); 
+    props.setRoomId(roomId)
   };
   return (
     <div className={styles.group_page}>

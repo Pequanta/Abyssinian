@@ -15,7 +15,8 @@ function DMList(props) {
       if (response.ok) {
         const result = response.json();
         result.then((content) => {
-          setUserList([...userList, content.result[0]]);
+          console.log(...content.result)
+          setUserList(content.result)
         });
       } else {
         console.log("user not found");
@@ -37,19 +38,22 @@ function DMList(props) {
   }
   const startConverstation = async (event, userName) => {
     getRoomId(userName, props.currentActiveUser)
+    const response = await fetch(
+      `http://localhost:8002/chats/access/groups/dms?user_name=${userName}&current_user=${props.currentActiveUser}`,
+      {method: "get"}
+    );
+    const result = response.json();
+    result.then((content)=>{
+      props.setChatDisplayed([...content])
+      console.log(content)
+    })
     console.log(roomId);
     props.setSelectedChat({
       chatType: "DM",
       Name: userName,
       roomId: roomId,
     });
-    props.setSocketDm(new WebSocket(`ws://localhost:8002/chats/dm/chat?room_id=${roomId}`))
-    props.socketDm.onmessage = function(event){
-      console.log(event.data);
-    }
-    props.socketDm.onopen = function(event){
-      console.log(event.data);
-    }
+    props.setRoomId(roomId)
   };
   const searchForDM = (event) => {
     event.preventDefault();

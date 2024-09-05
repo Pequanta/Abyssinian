@@ -9,21 +9,33 @@ function ChatPage(props) {
   const [activeGroups, setActiveGroups] = useState(false);
   const [activeUserProfile, setActiveProfile] = useState(false);
   const [activeNewChat, setActiveNewChat] = useState(false);
+  let socket;
   useEffect(()=>{
-    props.setSocketDm(new WebSocket(`ws://localhost:8002/chats/dm/chat?room_id=${props.roomId}`));
-  }, [])
-
-  useEffect(()=>{
-    const establishConnection  = async ()=>{
-      props.socketDm.onopen = async function(event){
-        console.log(event.data);
+    const connection = async () => {
+    if(props.selectedChat["chatType"] === "DM"){
+      socket = new WebSocket(`ws://localhost:8002/chats/dm/chat?room_id=${props.roomId}`);
+      socket.onopen = async (event) => {
+        console.log("connected");
       }
-      props.socketDm.onmessage = async function(event){
+      socket.onmessage =  async (event) => {
         console.log(event.data);
+      } 
+    }else if(props.selectedChat["chatType"] === "GROUP"){
+      socket = new WebSocket(`ws://localhost:8002/chats/group/chat?room_id=${props.roomId}`);
+      socket.onopen = async (event) => {
+        console.log("connected");
       }
+      socket.onmessage =  async (event) => {
+        console.log(event.data);
+      } 
     }
-    establishConnection();
+    }
+    connection();
+     return async ()=>{
+      await socket.close();
+    }
   }, [props.roomId])
+
   
   const handleInputChange = (event) => {
     const textContent = event.target.value;
