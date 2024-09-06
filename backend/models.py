@@ -54,6 +54,17 @@ class DMBase(MongoBaseModel):
 
 class DMDataModel(DMBase):
         pass
+
+class TrendBase(MongoBaseModel):
+        author_username: str
+        title: str
+        content: str
+        sent_time: str
+        tags: List[str]
+        reactions: {str: int}
+class TrendDataModel(TrendBase):
+        followup_trend = None
+
 class Token(BaseModel):
     access_token: str
     token_type: str
