@@ -19,6 +19,7 @@ function ChatPage(props) {
       }
       socket.onmessage =  async (event) => {
         console.log(event.data);
+        props.setChatDisplayed([...props.chatDisplayed, event.data])
       } 
     }else if(props.selectedChat["chatType"] === "GROUP"){
       socket = new WebSocket(`ws://localhost:8002/chats/group/chat?room_id=${props.roomId}`);
@@ -29,33 +30,28 @@ function ChatPage(props) {
         console.log(event.data);
       } 
     }
-    }
-    connection();
-     return async ()=>{
-      await socket.close();
-    }
-  }, [props.roomId])
+  }
+  connection();
+  return async ()=>{
+    await socket.close();
+  }
+}, [props.roomId])
 
-  
-  const handleInputChange = (event) => {
-    const textContent = event.target.value;
-    setChatToSend(textContent);
-  };
-  const sendChat = async (event) => {
-    document.getElementById("inputBox").value = "";
-    if (props.selectedChat["chatType"] === "DM") {
-      props.socketDm.send(JSON.stringify({
-        "sent_chat": chatToSend,
-        "sender_username": props.currentActiveUser,
-      }))
-    } else if (props.selectedChat["chatType"] === "GROUP") {
-      props.socketGroup.send(JSON.stringify({
-        "sent_chat": chatToSend,
-        "sender_username": props.currentActiveUser,
-      }))
-    } else {
-      console.log("chat not selected");
-    }
+
+const sendChat = async (event) => {
+  document.getElementById("inputBox").value = "";
+  if(socket && socket.readyState === WebSocket.OPEN){
+    await socket.send(JSON.stringify({
+      "sent_chat": chatToSend,
+      "sender_username": props.currentActiveUser,
+    }))
+  }else{
+    console.log(socket);
+  }
+};
+const handleInputChange = (event) => {
+  const textContent = event.target.value;
+  setChatToSend(textContent);
   };
   return (
     <>

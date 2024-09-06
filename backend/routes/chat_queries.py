@@ -61,7 +61,7 @@ async def establish_connection(websocket: WebSocket, room_id: str):
                 {"$push" : {"chats": new_chat_db}})):
                     raise HTTPException(status_code=401, detail="task not found")
             print(sent_data)
-            await socket_inst.broadcast_new_message(sent_data)
+            await socket_inst.broadcast_new_message(new_chat_db)
 
         print(socketrooms.chat_rooms)
     except WebSocketDisconnect:
@@ -84,7 +84,7 @@ async def establish_connection(websocket: WebSocket, room_id):
                 {"$push" : {"chats": new_chat_db}})):
                     raise HTTPException(status_code=401, detail="task not found")
             return {"message": "inserted successfully"}
-            await socket_inst.broadcast_new_message(sent_data)
+            await socket_inst.broadcast_new_message(new_chat_db)
 
         print(socketrooms.chat_rooms)
     except WebSocketDisconnect:
