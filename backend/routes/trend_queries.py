@@ -44,7 +44,7 @@ async def followup_trend(request: Request, trend: FollowUpDataModel, root_trend_
     new_followup["root_trend_id"] = root_trend_id
     print(root_trend_id, new_followup)
     try:
-        await request.app.mongodb["trends"].update(
+        await request.app.mongodb["trends"].update_one(
             {"_id":root_trend_id}, 
             {"$push" : {"followup_trends": new_followup}}
         
@@ -62,29 +62,54 @@ async def followup_trend(request: Request, trend_id: str):
 
 ### The following three operations need to be authenticated 
 ### For now it would be a simple request response feature
-async def update_reaction_likes(request: Request, trend_id: str):
+async def update_reaction_likes(request: Request, trend_id: str, root_id: str, type: str):
     try:
-        get_trend_info = await request.app.mongodb["trends"].find_one({"_id": trend_id})
-        await request.app.mongodb["trends"].update({"_id": trend_id}, {
-            "$set": {reactions["likes"]: get_trend_info["reactions"]["likes"] + 1}
-        })
+        if type=="ROOT":
+            get_trend_info = await request.app.mongodb["trends"].find_one({"_id": trend_id})
+            await request.app.mongodb["trends"].update_one({"_id": trend_id}, {
+                "$set": {"reactions.likes": get_trend_info["reactions"]["likes"] + 1}
+            })
+        elif type=="FOLLOWUP":
+            get_trend_info = await request.app.mongodb["trends"].find_one({"_id": root_id})
+            get_existing_likes = list(filter(lambda x: x["_id"] == trend_id, get_trend_info["followup_trends"]))[0]["reactions"]["likes"]
+            print(get_existing_likes)
+            await request.app.mongodb["trends"].update_one({"_id": root_id, "followup_trends._id": trend_id}, {
+                "$set": {"followup_trends.$.reactions.likes": get_existing_likes + 1}
+            })
+
     except:
         raise HTTPException(status_code=401, detail="could not add the like")
 @router.post("/update-reaction/share")
-async def update_reaction_likes(request: Request, trend_id: str):
+async def update_reaction_likes(request: Request, trend_id: str , root_id: str, type: str):
     try:
-        get_trend_info = await request.app.mongodb["trends"].find_one({"_id": trend_id})
-        await request.app.mongodb["trends"].update({"_id": trend_id}, {
-            "$set": {reactions["share"]: get_trend_info["reactions"]["share"] + 1}
-        })
+        if type=="ROOT":
+            get_trend_info = await request.app.mongodb["trends"].find_one({"_id": trend_id})
+            await request.app.mongodb["trends"].update_one({"_id": trend_id}, {
+                "$set": {"reactions.share": get_trend_info["reactions"]["share"] + 1}
+            })
+        elif type=="FOLLOWUP":
+            get_trend_info = await request.app.mongodb["trends"].find_one({"_id": root_id})
+            get_existing_share = list(filter(lambda x: x["_id"] == trend_id, get_trend_info["followup_trends"]))[0]["reactions"]["share"]
+            print(get_existing_share)
+            await request.app.mongodb["trends"].update_one({"_id": root_id, "followup_trends._id": trend_id}, {
+                "$set": {"followup_trends.$.reactions.likes": get_existing_share + 1}
+            })
     except:
-        raise HTTPException(status_code=401, detail="could not add the like")
+        raise HTTPException(status_code=401, detail="could not add the share")
 @router.post("/update-reaction/comments")
-async def update_reaction_likes(request: Request, trend_id: str):
+async def update_reaction_likes(request: Request, trend_id: str, root_id: str,type: str):
     try:
-        get_trend_info = await request.app.mongodb["trends"].find_one({"_id": trend_id})
-        await request.app.mongodb["trends"].update({"_id": trend_id}, {
-            "$set": {reactions["comments"]: get_trend_info["reactions"]["comments"] + 1}
-        })
+        if type=="ROOT":
+            get_trend_info = await request.app.mongodb["trends"].find_one({"_id": trend_id})
+            await request.app.mongodb["trends"].update_one({"_id": trend_id}, {
+                "$set": {"reactions.comments": get_trend_info["reactions"]["comments"] + 1}
+            })
+        elif type=="FOLLOWUP":
+            get_trend_info = await request.app.mongodb["trends"].find_one({"_id": root_id})
+            get_existing_comments = list(filter(lambda x: x["_id"] == trend_id, get_trend_info["followup_trends"]))[0]["reactions"]["comments"]
+            await request.app.mongodb["trends"].update_one({"_id": root_id, "followup_trends._id": trend_id}, {
+                "$set": {"followup_trends.$.reactions.comments": get_existing_comments + 1}
+            })
+            
     except:
-        raise HTTPException(status_code=401, detail="could not add the like")
+        raise HTTPException(status_code=401, detail="could not add the comments")
