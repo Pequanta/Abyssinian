@@ -24,7 +24,7 @@ async def add_new_trend(request:Request, trend: TrendDataModel):
         return {"message":added_.inserted_id}
     except:
         raise HTTPException(status_code=401, detail="could not add the trend")
-@router.get("/return-all-trends")
+@router.get("/get-all-trends")
 async def return_all_trends(request: Request):
     try:
         cursor = request.app.mongodb["trends"].find()
@@ -42,14 +42,12 @@ async def followup_trend(request: Request, trend: FollowUpDataModel, root_trend_
     new_followup["reactions"] = {"likes": 0, "share": 0, "comments": 0}
     new_followup["sent_time"] = formated_time(datetime.now())
     new_followup["root_trend_id"] = root_trend_id
-    print(root_trend_id, new_followup)
     try:
         await request.app.mongodb["trends"].update_one(
             {"_id":root_trend_id}, 
             {"$push" : {"followup_trends": new_followup}}
         
         )
-        print("hello")
         return {"message":"successful"}  
     except:
         raise HTTPException(status_code=401, detail="could not add the folloup to the trend")
@@ -72,7 +70,6 @@ async def update_reaction_likes(request: Request, trend_id: str, root_id: str, t
         elif type=="FOLLOWUP":
             get_trend_info = await request.app.mongodb["trends"].find_one({"_id": root_id})
             get_existing_likes = list(filter(lambda x: x["_id"] == trend_id, get_trend_info["followup_trends"]))[0]["reactions"]["likes"]
-            print(get_existing_likes)
             await request.app.mongodb["trends"].update_one({"_id": root_id, "followup_trends._id": trend_id}, {
                 "$set": {"followup_trends.$.reactions.likes": get_existing_likes + 1}
             })
@@ -90,7 +87,6 @@ async def update_reaction_likes(request: Request, trend_id: str , root_id: str, 
         elif type=="FOLLOWUP":
             get_trend_info = await request.app.mongodb["trends"].find_one({"_id": root_id})
             get_existing_share = list(filter(lambda x: x["_id"] == trend_id, get_trend_info["followup_trends"]))[0]["reactions"]["share"]
-            print(get_existing_share)
             await request.app.mongodb["trends"].update_one({"_id": root_id, "followup_trends._id": trend_id}, {
                 "$set": {"followup_trends.$.reactions.likes": get_existing_share + 1}
             })

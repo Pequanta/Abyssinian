@@ -121,7 +121,7 @@ function App() {
       element: (
         <>
           <Header />
-          <TrendsPage />,
+          <TrendsPage currentActiveUser={currentActiveUser}/>,
         </>
       ),
     },

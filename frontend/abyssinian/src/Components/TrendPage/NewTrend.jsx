@@ -1,21 +1,45 @@
 import styles from "./trendpage.module.css";
 import {useState} from "react";
+import { useNavigate} from "react-router-dom";
 function NewTrend(props) {
-  const [trendContent, setTrendContent] = useState();
-  const [trendTitle, setTrendTitle] = useState();
+  console.log(props.currentActiveUser)
+  const [trendToPost, setTrendToPost] = useState({
+    author_username: props.currentActiveUser,
+    title: "",
+    tags: [],
+    content: ""
+  })
+
+  const navigate = useNavigate();
   const handleNewTrendContent = (event) =>{
       console.log(event)
       const content = event.target.value;
-      setTrendContent(content);
+      setTrendToPost({
+        ...trendToPost, content: content
+      })
   }
 
   const handleNewTrendTitle = (event) =>{
     const title = event.target.value;
-    setTrendTitle(title);
+    setTrendToPost({
+      ...trendToPost, title: title
+    })
   }
 
-  const handleSubmit = (event) =>{
-    
+  const handleSubmit = async (event) =>{
+    event.preventDefault();
+    const response = await fetch(`http://localhost:8002/trends/new-trend`,
+      {
+        method: "post",
+        body: JSON.stringify(trendToPost),
+        headers: {
+          "Content-Type": "application/json",
+        }
+      }
+    )
+    props.setTrendPosition("to-main");
+    props.backFromNewTrend(event)
+
   }
   return (
     <div className={styles.newTrendPostDisplay}>
@@ -36,7 +60,7 @@ function NewTrend(props) {
         <form onSubmit={(event) => handleSubmit(event)}>
           <label>
             Title
-            <input type="text" placeholder="..." onChange={(event) => handleNewTrendTitle(event)}/>
+            <input type="text" placeholder="..." onChange={(event) => handleNewTrendTitle(event)} required/>
           </label>
           <button className={styles.newPostButton}>post</button>
         </form>

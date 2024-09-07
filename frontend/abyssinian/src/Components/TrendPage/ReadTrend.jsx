@@ -20,58 +20,31 @@ function ReadTrend(props) {
             <img src={userPic} />
           </div>
           <div className={styles.postInfo}>
-            <h3>Author: Peniel</h3>
+            <h3>{props.trend.author_username}</h3>
 
-            <h6>date: jul, 16, 2024 00:00:00pm</h6>
+            <h6>date: jul, 16, 2024 {props.trend.sent_time}</h6>
           </div>
         </div>
         <div className={styles.postContent}>
           <h3>
-            Title: Lorem Ipsum is simply dummy text of the printing and
-            typesetting industry
+           {props.trend.title}
           </h3>
           <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply
-            dummy text of the printing and typesetting industry. Lorem Ipsum has
-            been the industry's standard dummy text ever since the 1500s, when
-            an unknown printer took a galley of type and scrambled it to make a
-            type specimen book. It has survived not only five centuries, but
-            also the leap into electronic typesetting, remaining essentially
-            unchanged. It was popularised in the 1960s with the release of
-            Letraset sheets containing Lorem Ipsum passages, and more recently
-            with desktop publishing software like Aldus PageMaker including
-            versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the
-            printing and typesetting industry. Lorem Ipsum has been the
-            industry's standard dummy text ever since the 1500s, when an unknown
-            printer took a galley of type and scrambled it to make a type
-            specimen book. It has survived not only five centuries, but also the
-            leap into electronic typesetting, remaining essentially unchanged.
-            It was popularised in the 1960s with the release of Letraset sheets
-            containing Lorem Ipsum passages, and more recently with desktop
-            publishing software like Aldus PageMaker including versions of Lorem
-            Ipsum.
+            {props.trend.content}
           </p>
         </div>
         <div className={styles.viewersReaction}>
           <div className={styles.reactions}>
             <button>👍</button>
-            <h2>12</h2>
+            <span>{props.trend.reactions["likes"]}</span>
           </div>
           <div className={styles.reactions}>
             <button>🏹</button>
-            <h2>12</h2>
+            <span>{props.trend.reactions["share"]}</span>
           </div>
           <div className={styles.reactions}>
             <button>💬</button>
-            <h2>12</h2>
+            <span>{props.trend.reactions["comments"]}</span>
           </div>
         </div>
         <div className={styles.commentSection}>

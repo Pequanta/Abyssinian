@@ -5,14 +5,28 @@ import TrendList from "./TrendList";
 import NewTrend from "./NewTrend";
 import ReadTrend from "./ReadTrend";
 
-function TrendsPage() {
-  //     useEffect(
-  //         function fetchAllTrends(){
-  //             const fetchTrends = async () =>{
-  //                 const response = fetch(``)
-  //             }
-  //         }
-  //         ,[])
+
+function TrendsPage(props) {
+  const [trendsList, setTrendsList] = useState([]);
+  const [trendDisplayed , setTrendDisplayed] = useState();
+  const [trendPosition , setTrendPosition] = useState("current-main")
+  useEffect(() => {
+    const fetchTrends = async () =>{
+        const response = await fetch(`http://localhost:8002/trends/get-all-trends`,
+          {method: "get"}
+        );
+        const result = response.json();
+        result.then(content =>{
+          console.log(Array.isArray(content["message"]))
+          console.log(content["message"] !== undefined)
+          setTrendsList(content["message"])
+
+        })
+      }
+      fetchTrends();
+    }
+      
+      ,[trendPosition])
   const [mainPage, setMainPage] = useState(true);
   const [readTrend, setReadTrend] = useState(false);
   const [newTrend, setNewTrend] = useState(false);
@@ -28,11 +42,13 @@ function TrendsPage() {
     setNewTrend(false);
   };
 
-  const openTrend = (event) => {
+  const openTrend = (event, trend) => {
+    setTrendDisplayed(trend)
     setMainPage(false);
     setReadTrend(true);
   };
   const openNewTrend = (event) => {
+    console.log(trendsList)
     setMainPage(false);
     setNewTrend(true);
   };
@@ -57,19 +73,18 @@ function TrendsPage() {
             </div>
 
             <div className={styles.trendsListing}>
-              <TrendList openTrend={openTrend} />
-              <TrendList openTrend={openTrend} />
-              <TrendList openTrend={openTrend} />
-              <TrendList openTrend={openTrend} />
-              <TrendList openTrend={openTrend} />
-              <TrendList openTrend={openTrend} />
+              {
+                trendsList.map((trend, index) =>(
+                  <TrendList key={index} openTrend={openTrend} trend={trend}/>
+                ))
+              }
             </div>
           </div>
         </div>
       )}
-      {!mainPage && readTrend && <ReadTrend backFromTrend={backFromTrend} />}
+      {!mainPage && readTrend && <ReadTrend backFromTrend={backFromTrend} trend={trendDisplayed} setTrendPosition={setTrendDisplayed}/>}
       {!mainPage && newTrend && (
-        <NewTrend backFromNewTrend={backFromNewTrend} />
+        <NewTrend backFromNewTrend={backFromNewTrend} currentActiveUser={props.currentActiveUser} setTrendPosition={setTrendPosition}/>
       )}
     </div>
   );
