@@ -1,7 +1,7 @@
 from bson import ObjectId
 from enum import Enum
 from pydantic import BaseModel, Field
-from typing import List
+from typing import List, Dict, Set
 class PyObjectId(ObjectId):
         @classmethod
         def __get_validators__(cls):
@@ -51,20 +51,24 @@ class DMBase(MongoBaseModel):
         members: List[str]
         chats: List[str]
         tags: List[str]
-
 class DMDataModel(DMBase):
         pass
-
+class FollowUpBase(MongoBaseModel):
+        author_username: str
+        content: str
+class FollowUpDataModel(FollowUpBase):
+        reactions: Dict[str, int] = {}
+        sent_time: str = ""
+        root_trend_id: str | None = ""
 class TrendBase(MongoBaseModel):
         author_username: str
         title: str
-        content: str
-        sent_time: str
         tags: List[str]
-        reactions: {str: int}
+        content: str
 class TrendDataModel(TrendBase):
-        followup_trend = None
-
+        followup_trends : List[FollowUpDataModel] = []
+        reactions: Dict[str, int] = {}
+        sent_time: str = ""
 class Token(BaseModel):
     access_token: str
     token_type: str

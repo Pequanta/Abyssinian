@@ -9,7 +9,8 @@ from jose import jwt ,exceptions
 from decouple import config
 
 pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
-
+##The following code is based on the documentation from Fastapi about tokens with slight modification
+##for the application
 
 class Authentication:
     def __init__(self):

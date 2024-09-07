@@ -22,7 +22,7 @@ class SocketRooms:
     def get_all_rooms(self):
         return self.chat_rooms
     def get_room(self, room_id: str):
-        return self.chat_rooms.get(room_id  )
+        return self.chat_rooms.get(room_id)
 
 
 socketrooms = SocketRooms()
@@ -69,7 +69,7 @@ async def establish_connection(websocket: WebSocket, room_id: str):
         return
 
 @router.websocket("/group/chat")
-async def establish_connection(websocket: WebSocket, room_id):
+async def establish_connection(websocket: WebSocket, room_id: str):
     socket_inst = SocketRoomConnection(websocket, "GROUP", room_id)
     await socket_inst.add_connection_to_rooms()
     try:

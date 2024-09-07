@@ -276,7 +276,7 @@ nav li .active {
   color: white;
 }
 
-.chatCard {
+.chatCardMe {
   display: flex;
   margin: 20px;
   background: transparent;
@@ -285,7 +285,7 @@ nav li .active {
   width: 60%;
 }
 
-.chatCard .user_profile {
+.chatCardMe .user_profile {
   margin-bottom: 0;
   width: 5rem;
   height: 100%;
@@ -293,7 +293,54 @@ nav li .active {
   display: flex;
   justify-content: end;
 }
-.chatCard .content {
+.chatCardMe .content {
+  width: 85%;
+  background-color: rgb(9, 223, 238);
+  color: rgb(18, 35, 66);
+  font-size: 1.3rem;
+  padding: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-top-left-radius: 40px;
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+}
+.chatCardMe img {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+}
+
+.chatCardMe .userName {
+  color: rgb(68, 64, 64);
+  float: right;
+  font-size: 1rem;
+}
+
+.chatCardMe .sentTime {
+  color:rgb(68, 64, 64);
+  font-size: 1rem;
+  float: right;
+}
+.chatCardAnother {
+  display: flex;
+  margin: 20px;
+  background: transparent;
+  color: white;
+  border-radius: 25px;
+  width: 60%;
+}
+
+.chatCardAnother .user_profile {
+  margin-bottom: 0;
+  width: 5rem;
+  height: 100%;
+  background: transparent;
+  display: flex;
+  justify-content: end;
+}
+.chatCardAnother .content {
   width: 85%;
   background-color: rgb(194, 228, 132);
   color: rgb(18, 35, 66);
@@ -305,20 +352,21 @@ nav li .active {
   display: flex;
   flex-direction: column;
   text-align: start;
+  float: left;
 }
-.chatCard img {
+.chatCardAnother img {
   width: 3.5rem;
   height: 3.5rem;
   border-radius: 50%;
 }
 
-.chatCard .userName {
+.chatCardAnother .userName {
   color: rgb(68, 64, 64);
   float: right;
   font-size: 1rem;
 }
 
-.chatCard .sentTime {
+.chatCardAnother .sentTime {
   color:rgb(68, 64, 64);
   font-size: 1rem;
   float: right;

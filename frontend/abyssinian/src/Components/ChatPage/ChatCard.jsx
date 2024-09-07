@@ -2,7 +2,7 @@ import styles from "./chatpagestyles.module.css";
 import profilePic from "../../assets/bg9.png";
 function ChatCard(props) {
   return (
-    <div className={styles.chatCard}>
+    <div className={`${props.senderName === props.currentActiveUser? styles.chatCardMe: styles.chatCardAnother}`}>
       <div className={styles.user_profile}>
         <img alt="profile" src={profilePic} />
       </div>

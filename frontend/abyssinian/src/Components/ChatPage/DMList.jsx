@@ -37,7 +37,7 @@ function DMList(props) {
     });
   }
   const startConverstation = async (event, userName) => {
-    getRoomId(userName, props.currentActiveUser)
+    getRoomId(userName)
     const response = await fetch(
       `http://localhost:8002/chats/access/groups/dms?user_name=${userName}&current_user=${props.currentActiveUser}`,
       {method: "get"}
@@ -45,7 +45,6 @@ function DMList(props) {
     const result = response.json();
     result.then((content)=>{
       props.setChatDisplayed([...content])
-      console.log(content)
     })
     console.log(roomId);
     props.setSelectedChat({
