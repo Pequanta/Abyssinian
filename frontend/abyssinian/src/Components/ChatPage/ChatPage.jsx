@@ -120,7 +120,7 @@ return (
                       setActiveProfile(false);
                     }}
                   >
-                    <button className={styles.newButton}>➕New</button>
+                    ➕New
                   </NavLink>
                 </li>
               </ul>

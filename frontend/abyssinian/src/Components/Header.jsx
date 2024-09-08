@@ -10,13 +10,13 @@ function Header() {
   const [activeChat, setActiveChat] = useState(false);
   const [activeVlog, setActiveVlog] = useState(false);
   const [activeAbout, setActiveAbout] = useState(false);
-  const changeTheme = (event) => {
-    if (theme === "light") {
-      setTheme("dark");
-    } else if (theme === "dark") {
-      setTheme("light");
-    }
-  };
+  // const changeTheme = (event) => {
+  //   if (theme === "light") {
+  //     setTheme("dark");
+  //   } else if (theme === "dark") {
+  //     setTheme("light");
+  //   }
+  // };
   return (
     <header className="main_header">
       <img src={logoPic} />
@@ -88,7 +88,7 @@ function Header() {
               About
             </NavLink>
           </li>
-          <li>
+          {/* <li>
             <button
               onClick={(event) => {
                 changeTheme(event);
@@ -98,7 +98,7 @@ function Header() {
               {theme === "dark" && <MdDarkMode className="symbol" />}
               {theme === "light" && <CiLight className="symbol" />}
             </button>
-          </li>
+          </li> */}
         </ul>
       </nav>
     </header>

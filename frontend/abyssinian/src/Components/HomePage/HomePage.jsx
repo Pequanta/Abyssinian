@@ -26,23 +26,31 @@ function HomePage() {
       
       {mainPage && (
         <>
+        <h1 className={styles.welcomeText}>Welcome to IziSefer</h1>
         <div className={styles.introCard}>
-          <h1>Welcome to IziSefer</h1>
           <p>
-            This is Where similar minds are gathered to
+            This is Where everyone gather to
           </p>
           <ul>
-            <li>Discuss Ideas</li>
-            <img src={imga}/>
-            <li>have reasonable debate</li>
-            <img src={imgf}/>
-            <li>give advices</li>
-            <img src={imgb}/>
-            <li>share and exchange trends</li>
-            <img src={imga}/>
+            <li>
+              <h3>Discuss Ideas</h3>
+              <img src={imga}/>
+            </li>
+            <li>
+              <h3>have reasonable debate</h3>
+              <img src={imgf}/>
+            </li>
+            <li>
+              <h3>give advices</h3>
+              <img src={imgb}/>
+            </li>
+            <li>
+              <h3>share and exchange trends</h3>
+              <img src={imgc}/>
+            </li>
           </ul>
           
-          <h2>So Buckle Up! its just one click away!</h2>
+          <h2 className={styles.buckleMessage}>So Buckle Up! its just one click away! Or ....</h2>
         </div>
         <div className={styles.pageCard}>
           <h2 className={styles.featureHeading}>Popular Trends</h2>

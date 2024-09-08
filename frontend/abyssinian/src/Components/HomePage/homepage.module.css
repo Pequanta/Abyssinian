@@ -1,69 +1,24 @@
-.mainHomePage {
-  width: 100%;
-  position: fixed;
+.mainHomePage{
+  background-color: rgb(1, 12, 12);
+  position:fixed;
   top: 10vh;
-  height: 85vh;
-  border-radius: 1rem;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  color: rgb(200, 200, 63);
-  padding: 3rem;
-  overflow: auto;
-}
-
-.pageCard {
+  overflow-y: auto;
+  height: 100vh;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: white;
 }
 
-.pageCard .featureHeading {
+.welcomeText{
+  place-self: start;
+  margin: 4rem;
+  text-decoration: underline;
   font-size: 3rem;
-  color: rgb(197, 251, 0);
+  color: rgb(64, 253, 196);
+  font-weight: 900px;
 }
-.introCard{
-  background-color: rgb(26, 61, 75);
-  color :rgb(255, 255, 255);
-  padding: 2rem;
-  border-radius: 1rem;
-  width: 90%;
-  height: 1000rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  flex: 1;
-}
-
-.introCard h1 , h2{
-  font-size: 5rem;
-}
-
-.introCard img{
-  width: 70rem;
-  height: 70rem;
-  border-radius: 2rem;
-}
-
-
-.introCard p{
-  color: cyan;
-  font-size: 4rem;
-}
-
-.introCard li{
-  font-size: 4rem;
-  margin-bottom: 3rem;
-  color: yellow;
-}
-intro
-.readingPage {
-  margin-top: -3rem;
-  background-color: rgb(14, 24, 29);
-}
-
 .featureTrends {
   border: 1px solid white;
   border-radius: 1rem;
@@ -123,4 +78,36 @@ intro
   font-size: 1.3rem;
   padding: 0 1rem 0;
   border-radius: 2rem;
+}
+
+
+.introCard{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.introCard ul{
+  display: flex;
+  place-content: center;
+  gap: 5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 2rem 10rem 2rem;
+}
+
+.introCard img{
+  flex: 1 1 auto;
+  width: 35rem;
+  border-radius: 5rem;
+}
+
+.introCard img:hover{
+  width: 36rem;
+  transition: all ease-in 0.5s;
+}
+.introCard p , .buckleMessage{
+  font-size: 3rem;
+  color: rgb(243, 245, 153);
+  margin-bottom: 3rem;
 }
