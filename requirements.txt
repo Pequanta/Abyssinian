@@ -16,7 +16,4 @@ rich==13.7.1
 rsa==4.9
 uvicorn==0.30.5
 websockets==12.0
-<<<<<<< HEAD
-
-=======
->>>>>>> 492f06153467784c36c85c69dd96e3a5989f7d5c
+gunicorn==23.0.0
