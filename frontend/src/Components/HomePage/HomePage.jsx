@@ -26,7 +26,7 @@ function HomePage() {
       
       {mainPage && (
         <>
-        <h1 className={styles.welcomeText}>Welcome to IziSefer</h1>
+        <h1 className={styles.welcomeText}>Welcome to እዚSefer</h1>
         <div className={styles.introCard}>
           <p>
             This is Where everyone gather to

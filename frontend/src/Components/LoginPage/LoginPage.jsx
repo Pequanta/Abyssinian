@@ -20,7 +20,7 @@ function LoginPage(props) {
   };
   async function getCurrentUser(token) {
     const response = await fetch(
-      `http://localhost:8002/users/access/user/current-user?token=${token}`,
+      `${props.backendHttpUrl}/users/access/user/current-user?token=${token}`,
       {
         method: "get",
       }
@@ -36,7 +36,7 @@ function LoginPage(props) {
     };
     try {
       const response = await fetch(
-        "http://localhost:8002/users/access/user/login?",
+        `${props.backendHttpUrl}/users/access/user/login`,
         {
           method: "post",
           body: JSON.stringify(userData),

@@ -10,7 +10,7 @@ function UserProfile(props) {
   useEffect(function fetchUserProfile() {
     const fetchData = async () => {
       const response = await fetch(
-        `http://localhost:8002/users/access/single-user/?user_name=${props.currentActiveUser}`
+        `${props.backendHttpUrl}/users/access/single-user/?user_name=${props.currentActiveUser}`
       );
       const result = response.json();
       result.then((content) => {

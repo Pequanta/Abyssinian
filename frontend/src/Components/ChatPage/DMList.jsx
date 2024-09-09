@@ -9,7 +9,7 @@ function DMList(props) {
   useEffect(function fetchDMList() {
     const fetchData = async () => {
       const response = await fetch(
-        `http://localhost:8002/chats/access/groups/all/dms?current_user=${props.currentActiveUser}`,
+        `${props.backendHttpUrl}/chats/access/groups/all/dms?current_user=${props.currentActiveUser}`,
         { method: "get" }
       );
       if (response.ok) {
@@ -28,7 +28,7 @@ function DMList(props) {
 
   const getRoomId = async (userName) => {
     const response = await fetch(
-      `http://localhost:8002/chats/access/get-group-id?user_name=${userName}&current_user=${props.currentActiveUser}`,
+      `${props.backendHttpUrl}/chats/access/get-group-id?user_name=${userName}&current_user=${props.currentActiveUser}`,
       { method: "get" }
     );
     const result = response.json();
@@ -39,7 +39,7 @@ function DMList(props) {
   const startConverstation = async (event, userName) => {
     getRoomId(userName)
     const response = await fetch(
-      `http://localhost:8002/chats/access/groups/dms?user_name=${userName}&current_user=${props.currentActiveUser}`,
+      `${props.backendHttpUrl}/chats/access/groups/dms?user_name=${userName}&current_user=${props.currentActiveUser}`,
       {method: "get"}
     );
     const result = response.json();

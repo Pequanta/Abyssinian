@@ -21,13 +21,13 @@ function NewChat(props) {
     console.log(newChat);
     if (newChat["type"] === "GROUP") {
       const response = fetch(
-        `http://localhost:8002/chats/create-new-chat/group/${newChat["name"]}?group_name=${newChat["name"]}&current_user=${props.currentActiveUser}`,
+        `${props.backendHttpUrl}/chats/create-new-chat/group/${newChat["name"]}?group_name=${newChat["name"]}&current_user=${props.currentActiveUser}`,
         { method: "post" }
       );
       navigate("/chat/group-page");
     } else if (newChat["type"] === "DM") {
       const response = fetch(
-        `http://localhost:8002/chats/create-new-chat/dm/${newChat["name"]}?user_name=${newChat["name"]}&current_user=${props.currentActiveUser}`,
+        `${props.backendHttpUrl}/chats/create-new-chat/dm/${newChat["name"]}?user_name=${newChat["name"]}&current_user=${props.currentActiveUser}`,
         { method: "post" }
       );
     }

@@ -30,6 +30,8 @@ function App() {
   const [socketDm , setSocketDm] = useState();
   const [socketGroup , setSocketGroup] = useState();
   const [roomId , setRoomId] = useState("66d8a16a234e6417886c9eba")
+  const [backendHttpUrl, setBackendHttpUrl] = useState(import.meta.env.VITE_BACKEND_URL)
+  const [backendWebSocketUrl, setBackendWebSocketUrl] = useState(process.env.REACT_APP_BACKEND_WEBSOCKET_URL || "ws://localhost:8002")
   const router = createBrowserRouter([
     {
       index: true,
@@ -37,6 +39,7 @@ function App() {
         <LoginPage
           setToken={setToken}
           setCurrentActiveUser={setCurrentActiveUser}
+          backendHttpUrl={backendHttpUrl}
         />
       ),
     },
@@ -46,7 +49,7 @@ function App() {
       element: (
         <>
           <Header />
-          <HomePage />,
+          <HomePage backendHttpUrl={backendHttpUrl}/>,
         </>
       ),
     },
@@ -68,6 +71,8 @@ function App() {
             setSocketDm={setSocketDm}
             setSocketGroup={setSocketGroup}
             roomId={roomId}
+            backendHttpUrl={backendHttpUrl}
+            backendWebSocketUrl={backendWebSocketUrl}
           />
           ,
         </>
@@ -84,6 +89,8 @@ function App() {
               setSocketDm={setSocketDm}
               socketDm={socketDm}
               setRoomId={setRoomId}
+              backendHttpUrl={backendHttpUrl}
+              backendWebSocketUrl={backendWebSocketUrl}
 
             />
           ),
@@ -94,6 +101,7 @@ function App() {
             <UserProfile
               chatSetterFunction={setChatDisplayed}
               currentActiveUser={currentActiveUser}
+              backendHttpUrl={backendHttpUrl}
             />
           ),
         },
@@ -107,12 +115,15 @@ function App() {
               socketGroup={socketGroup}
               setSocketGroup={setSocketGroup}
               setRoomId={setRoomId}
+              backendHttpUrl={backendHttpUrl}
+              backendWebSocketUrl={backendWebSocketUrl}
+
             />
           ),
         },
         {
           path: "/chat/new-chat",
-          element: <NewChat currentActiveUser={currentActiveUser} />,
+          element: <NewChat currentActiveUser={currentActiveUser} backendHttpUrl={backendHttpUrl}/>,
         },
       ],
     },
@@ -121,7 +132,7 @@ function App() {
       element: (
         <>
           <Header />
-          <TrendsPage currentActiveUser={currentActiveUser}/>,
+          <TrendsPage currentActiveUser={currentActiveUser} backendHttpUrl={backendHttpUrl}/>,
         </>
       ),
     },
@@ -136,7 +147,7 @@ function App() {
     },
     {
       path: "signup",
-      element: <SignUpPage />,
+      element: <SignUpPage backendHttpUrl={backendHttpUrl}/>,
     },
   ]);
   return (

@@ -56,10 +56,10 @@ class DMDataModel(DMBase):
 class FollowUpBase(MongoBaseModel):
         author_username: str
         content: str
+        root_trend_id: str = ""
 class FollowUpDataModel(FollowUpBase):
         reactions: Dict[str, int] = {}
         sent_time: str = ""
-        root_trend_id: str | None = ""
 class TrendBase(MongoBaseModel):
         author_username: str
         title: str

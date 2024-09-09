@@ -12,7 +12,7 @@ function TrendsPage(props) {
   const [trendPosition , setTrendPosition] = useState("current-main")
   useEffect(() => {
     const fetchTrends = async () =>{
-        const response = await fetch(`http://localhost:8002/trends/get-all-trends`,
+        const response = await fetch(`${props.backendHttpUrl}/trends/get-all-trends`,
           {method: "get"}
         );
         const result = response.json();
@@ -82,7 +82,7 @@ function TrendsPage(props) {
           </div>
         </div>
       )}
-      {!mainPage && readTrend && <ReadTrend backFromTrend={backFromTrend} trend={trendDisplayed} setTrendPosition={setTrendDisplayed}/>}
+      {!mainPage && readTrend && <ReadTrend backFromTrend={backFromTrend} trend={trendDisplayed} setTrendPosition={setTrendDisplayed} currentActiveUser={props.currentActiveUser} backendHttpUrl={props.backendHttpUrl}/> }
       {!mainPage && newTrend && (
         <NewTrend backFromNewTrend={backFromNewTrend} currentActiveUser={props.currentActiveUser} setTrendPosition={setTrendPosition}/>
       )}

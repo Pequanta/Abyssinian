@@ -124,6 +124,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
+  width: 100%;
 }
 .postDisplayCard .postHeadings img {
   height: 5rem;
@@ -143,6 +144,10 @@
   color: rgb(91, 86, 14);
   margin-bottom: 6rem;
   text-align: center;
+}
+
+.postDisplayCard span{
+  font-size: 2rem;
 }
 .backButton {
   display: flex;
@@ -253,7 +258,7 @@
 }
 
 .viewersReaction {
-  width: 85%;
+  width: 87%;
   height: 3rem;
   border-radius: 0.5rem;
   display: flex;
@@ -276,6 +281,7 @@
   display: flex;
   align-items: center;
   margin-top: 2rem;
+  flex-direction: column;
 }
 
 .commentSection .commentTextArea {
@@ -283,6 +289,7 @@
   height: 6rem;
   display: flex;
   align-items: center;
+  margin-bottom: 3rem;
 }
 
 .commentSection .commentTextArea textarea {
@@ -313,4 +320,28 @@
   border-radius: 1rem;
   color: rgb(3, 35, 35);
   background-color: yellow;
+}
+
+
+.commentSection .followUpContainer{
+  border: 1px solid white;
+  padding: 3rem;
+  border-radius: 2rem;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.commentSection .followUpContainer .metaData{
+  color: rgb(172, 159, 159);
+  float: right;
+  text-decoration: underline;
+  font-size: 1.6rem;
+}
+
+
+
+.commentSection .followUpContainer .replySection input{
+  border-radius: 1rem;
+  padding: 0.3rem;
 }

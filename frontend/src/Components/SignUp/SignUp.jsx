@@ -2,7 +2,7 @@ import { Link, NavLink } from "react-router-dom";
 import styles from "./SignUp.module.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-function SignUpPage() {
+function SignUpPage(props) {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({
     user_name: "",
@@ -20,7 +20,7 @@ function SignUpPage() {
   const sendSignUpRequest = async (event) => {
     console.log(userInfo);
     event.preventDefault();
-    const response = await fetch("http://localhost:8002/users/create/user", {
+    const response = await fetch(`${props.backendHttpUrl}/users/create/user`, {
       method: "post",
       body: JSON.stringify(userInfo),
       headers: {

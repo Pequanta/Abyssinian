@@ -11,7 +11,7 @@ function Groups(props) {
     console.log(props.currentActiveUser);
     const fetchData = async () => {
       const response = await fetch(
-        `http://localhost:8002/chats/access/groups/all/groups?current_user=${props.currentActiveUser}`,
+        `${props.backendHttpUrl}/chats/access/groups/all/groups?current_user=${props.currentActiveUser}`,
         { method: "get" }
       );
       if (response.ok) {
@@ -31,7 +31,16 @@ function Groups(props) {
     event.preventDefault();
   };
   const startConverstation = async (event, groupName, roomId) => {
+    const response = await fetch(
+      `${props.backendHttpUrl}/chats/access/groups/group/${groupName}?group_name=${groupName}`,
+      {method: "get"}
+    );
     const result = response.json();
+    result.then((content)=>{
+      console.log(content)
+      props.setChatDisplayed([...content])
+    })
+    console.log(roomId);
     props.setSelectedChat({
       chatType: "GROUP",
       Name: groupName,

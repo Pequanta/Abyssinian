@@ -28,7 +28,7 @@ function NewTrend(props) {
 
   const handleSubmit = async (event) =>{
     event.preventDefault();
-    const response = await fetch(`http://localhost:8002/trends/new-trend`,
+    const response = await fetch(`${props.backendHttpUrl}/trends/new-trend`,
       {
         method: "post",
         body: JSON.stringify(trendToPost),

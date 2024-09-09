@@ -75,20 +75,20 @@ async def establish_connection(websocket: WebSocket, room_id: str):
     try:
         while True:
             sent_data = await websocket.receive_json()
-            
-            await socket_inst.add_connection_to_rooms()
             new_chat = {"chat_text": sent_data["sent_chat"], "sender_username": sent_data["sender_username"], "sent_time": formated_time(datetime.now())}
             new_chat_db = jsonable_encoder(ChatDataModel(**new_chat))
             if not (await websocket.app.mongodb["groups"].update_one(
-                {"_id": sent_data["_id"]}, 
+                {"_id": room_id}, 
                 {"$push" : {"chats": new_chat_db}})):
                     raise HTTPException(status_code=401, detail="task not found")
-            return {"message": "inserted successfully"}
+            print(sent_data)
             await socket_inst.broadcast_new_message(new_chat_db)
 
         print(socketrooms.chat_rooms)
     except WebSocketDisconnect:
         socketrooms.remove_connection(room_id, websocket)
+        return
+
 ################### only for the debugging purpose #################
 @router.get("/access" , description = "access level notification")
 async def notify_access():

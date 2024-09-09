@@ -35,16 +35,16 @@ async def return_all_trends(request: Request):
     except:
         raise HTTPException(status_code=401, detail="could not retrive trends")
 @router.post("/add/followup-trend"  , description="this will add a follow up on the given trend")
-async def followup_trend(request: Request, trend: FollowUpDataModel, root_trend_id: str):
-    if not (cont_returned:= await request.app.mongodb["trends"].find_one({"_id": root_trend_id})):
-        raise HTTPException(status_code=401, detail="trend not found")
+async def followup_trend(request: Request, trend: FollowUpDataModel):
     new_followup = jsonable_encoder(trend)
-    new_followup["reactions"] = {"likes": 0, "share": 0, "comments": 0}
+    new_followup["reactions"] = {"likes": 0, "share": 0}
     new_followup["sent_time"] = formated_time(datetime.now())
-    new_followup["root_trend_id"] = root_trend_id
+    if not (cont_returned:= await request.app.mongodb["trends"].find_one({"_id": new_followup["root_trend_id"]})):
+        raise HTTPException(status_code=401, detail="trend not found")
+    print(new_followup)
     try:
         await request.app.mongodb["trends"].update_one(
-            {"_id":root_trend_id}, 
+            {"_id":new_followup["root_trend_id"]}, 
             {"$push" : {"followup_trends": new_followup}}
         
         )
@@ -85,11 +85,12 @@ async def update_reaction_likes(request: Request, trend_id: str , root_id: str, 
                 "$set": {"reactions.share": get_trend_info["reactions"]["share"] + 1}
             })
         elif type=="FOLLOWUP":
-            get_trend_info = await request.app.mongodb["trends"].find_one({"_id": root_id})
-            get_existing_share = list(filter(lambda x: x["_id"] == trend_id, get_trend_info["followup_trends"]))[0]["reactions"]["share"]
-            await request.app.mongodb["trends"].update_one({"_id": root_id, "followup_trends._id": trend_id}, {
-                "$set": {"followup_trends.$.reactions.likes": get_existing_share + 1}
-            })
+            # get_trend_info = await request.app.mongodb["trends"].find_one({"_id": root_id})
+            # get_existing_share = list(filter(lambda x: x["_id"] == trend_id, get_trend_info["followup_trends"]))[0]["reactions"]["share"]
+            # await request.app.mongodb["trends"].update_one({"_id": root_id, "followup_trends._id": trend_id}, {
+            #     "$set": {"followup_trends.$.reactions.likes": get_existing_share + 1}
+            # })
+            print("sharing a followup_trend functionality is removed temporarly")
     except:
         raise HTTPException(status_code=401, detail="could not add the share")
 @router.post("/update-reaction/comments")
@@ -101,11 +102,12 @@ async def update_reaction_likes(request: Request, trend_id: str, root_id: str,ty
                 "$set": {"reactions.comments": get_trend_info["reactions"]["comments"] + 1}
             })
         elif type=="FOLLOWUP":
-            get_trend_info = await request.app.mongodb["trends"].find_one({"_id": root_id})
-            get_existing_comments = list(filter(lambda x: x["_id"] == trend_id, get_trend_info["followup_trends"]))[0]["reactions"]["comments"]
-            await request.app.mongodb["trends"].update_one({"_id": root_id, "followup_trends._id": trend_id}, {
-                "$set": {"followup_trends.$.reactions.comments": get_existing_comments + 1}
-            })
+            # get_trend_info = await request.app.mongodb["trends"].find_one({"_id": root_id})
+            # get_existing_comments = list(filter(lambda x: x["_id"] == trend_id, get_trend_info["followup_trends"]))[0]["reactions"]["comments"]
+            # await request.app.mongodb["trends"].update_one({"_id": root_id, "followup_trends._id": trend_id}, {
+            #     "$set": {"followup_trends.$.reactions.comments": get_existing_comments + 1}
+            # })
+            print("replying to followup_trend functionality is removed temporarly")
             
     except:
         raise HTTPException(status_code=401, detail="could not add the comments")

@@ -13,23 +13,26 @@ function ChatPage(props) {
   useEffect(()=>{
     const connection = async () => {
       if(props.selectedChat["chatType"] === "DM"){
-        socket.current = new WebSocket(`ws://localhost:8002/chats/dm/chat?room_id=${props.roomId}`);
+        socket.current = new WebSocket(`${props.backendWebSocketUrl}/chats/dm/chat?room_id=${props.roomId}`);
         const currentArr = props.chatDisplayed
-      socket.current.onopen = async (event) => {
-        console.log("connected");
-      }
-      socket.current.onmessage =  async (event) => {
-        let recievedMessage = JSON.parse(event.data)
-        currentArr.push(recievedMessage["message"])
-        props.setChatDisplayed([...currentArr])
-      } 
-      }else if(props.selectedChat["chatType"] === "GROUP"){
-        socket.current = new WebSocket(`ws://localhost:8002/chats/group/chat?room_id=${props.roomId}`);
         socket.current.onopen = async (event) => {
           console.log("connected");
         }
         socket.current.onmessage =  async (event) => {
-          console.log(event.data);
+          let recievedMessage = JSON.parse(event.data)
+          currentArr.push(recievedMessage["message"])
+          props.setChatDisplayed([...currentArr])
+        } 
+      }else if(props.selectedChat["chatType"] === "GROUP"){
+        socket.current = new WebSocket(`${props.backendWebSocketUrl}/chats/group/chat?room_id=${props.roomId}`);
+        const currentArr = props.chatDisplayed
+        socket.current.onopen = async (event) => {
+          console.log("connected");
+        }
+        socket.current.onmessage =  async (event) => {
+          let recievedMessage = JSON.parse(event.data)
+          currentArr.push(recievedMessage["message"])
+          props.setChatDisplayed([...currentArr])
         } 
       }
   }
