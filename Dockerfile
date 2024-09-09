@@ -24,7 +24,7 @@ RUN npm install
 RUN npm run build
 
 # Expose ports if needed (e.g., 8000 for backend, 5000 for frontend)
-EXPOSE 8000
+EXPOSE 8080
 EXPOSE 5000
 
 # Command to start the backend and frontend services
