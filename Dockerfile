@@ -2,15 +2,15 @@
 FROM python:3.12-slim
 
 
-WORKDIR /backend
+WORKDIR /Abyssinian
 
 
-COPY requirements.txt .
+COPY backend/requirements.txt .
 
 
 RUN pip install --no-cache-dir -r requirements.txt
 
 
-COPY . .
+COPY backend/ .
 
 CMD ["gunicorn","-c","gunicorn.config.py", "main:app"]
