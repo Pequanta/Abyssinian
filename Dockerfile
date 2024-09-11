@@ -13,4 +13,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY backend/ .
 
-CMD ["gunicorn","-c","gunicorn.config.py", "backend/main:app"]
+CMD ["gunicorn","-c","gunicorn.config.py", "main:app"]
