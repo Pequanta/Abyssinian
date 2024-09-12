@@ -20,6 +20,7 @@ function SignUpPage(props) {
   const sendSignUpRequest = async (event) => {
     console.log(userInfo);
     event.preventDefault();
+    console.log(props.backendHttpUrl)
     const response = await fetch(`${props.backendHttpUrl}/users/create/user`, {
       method: "post",
       body: JSON.stringify(userInfo),
