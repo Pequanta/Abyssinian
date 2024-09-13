@@ -39,7 +39,7 @@ class SocketRoomConnection:
         else: 
             socketrooms.add_connection_to_room(self.room_id, self.websocket)
         print(socketrooms.chat_rooms)
-    async def broadcast_new_message(self, message):
+    async def broadcast_new_message(self, message, sender_websocket: WebSocket):
         cont_active = socketrooms.get_room(self.room_id).copy()
         for connection in cont_active:
             try:
@@ -61,7 +61,7 @@ async def establish_connection(websocket: WebSocket, room_id: str):
                 {"$push" : {"chats": new_chat_db}})):
                     raise HTTPException(status_code=401, detail="task not found")
             print(sent_data)
-            await socket_inst.broadcast_new_message(new_chat_db)
+            await socket_inst.broadcast_new_message(new_chat_db, websocket)
 
         print(socketrooms.chat_rooms)
     except WebSocketDisconnect:
@@ -82,7 +82,7 @@ async def establish_connection(websocket: WebSocket, room_id: str):
                 {"$push" : {"chats": new_chat_db}})):
                     raise HTTPException(status_code=401, detail="task not found")
             print(sent_data)
-            await socket_inst.broadcast_new_message(new_chat_db)
+            await socket_inst.broadcast_new_message(new_chat_db, websocket)
 
         print(socketrooms.chat_rooms)
     except WebSocketDisconnect:

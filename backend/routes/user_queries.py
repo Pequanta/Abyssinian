@@ -75,6 +75,7 @@ async def admin_granting(request: Request, group_name: str, user_name: str):
 #single user
 @router.post("/create/user/")
 async def create_new_user(request: Request, new_user: UserDB = Body(...)):
+    print('even before entering')
     try:
         user_password = auth.get_password_hash(new_user.password)
         new_user = jsonable_encoder(new_user)

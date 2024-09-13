@@ -3,11 +3,12 @@ import FeacturingCard from "./FeaturingCard";
 import ReadTrend from "../TrendPage/ReadTrend.jsx";
 import { useState } from "react";
 import imga from "../../assets/a.jpg"
-import imgb from "../../assets/b.jpg"
+import imgb from "../../assets/sudo_it.png"
 import imgc from "../../assets/c.jpg"
 import imgd from "../../assets/d.jpg"
 import imge from "../../assets/e.jpg"
 import imgf from "../../assets/f.jpg"
+import logo from "../../assets/cover3.png"
 
 function HomePage() {
   const [mainPage, setMainPage] = useState(true);
@@ -23,10 +24,14 @@ function HomePage() {
   };
   return (
     <div className={styles.mainHomePage}>
-      
       {mainPage && (
         <>
-        <h1 className={styles.welcomeText}>Welcome to እዚSefer</h1>
+        <div className={styles.welcomeDiv}>
+        <div className={styles.logoCard}>
+          <img alt={"logo"} src={logo}/>
+        </div>
+        <span className={styles.welcomeText}>Welcome to እዚSefer</span>
+        </div>
         <div className={styles.introCard}>
           <p>
             This is Where everyone gather to

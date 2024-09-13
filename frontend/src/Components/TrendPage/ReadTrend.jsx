@@ -25,6 +25,7 @@ function ReadTrend(props) {
     )
 
   }
+  console.log()
   return (
     <div className={styles.postDisplayCard}>
       <div className={styles.backButton}>

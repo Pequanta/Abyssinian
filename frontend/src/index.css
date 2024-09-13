@@ -56,9 +56,9 @@ button {
 }
 
 .main_header img {
-  width: 5%;
-  border-radius: 50%;
-  transition: all 0.3s;
+  width: 6rem;
+  height: 3rem;
+  margin-left: 2rem;
 }
 
 .container .main_page {

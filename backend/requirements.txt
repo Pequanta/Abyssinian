@@ -59,4 +59,5 @@ watchfiles==0.22.0
 websockets==12.0
 wsproto==1.2.0
 gunicorn >=22.0.0
-passlib
+passlib[argon2]
+argon2-cffi

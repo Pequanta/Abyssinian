@@ -1,4 +1,4 @@
-import logoPic from "../assets/logo.jpg";
+import logoPic from "../assets/cat.svg";
 import React, { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 
@@ -10,13 +10,7 @@ function Header() {
   const [activeChat, setActiveChat] = useState(false);
   const [activeVlog, setActiveVlog] = useState(false);
   const [activeAbout, setActiveAbout] = useState(false);
-  // const changeTheme = (event) => {
-  //   if (theme === "light") {
-  //     setTheme("dark");
-  //   } else if (theme === "dark") {
-  //     setTheme("light");
-  //   }
-  // };
+
   return (
     <header className="main_header">
       <img src={logoPic} />
