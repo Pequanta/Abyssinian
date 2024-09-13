@@ -32,8 +32,8 @@ function App() {
   const [roomId , setRoomId] = useState("66d8a16a234e6417886c9eba")
   // const [backendHttpUrl, setBackendHttpUrl] = useState(import.meta.env.VITE_BACKEND_URL)
   // const [backendWebSocketUrl, setBackendWebSocketUrl] = useState(import.meta.env.VITE_WEBSOCKET_BACKEND_URL)
-  const [backendHttpUrl, setBackendHttpUrl] = useState("http://localost:8002")
-  const [backendWebSocketUrl, setBackendWebSocketUrl] = useState("ws://localhost:8002")
+  const [backendHttpUrl, setBackendHttpUrl] = useState("http://0.0.0.0:8080")
+  const [backendWebSocketUrl, setBackendWebSocketUrl] = useState("ws://0.0.0.0:8080")
   const router = createBrowserRouter([
     {
       index: true,

@@ -21,7 +21,8 @@ function ChatPage(props) {
         socket.current.onmessage =  async (event) => {
           let recievedMessage = JSON.parse(event.data)
           currentArr.push(recievedMessage["message"])
-          props.setChatDisplayed([...props.chatDisplayed, recievedMessage["message"]])
+          console.log(currentArr)
+          props.setChatDisplayed(currentArr)
         } 
       }else if(props.selectedChat["chatType"] === "GROUP"){
         socket.current = new WebSocket(`${props.backendWebSocketUrl}/chats/group/chat?room_id=${props.roomId}`);

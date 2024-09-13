@@ -37,7 +37,7 @@ function DMList(props) {
     });
   }
   const startConverstation = async (event, userName) => {
-    getRoomId(userName)
+    await getRoomId(userName)
     const response = await fetch(
       `${props.backendHttpUrl}/chats/access/groups/dms?user_name=${userName}&current_user=${props.currentActiveUser}`,
       {method: "get"}
