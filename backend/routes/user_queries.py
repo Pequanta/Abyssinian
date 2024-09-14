@@ -57,6 +57,7 @@ async def create_new_group(request: Request, group_name: str, ):
 #new user joining a group
 @router.post("/create/group/new-user")
 async def joining_user(request: Request, group_name: str, user_name: str):
+    print("here")
     try:
         await request.app.mongodb["groups"].update_one({"group_name": group_name},
                                                        {"$push": {"members": user_name}}

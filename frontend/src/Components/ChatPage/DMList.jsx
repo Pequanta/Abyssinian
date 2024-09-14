@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import pic from "../../assets/bp2.png";
 function DMList(props) {
   const [userList, setUserList] = useState([]);
-  const [roomId, setRoomId] = useState();
 
   useEffect(function fetchDMList() {
     const fetchData = async () => {
@@ -26,18 +25,8 @@ function DMList(props) {
     fetchData();
   }, []);
 
-  const getRoomId = async (userName) => {
-    const response = await fetch(
-      `${props.backendHttpUrl}/chats/access/get-group-id?user_name=${userName}&current_user=${props.currentActiveUser}`,
-      { method: "get" }
-    );
-    const result = response.json();
-    result.then((content) => {
-        setRoomId(content);
-    });
-  }
-  const startConverstation = async (event, userName) => {
-    await getRoomId(userName)
+  const startConverstation = async (event, userName , groupId) => {
+    console.log(userList);
     const response = await fetch(
       `${props.backendHttpUrl}/chats/access/groups/dms?user_name=${userName}&current_user=${props.currentActiveUser}`,
       {method: "get"}
@@ -46,14 +35,32 @@ function DMList(props) {
     result.then((content)=>{
       props.setChatDisplayed([...content])
     })
-    console.log(roomId);
+    console.log(groupId);
     props.setSelectedChat({
       chatType: "DM",
       Name: userName,
-      roomId: roomId,
+      roomId: groupId,
     });
-    props.setRoomId(roomId)
+    props.setRoomId(groupId)
   };
+  // const startConverstation = async (event, groupName, roomId) => {
+  //   const response = await fetch(
+  //     `${props.backendHttpUrl}/chats/access/groups/group/${groupName}?group_name=${groupName}`,
+  //     {method: "get"}
+  //   );
+  //   const result = response.json();
+  //   result.then((content)=>{
+  //     console.log(content)
+  //     props.setChatDisplayed([...content])
+  //   })
+  //   console.log(roomId);
+  //   props.setSelectedChat({
+  //     chatType: "GROUP",
+  //     Name: groupName,
+  //     roomId: roomId,
+  //   }); 
+  //   props.setRoomId(roomId)
+  // };
   const searchForDM = (event) => {
     event.preventDefault();
   };
@@ -81,7 +88,7 @@ function DMList(props) {
                   event,
                   user["members"].filter(
                     (member) => member !== props.currentActiveUser
-                  )[0]
+                  )[0], user["_id"]
                 )
               }
             />

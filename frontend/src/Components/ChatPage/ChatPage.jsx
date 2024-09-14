@@ -10,11 +10,11 @@ function ChatPage(props) {
   const [activeUserProfile, setActiveProfile] = useState(false);
   const [activeNewChat, setActiveNewChat] = useState(false);
   let socket = useRef(null);
+  let currentArr = props.chatDisplayed
   useEffect(()=>{
     const connection = async () => {
       if(props.selectedChat["chatType"] === "DM"){
         socket.current = new WebSocket(`${props.backendWebSocketUrl}/chats/dm/chat?room_id=${props.roomId}`);
-        const currentArr = props.chatDisplayed
         socket.current.onopen = async (event) => {
           console.log("connected");
         }
@@ -22,7 +22,7 @@ function ChatPage(props) {
           let recievedMessage = JSON.parse(event.data)
           currentArr.push(recievedMessage["message"])
           console.log(currentArr)
-          props.setChatDisplayed(currentArr)
+          props.setChatDisplayed([...currentArr])
         } 
       }else if(props.selectedChat["chatType"] === "GROUP"){
         socket.current = new WebSocket(`${props.backendWebSocketUrl}/chats/group/chat?room_id=${props.roomId}`);
@@ -42,6 +42,7 @@ function ChatPage(props) {
     if(socket.current) await socket.current.close();
   }
 },[props.roomId])
+
 
 
 const sendChat = async (event) => {
