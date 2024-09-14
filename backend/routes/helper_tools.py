@@ -29,4 +29,4 @@ def formated_time(time_):
     else:
         seconds=str(get_seconds)
     
-    return f"{day}/{month_container[month]}/{year} {hours}:{minutes}:{seconds}{prime}"
+    return f"{day},{month_container[month]},{year} {hours}:{minutes}:{seconds}{prime}"

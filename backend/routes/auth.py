@@ -1,7 +1,6 @@
 from fastapi import HTTPException, Depends, status, Security
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm, HTTPAuthorizationCredentials, HTTPBearer
 from passlib.context import CryptContext
-from pydantic import BaseModel
 from typing import Annotated
 from models import Token, TokenData, UserDB
 from datetime import datetime, timezone, timedelta
