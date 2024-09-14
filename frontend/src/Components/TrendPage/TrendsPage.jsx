@@ -84,7 +84,7 @@ function TrendsPage(props) {
       )}
       {!mainPage && readTrend && <ReadTrend backFromTrend={backFromTrend} trend={trendDisplayed} setTrendPosition={setTrendDisplayed} currentActiveUser={props.currentActiveUser} backendHttpUrl={props.backendHttpUrl}/> }
       {!mainPage && newTrend && (
-        <NewTrend backFromNewTrend={backFromNewTrend} currentActiveUser={props.currentActiveUser} setTrendPosition={setTrendPosition}/>
+        <NewTrend backFromNewTrend={backFromNewTrend} currentActiveUser={props.currentActiveUser} setTrendPosition={setTrendPosition} backendHttpUrl={props.backendHttpUrl} />
       )}
     </div>
   );
