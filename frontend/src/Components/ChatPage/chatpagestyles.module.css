@@ -353,8 +353,7 @@ nav li .active {
   border-top-right-radius: 40px;
   display: flex;
   flex-direction: column;
-  text-align: start;
-  float: left;
+  text-align: end;
 }
 .chatCardAnother img {
   width: 3.5rem;
@@ -364,14 +363,14 @@ nav li .active {
 
 .chatCardAnother .userName {
   color: rgb(255, 255, 255);
-  float: right;
+  float: left;
   font-size: 1rem;
 }
 
 .chatCardAnother .sentTime {
   color:rgb(255, 255, 255);
   font-size: 1rem;
-  float: right;
+  float: left;
 }
 
 .newChatContainer {

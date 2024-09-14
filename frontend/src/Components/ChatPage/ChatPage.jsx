@@ -10,7 +10,7 @@ function ChatPage(props) {
   const [activeUserProfile, setActiveProfile] = useState(false);
   const [activeNewChat, setActiveNewChat] = useState(false);
   let socket = useRef(null);
-  let currentArr = props.chatDisplayed
+  
   useEffect(()=>{
     const connection = async () => {
       if(props.selectedChat["chatType"] === "DM"){
@@ -19,6 +19,7 @@ function ChatPage(props) {
           console.log("connected");
         }
         socket.current.onmessage =  async (event) => {
+          let currentArr = props.chatDisplayed
           let recievedMessage = JSON.parse(event.data)
           currentArr.push(recievedMessage["message"])
           console.log(currentArr)
