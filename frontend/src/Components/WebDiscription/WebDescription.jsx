@@ -28,7 +28,7 @@ function WebDescription() {
             will be accessible to any member. 
           </h3>
           <div>
-            <h5>Developed By: <a href="#">Peniel Yohannes</a></h5>
+            <h5>Developed By: <a href="https://github.com/Pequanta">Peniel Yohannes</a></h5>
             <h5>Public Repository: <a href="#">public repo</a></h5>
           </div>
         </div>
