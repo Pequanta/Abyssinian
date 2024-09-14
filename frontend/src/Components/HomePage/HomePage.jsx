@@ -4,7 +4,7 @@ import ReadTrend from "../TrendPage/ReadTrend.jsx";
 import { useState } from "react";
 import imga from "../../assets/a.jpg"
 import imgb from "../../assets/sudo_it.png"
-import imgc from "../../assets/c.jpg"
+import imgc from "../../assets/asdf.png"
 import imgd from "../../assets/d.jpg"
 import imge from "../../assets/e.jpg"
 import imgf from "../../assets/f.jpg"
@@ -33,9 +33,6 @@ function HomePage() {
         <span className={styles.welcomeText}>Welcome to እዚSefer</span>
         </div>
         <div className={styles.introCard}>
-          <p>
-            This is Where everyone gather to
-          </p>
           <ul>
             <li>
               <h3>Discuss Ideas</h3>
