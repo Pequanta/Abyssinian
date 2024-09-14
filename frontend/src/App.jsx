@@ -25,6 +25,7 @@ function App() {
     Name: "",
     roomId:"",
   });
+  console.log("debugging")
   const [token, setToken] = useState("");
   const [currentActiveUser, setCurrentActiveUser] = useState("");
   const [socketDm , setSocketDm] = useState();
