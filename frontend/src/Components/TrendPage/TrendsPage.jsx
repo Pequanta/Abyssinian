@@ -17,8 +17,6 @@ function TrendsPage(props) {
         );
         const result = response.json();
         result.then(content =>{
-          console.log(Array.isArray(content["message"]))
-          console.log(content["message"] !== undefined)
           setTrendsList(content["message"])
 
         })
@@ -30,8 +28,6 @@ function TrendsPage(props) {
   const [mainPage, setMainPage] = useState(true);
   const [readTrend, setReadTrend] = useState(false);
   const [newTrend, setNewTrend] = useState(false);
-  console.log(readTrend);
-  console.log(mainPage);
 
   const backFromTrend = (event) => {
     setMainPage(true);
@@ -43,6 +39,7 @@ function TrendsPage(props) {
   };
 
   const openTrend = (event, trend) => {
+    console.log(trend);
     setTrendDisplayed(trend)
     setMainPage(false);
     setReadTrend(true);
