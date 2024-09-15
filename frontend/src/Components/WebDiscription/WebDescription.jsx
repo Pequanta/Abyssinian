@@ -13,12 +13,14 @@ import { VscCheckAll } from "react-icons/vsc";
 import { VscAccount } from "react-icons/vsc";
 import { VscMail } from "react-icons/vsc";
 import { VscPlayCircle } from "react-icons/vsc";
+import logo from "../../assets/default.png"
 function WebDescription() {
   return (
     <div className={styles.page_container}>
       <main>
         <div className={styles.welcome_card}>
           <h1>Abyssinian-Chat</h1>
+          <img alt="logo" src={logo} className={styles.logo}/>
           <h2>Welcome to Abyssinian</h2>
           <h3>
             This is a chat and trend site where users can post trends
@@ -54,12 +56,6 @@ function WebDescription() {
               <div className={styles.links}>
                 <VscPlayCircle className={styles.icons} />
                 <a>Youtube</a>
-              </div>
-            </li>
-            <li>
-              <div className={styles.links}>
-                <VscAccount className={styles.icons} />
-                <a>Account</a>
               </div>
             </li>
             <li>

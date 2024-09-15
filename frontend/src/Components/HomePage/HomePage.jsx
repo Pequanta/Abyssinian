@@ -6,7 +6,6 @@ import imga from "../../assets/a.jpg"
 import imgb from "../../assets/sudo_it.png"
 import imgc from "../../assets/asdf.png"
 import imgd from "../../assets/d.jpg"
-import imge from "../../assets/e.jpg"
 import imgf from "../../assets/f.jpg"
 import logo from "../../assets/cover3.png"
 
@@ -48,7 +47,7 @@ function HomePage() {
             </li>
             <li>
               <h3>share and exchange trends</h3>
-              <img src={imgc}/>
+              <img className={styles.lastImage} src={imgc}/>
             </li>
           </ul>
           

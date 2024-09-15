@@ -12,7 +12,7 @@ function FollowUp(props){
     return(
         <div className={styles.followUpContainer}>
             <span className={styles.metaData}>{props.trend.author_username}</span>
-            <p>
+            <p className={styles.contentData}>
                 {props.trend.content}
             </p>
             <span className={styles.metaData}>{props.trend.sent_time}</span>
