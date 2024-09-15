@@ -21,16 +21,17 @@ footer {
 }
 
 main {
-  background: transparent;
+  background: url("../../assets/bp4.png");
   background-position: fixed;
   background-size: cover;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: 75vh;
+  height: 80vh;
   margin-bottom: 1%;
   margin-top: 8rem;
+
 }
 
 .page_container {
@@ -47,8 +48,9 @@ main {
   border: 1px solid;
   height: 80%;
   border-radius: 50px;
-  background-color: rgba(240, 248, 255, 0.452);
+  background-color: rgba(1, 12, 12, 0.418);;
   padding: 10px;
+  color: white;
 }
 
 .welcome_card h1 {

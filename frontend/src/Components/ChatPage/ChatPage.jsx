@@ -62,7 +62,6 @@ const handleInputChange = (event) => {
   setChatToSend(textContent);
   };
 return (
-  <>
     <div className={styles.chat_container}>
       <div className={styles.chat_page_handler}>
         <div className={styles.header}>
@@ -180,7 +179,6 @@ return (
         </div>
       </div>
     </div>
-  </>
   );
 }
 

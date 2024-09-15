@@ -1,6 +1,5 @@
 import styles from "./trendpage.module.css";
 function TrendList(props) {
-  console.log("Hello there")
   return (
     <button
       className={styles.TrendList}

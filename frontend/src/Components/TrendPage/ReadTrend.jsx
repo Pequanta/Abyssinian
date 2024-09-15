@@ -62,7 +62,7 @@ function ReadTrend(props) {
         <div className={styles.viewersReaction}>
           <div className={styles.reactions}>
             <button>👍</button>
-            <span>{props.trend["reactions"]["likes"]}</span>
+            <span>{props.trend.reactions.likes}</span>
           </div>
           <div className={styles.reactions}>
             <button>🏹</button>
