@@ -248,6 +248,11 @@ nav li .active {
   height: 7rem;
 }
 
+.user_profile button{
+  background-color: #1f1f05;
+  color: rgb(98, 252, 226);
+}
+
 .search_button {
   margin: 20px 10px;
 }

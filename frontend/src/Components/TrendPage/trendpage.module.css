@@ -342,7 +342,6 @@
 .commentSection .followUpContainer .contentData{
   color: rgb(240, 229, 76);
   float: right;
-  text-decoration: underline;
   font-size: 1.6rem;
   padding: 2rem 0 2rem;
 }

@@ -43,7 +43,40 @@ function ChatPage(props) {
     if(socket.current) await socket.current.close();
   }
 },[props.roomId])
-
+const startConverstation = async (event, name , roomId, roomType) => {
+  if(roomType === "DM"){
+    const response = await fetch(
+      `${props.backendHttpUrl}/chats/access/groups/dms?user_name=${name}&current_user=${props.currentActiveUser}`,
+      {method: "get"}
+    );
+    const result = response.json();
+    result.then((content)=>{
+      props.setChatDisplayed([...content])
+    })
+    console.log(groupId);
+    props.setSelectedChat({
+      chatType: "DM",
+      Name: name,
+      roomId: roomId,
+    });
+  }else if(roomType==="GROUP"){
+      const response = await fetch(
+        `${props.backendHttpUrl}/chats/access/groups/group/${name}?group_name=${name}`,
+        {method: "get"}
+      );
+      const result = response.json();
+      result.then((content)=>{
+        props.setChatDisplayed([...content])
+      })
+      console.log(romId);
+      props.setSelectedChat({
+        chatType: "GROUP",
+        Name: name,
+        roomId: roomId,
+      });
+    }
+  props.setRoomId(groupId)
+};
 
 
 const sendChat = async (event) => {
@@ -53,6 +86,11 @@ const sendChat = async (event) => {
       "sent_chat": chatToSend,
       "sender_username": props.currentActiveUser
     }))
+    if(props.selectedChat["chatType"] === "DM"){
+      startConverstation(selectedChat["Name"], selectedChat["roomId"], "DM");
+    }else if(props.selectedChat["chatType"] === "GROUP"){
+      startConverstation(selectedChat["Name"], selectedChat["roomId"], "GROUP")
+    }
   }else{
     console.log(socket);
   }
