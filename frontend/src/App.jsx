@@ -31,10 +31,10 @@ function App() {
   const [socketDm , setSocketDm] = useState();
   const [socketGroup , setSocketGroup] = useState();
   const [roomId , setRoomId] = useState("66d8a16a234e6417886c9eba")
-  // const [backendHttpUrl, setBackendHttpUrl] = useState(import.meta.env.VITE_BACKEND_URL)
-  // const [backendWebSocketUrl, setBackendWebSocketUrl] = useState(import.meta.env.VITE_WEBSOCKET_BACKEND_URL)
-  const [backendHttpUrl, setBackendHttpUrl] = useState("http://0.0.0.0:8080")
-  const [backendWebSocketUrl, setBackendWebSocketUrl] = useState("ws://0.0.0.0:8080")
+  const [backendHttpUrl, setBackendHttpUrl] = useState(import.meta.env.VITE_BACKEND_URL)
+  const [backendWebSocketUrl, setBackendWebSocketUrl] = useState(import.meta.env.VITE_WEBSOCKET_BACKEND_URL)
+  // const [backendHttpUrl, setBackendHttpUrl] = useState("http://0.0.0.0:8080")
+  // const [backendWebSocketUrl, setBackendWebSocketUrl] = useState("ws://0.0.0.0:8080")
   const router = createBrowserRouter([
     {
       index: true,
