@@ -1,15 +1,31 @@
 import styles from "./homepage.module.css";
 import FeacturingCard from "./FeaturingCard";
 import ReadTrend from "../TrendPage/ReadTrend.jsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import imga from "../../assets/a.jpg"
 import imgb from "../../assets/sudo_it.png"
 import imgc from "../../assets/asdf.png"
-import imgd from "../../assets/d.jpg"
 import imgf from "../../assets/f.jpg"
 import logo from "../../assets/cover3.png"
 
-function HomePage() {
+function HomePage(props) {
+  const [trendList, setTrendsList] = useState();
+  const [trendDisplayed, setTrendDisplayed] = useState();
+  useEffect(() => {
+    const fetchTrends = async () =>{
+        const response = await fetch(`${props.backendHttpUrl}/trends/get-all-trends`,
+          {method: "get"}
+        );
+        const result = response.json();
+        result.then(content =>{
+          let trendsTemp = content["message"]
+          setTrendsList(...trendsTemp.slice(0, 4))
+          console.log(trendList)
+
+        })
+      }
+      fetchTrends();
+    },[])
   const [mainPage, setMainPage] = useState(true);
   const [readPage, setReadPage] = useState(false);
   const openPostFunction = (event) => {
@@ -57,10 +73,13 @@ function HomePage() {
           <h2 className={styles.featureHeading}>Popular Trends</h2>
           <div className={styles.featureTrends}>
             <div className={styles.trendDisplay}>
-              <FeacturingCard openPostFunction={openPostFunction} />
-              <FeacturingCard openPostFunction={openPostFunction} />
-              <FeacturingCard openPostFunction={openPostFunction} />
-              <FeacturingCard openPostFunction={openPostFunction} />
+              {
+                (Array.isArray(trendList) && trendList[0] !== undefined) && trendList.map(
+                  (trend, index) =>(
+                    <FeacturingCard trend={trend} openPostFunction={openPostFunction} key={index}/>
+                  )
+                )
+              }
             </div>
           </div>
         </div>
@@ -68,7 +87,7 @@ function HomePage() {
       )}
       {readPage && (
         <div className={styles.readingPage}>
-          <ReadTrend backFromTrend={backFromTrend} />
+          <ReadTrend backFromTrend={backFromTrend} trend={trendDisplayed} currentActiveUser={props.currentActiveUser} backendHttpUrl={props.backendHttpUrl}/>
         </div>
       )}
     </div>

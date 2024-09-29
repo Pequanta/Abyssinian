@@ -12,6 +12,7 @@ import { VscCheck } from "react-icons/vsc";
 import { VscCheckAll } from "react-icons/vsc";
 import { VscAccount } from "react-icons/vsc";
 import { VscMail } from "react-icons/vsc";
+import { FaDiscord } from "react-icons/fa";
 import { VscPlayCircle } from "react-icons/vsc";
 import logo from "../../assets/default.png"
 function WebDescription() {
@@ -30,8 +31,8 @@ function WebDescription() {
             will be accessible to any member. 
           </h3>
           <div>
-            <h5>Developed By: <a href="https://github.com/Pequanta">Peniel Yohannes</a></h5>
-            <h5>Public Repository: <a href="#">public repo</a></h5>
+            <h5>Developed By: <a href="https://github.com/Pequanta" target="_blank">Peniel Yohannes</a></h5>
+            <h5>Public Repository: <a href="https://github.com/penielQ/AbyssinianDataset/tree/main" target="_blank">public repo</a></h5>
           </div>
         </div>
       </main>
@@ -42,26 +43,13 @@ function WebDescription() {
             <li>
               <div className={styles.links}>
                 <VscGithubAlt className={styles.icons} />
-                <a>Github</a>
+                <a href="https://github.com/Pequanta" target="_blank">Github</a>
               </div>
             </li>
             <li>
               <div className={styles.links}>
-                <VscMail className={styles.icons} />
-                <a>GMail</a>
-              </div>
-            </li>
-
-            <li>
-              <div className={styles.links}>
-                <VscPlayCircle className={styles.icons} />
-                <a>Youtube</a>
-              </div>
-            </li>
-            <li>
-              <div className={styles.links}>
-                <VscTwitter className={styles.icons} />
-                <a>Twitter</a>
+                <FaDiscord className={styles.icons} />
+                <a href="https://discord.com/channels/1288820215895031878/1288820215895031881" target="_blank">Discord</a>
               </div>
             </li>
           </ul>

@@ -10,6 +10,12 @@ function TrendsPage(props) {
   const [trendsList, setTrendsList] = useState([]);
   const [trendDisplayed , setTrendDisplayed] = useState();
   const [trendPosition , setTrendPosition] = useState("current-main")
+  const [mainPage, setMainPage] = useState(true);
+  const [readTrend, setReadTrend] = useState(false);
+  const [newTrend, setNewTrend] = useState(false);
+  const [titleToSearch , setTitleToSearch] = useState("");
+  const [searchResult, setSearchResult] = useState([])
+  const [tempHolder, setTempHolder]=useState(false);
   useEffect(() => {
     const fetchTrends = async () =>{
         const response = await fetch(`${props.backendHttpUrl}/trends/get-all-trends`,
@@ -18,6 +24,7 @@ function TrendsPage(props) {
         const result = response.json();
         result.then(content =>{
           setTrendsList(content["message"])
+          setTempHolder(content["message"])
 
         })
       }
@@ -25,9 +32,6 @@ function TrendsPage(props) {
     }
       
       ,[trendPosition])
-  const [mainPage, setMainPage] = useState(true);
-  const [readTrend, setReadTrend] = useState(false);
-  const [newTrend, setNewTrend] = useState(false);
 
   const backFromTrend = (event) => {
     setMainPage(true);
@@ -44,20 +48,32 @@ function TrendsPage(props) {
     setReadTrend(true);
   };
   const openNewTrend = (event) => {
-    console.log(trendsList)
     setMainPage(false);
     setNewTrend(true);
   };
+
+  const handleInputChange = (event) =>{
+    const text = event.target.value;
+    event.preventDefault();
+    setTrendsList(tempHolder.filter(
+      (item) =>(
+        item["title"].search(text) !== -1) || item["author_username"].search(text) !== -1
+      )
+    )
+
+  }
   return (
     <div className={styles.trendPageContainer}>
       {mainPage && (
         <div className={styles.mainPageElements}>
           <h1 className={styles.pageHeading}>Nerd Trends</h1>
-          <hr className={styles.titleLine} id="main-page-elements"></hr>
-          <form className={styles.searchTrends} id="main-page-elements">
-            <input type="text" placeholder="🔍 search trend..." />
-            <button>Search</button>
-          </form>
+          <hr className={styles.titleLine}></hr>
+          <div className={styles.searchDiv}>
+            <form className={styles.searchTrends}>
+              <input type="text" placeholder="🔍 search trend..." onChange={(event) => handleInputChange(event)}/>
+            </form>
+          
+          </div>
           <div className={styles.trendsListing} id="main-page-elements">
             <div className={styles.trendListHeaders}>
               <span className={styles.pageHeading}> Trends</span>
@@ -78,7 +94,7 @@ function TrendsPage(props) {
           </div>
         </div>
       )}
-      {!mainPage && readTrend && <ReadTrend dTrend backFromTrend={backFromTrend} trend={trendDisplayed} setTrendPosition={setTrendPosition} currentActiveUser={props.currentActiveUser} backendHttpUrl={props.backendHttpUrl}/> }
+      {!mainPage && readTrend && <ReadTrend backFromTrend={backFromTrend} trend={trendDisplayed} setTrendPosition={setTrendPosition} currentActiveUser={props.currentActiveUser} backendHttpUrl={props.backendHttpUrl}/> }
       {!mainPage && newTrend && (
         <NewTrend backFromNewTrend={backFromNewTrend} currentActiveUser={props.currentActiveUser} setTrendPosition={setTrendPosition} backendHttpUrl={props.backendHttpUrl} />
       )}

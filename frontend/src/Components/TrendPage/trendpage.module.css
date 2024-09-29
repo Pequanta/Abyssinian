@@ -73,7 +73,7 @@
   float: right;
 }
 .searchTrends {
-  width: 60%;
+  width: 100%;
   display: flex;
   align-items: center;
 }
@@ -87,9 +87,9 @@
   padding: 0.4rem 1.5rem 0.4rem;
 }
 .searchTrends button {
-  font-size: 2rem;
+  font-size: 2.5rem;
   height: 100%;
-  width: 15%;
+  width: 20%;
   border-top-right-radius: 1rem;
   border-bottom-right-radius: 1rem;
 }
@@ -346,3 +346,19 @@
   padding: 2rem 0 2rem;
 }
 
+
+.searchResultDiv{
+  border: 1px solid;
+  border-radius: 1rem;
+}
+
+.searchResultDiv button{
+  width: 100%;
+  height: 3.5rem;
+  font-size: 2rem;
+  border-radius: 1rem;
+  background-color: rgb(15, 32, 43);
+  color: white;
+  border: none;
+  margin: 0.5rem 0 0.5rem;
+}

@@ -44,6 +44,7 @@ class SocketRoomConnection:
         for connection in cont_active:
             try:
                 await connection.send_json({"message":message})
+                print(message)
             except:
                 socketrooms.remove_connection(self.room_id, connection) 
 

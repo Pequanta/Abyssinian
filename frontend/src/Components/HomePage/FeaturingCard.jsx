@@ -4,11 +4,12 @@ function FeacturingCard(props) {
   return (
     <div className={styles.featuringCard}>
       <img src={authorPic} />
-      <h3 className={styles.userName}>Peniel</h3>
+      <h3 className={styles.userName}>{trend.author_username}</h3>
       <div className={styles.title}>
         <p>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
+          {
+            props.trend.content.slice(0, 16)
+          }
         </p>
       </div>
       <div>
