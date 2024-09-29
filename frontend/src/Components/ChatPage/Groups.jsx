@@ -5,6 +5,7 @@ import pic from "../../assets/bp4.png";
 
 function Groups(props) {
   const [groupsList, setGroupsList] = useState([]);
+  const [tempHolder, setTempHolder] = useState([])
   const [roomId, setRoomId] = useState();//though there is a general roomId variable being drilled to the components , additional roomId
   //in both Groups.jsx and DMList.jsx is usded to lessen the complication
   useEffect(function fetchGroupList() {
@@ -20,6 +21,7 @@ function Groups(props) {
         result.then((content) => {
           console.log(content);
           setGroupsList([...content]);
+          setTempHolder([...content])
         });
       } else {
         console.log("helloworld");
@@ -27,9 +29,16 @@ function Groups(props) {
     };
     fetchData();
   }, []);
-  const searchForDM = (event) => {
+  const handleInputChange = (event) =>{
+    const text = event.target.value;
     event.preventDefault();
-  };
+    setGroupsList(tempHolder.filter(
+      (item) =>(
+        item["group_name"].search(text) !== -1)
+      )
+    )
+
+  }
   const startConverstation = async (event, groupName, roomId) => {
     const response = await fetch(
       `${props.backendHttpUrl}/chats/access/groups/group/${groupName}?group_name=${groupName}`,
@@ -51,9 +60,8 @@ function Groups(props) {
   return (
     <div className={styles.group_page}>
       <div className={styles.search_button}>
-        <form onSubmit={searchForDM}>
-          <input type="text" className={styles.text_input} />
-          <input type="submit" value="🔍" className={styles.submit} />
+        <form>
+          <input type="text" onChange={(event) => handleInputChange(event)}className={styles.text_input} placeholder="🔍 search group"/>
         </form>
       </div>
       {(Array.isArray(groupsList) && groupsList[0] !== undefined)&&
