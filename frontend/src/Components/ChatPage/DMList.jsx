@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import pic from "../../assets/bp2.png";
 function DMList(props) {
   const [userList, setUserList] = useState([]);
+  const [tempHolder, setTempHolder] = useState([]);
 
   useEffect(function fetchDMList() {
     const fetchData = async () => {
@@ -14,8 +15,8 @@ function DMList(props) {
       if (response.ok) {
         const result = response.json();
         result.then((content) => {
-          console.log(...content.result)
           setUserList(content.result)
+          setTempHolder(content.result)
         });
       } else {
         console.log("user not found");
@@ -43,33 +44,22 @@ function DMList(props) {
     });
     props.setRoomId(groupId)
   };
-  // const startConverstation = async (event, groupName, roomId) => {
-  //   const response = await fetch(
-  //     `${props.backendHttpUrl}/chats/access/groups/group/${groupName}?group_name=${groupName}`,
-  //     {method: "get"}
-  //   );
-  //   const result = response.json();
-  //   result.then((content)=>{
-  //     console.log(content)
-  //     props.setChatDisplayed([...content])
-  //   })
-  //   console.log(roomId);
-  //   props.setSelectedChat({
-  //     chatType: "GROUP",
-  //     Name: groupName,
-  //     roomId: roomId,
-  //   }); 
-  //   props.setRoomId(roomId)
-  // };
-  const searchForDM = (event) => {
+
+  const handleInputChange = (event) =>{
+    const text = event.target.value;
     event.preventDefault();
-  };
+    setUserList(tempHolder.filter(
+      (item) =>(
+        item["members"].filter(member => member !== props.currentActiveUser)[0].search(text) !== -1)
+      )
+    )
+
+  }
   return (
     <div className={styles.dm_list}>
       <div className={styles.search_button}>
-        <form onSubmit={searchForDM}>
-          <input type="text" className={styles.text_input} />
-          <input type="submit" value="🔍" className={styles.submit} />
+        <form>
+          <input type="text" className={styles.text_input} onChange={(event) => handleInputChange(event)} placeholder="🔍 search user"/>
         </form>
       </div>
       <div className={styles.itemList}>
