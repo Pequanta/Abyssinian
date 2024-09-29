@@ -136,7 +136,7 @@ async def return_all_groups(request: Request, current_user: str):
 @router.get("/access/groups/all/my-groups")
 async def return_all_groups(request: Request, current_user: str):
     try:
-        cont_returned = request.app.mongodb.groups.find("group_type": "GROUP", "admins": {"$in": [current_user]})
+        cont_returned = request.app.mongodb.groups.find({"group_type": "GROUP", "admins": {"$in": [current_user]}})
         contain_results = []
         async for item in cont_returned:
             contain_results.append(item)
