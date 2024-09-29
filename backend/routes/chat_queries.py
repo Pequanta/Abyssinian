@@ -133,6 +133,16 @@ async def return_all_groups(request: Request, current_user: str):
         return contain_results
     except:
         return HTTPException(status_code=401)
+@router.get("/access/groups/all/my-groups")
+async def return_all_groups(request: Request, current_user: str):
+    try:
+        cont_returned = request.app.mongodb.groups.find("group_type": "GROUP", "admins": {"$in": [current_user]})
+        contain_results = []
+        async for item in cont_returned:
+            contain_results.append(item)
+        return contain_results
+    except:
+        return HTTPException(status_code=404)
 #operations to add new data to the existing document elements
 #group
 @router.post("/add_chat/groups/group/{group_name}" , description="adds a chat to a specified group")
