@@ -50,7 +50,7 @@ function DMList(props) {
     event.preventDefault();
     setUserList(tempHolder.filter(
       (item) =>(
-        item["members"].filter(member => member !== props.currentActiveUser)[0].search(text) !== -1)
+        item["members"].filter(member => member !== props.currentActiveUser)[0].toUpperCase().search(text.toUpperCase()) !== -1)
       )
     )
 
