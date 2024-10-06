@@ -1,11 +1,11 @@
 
 FROM python:3.9-slim
 
-WORKDIR /app
+WORKDIR /
 
-COPY ./backend /app
+COPY ./backend /
 
-COPY ./backend/requirements.txt /app/requirements.txt
+COPY ./backend/requirements.txt /requirements.txt
 
 RUN pip install --no-cache-dir -r requirements.txt
 
