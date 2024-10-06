@@ -57,7 +57,7 @@ function TrendsPage(props) {
     event.preventDefault();
     setTrendsList(tempHolder.filter(
       (item) =>(
-        item["title"].search(text) !== -1) || item["author_username"].search(text) !== -1
+        item["title"].toUpperCase().search(text.toUpperCase()) !== -1) || item["author_username"].toUpperCase().search(text.toUpperCase()) !== -1
       )
     )
 
