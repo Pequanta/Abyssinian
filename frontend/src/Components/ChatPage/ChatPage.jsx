@@ -35,7 +35,7 @@ function ChatPage(props) {
         socket.current.onmessage =  async (event) => {
           let recievedMessage = JSON.parse(event.data)
           currentArr.push(recievedMessage["message"])
-          props.setChatDisplayed([...currentArr])
+          props.setChatDisplayed([...currentArr]) 
         } 
       }
   }
