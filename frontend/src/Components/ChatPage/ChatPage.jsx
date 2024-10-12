@@ -39,12 +39,19 @@ function ChatPage(props) {
         } 
       }
   }
+  
   connection();
   return async ()=>{
     if(socket.current) await socket.current.close();
     props.setRoomId(null)
   }
 },[props.roomId])
+useEffect(() => {
+  const place = document.getElementById("endOfText");
+  if (place) {
+    place.scrollIntoView({});
+  }
+}, [props.chatDisplayed])
 // const startConverstation = async (event, name , roomId, roomType) => {
 //   if(roomType === "DM"){
 //     const response = await fetch(
@@ -100,8 +107,12 @@ const handleInputChange = (event) => {
   const textContent = event.target.value;
   setChatToSend(textContent);
   };
+const backFromChat = (event) =>{
+  props.setChatingState(false)
+}
 return (
     <div className={styles.chat_container}>
+      {(!props.chatingState) && (
       <div className={styles.chat_page_handler}>
         <div className={styles.header}>
           <header>
@@ -177,13 +188,21 @@ return (
           </div>
         </div>
       </div>
-      <div className={styles.chat_area}>
-        {useEffect(() => {
-          const place = document.getElementById("endOfText");
-          if (place) {
-            place.scrollIntoView({});
-          }
-        }, [props.chatDisplayed])}
+      )}
+      {(props.chatingState) && (<div className={styles.chat_area}>
+        
+        {
+          (props.chatingState) && (<div className={styles.backButton}>
+            <button
+              onClick={(event) => backFromChat(event)}
+              className={styles.backButton}
+            >
+              ⬅️Back
+            </button>
+          </div>
+
+          )
+        }
         <div className={styles.chat_display_area}>
           {props.chatDisplayed.map((chat, index) => (
             <ChatCard
@@ -216,7 +235,7 @@ return (
           />
           <button onClick={(event) => sendChat(event)}>send</button>
         </div>
-      </div>
+      </div>)}
     </div>
   );
 }

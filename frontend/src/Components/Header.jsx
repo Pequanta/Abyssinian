@@ -13,7 +13,10 @@ function Header() {
 
   return (
     <header className="main_header">
-      <img src={logoPic} />
+      <div className="logoDivMain">
+        <img src={logoPic} />
+      </div>
+      
       <nav>
         <ul>
           <div>

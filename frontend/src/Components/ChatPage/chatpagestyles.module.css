@@ -64,7 +64,6 @@ nav li .active {
   color: rgb(151, 223, 70);
   background-color: black;
   border-radius: 10px;
-  padding: 2px;
 }
 
 .chat_page_handler header button {
@@ -216,7 +215,7 @@ nav li .active {
 
 .AvatarTab {
   width: 95%;
-  background: rgb(19, 29, 4);
+  background: rgb(1, 19, 19);
   box-shadow: 1px 1px 5px rgb(97, 97, 97);
   border: 3px solid rgb(0, 0, 0);
   border-radius: 1rem;
@@ -230,9 +229,7 @@ nav li .active {
   padding: 2rem;
 }
 
-.AvatarTab:hover {
-  border: 1px solid greenyellow;
-}
+
 .AvatarTab:active {
   background-color: rgb(238, 255, 0);
   color: black;
@@ -409,6 +406,9 @@ nav li .active {
   display: flex;
   align-items: center;
 }
+.newChatContainer form .nameContainer input{
+  width: 25rem;
+}
 
 .newChatContainer .submitButton {
   margin-top: 10rem;
@@ -433,7 +433,23 @@ nav li .active {
 
 
 .newChatContainer .radioButtons{
-  font-size: 3rem;
-  display: flex;
-  justify-content: space-around;
+  font-family: system-ui, sans-serif;
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 1.1;
+  display: grid;
+  grid-template-columns: 1em auto;
+  gap: 0.5em;
+}
+.backButton button {
+  font-size: 1.6rem;
+  border: none;
+  background: transparent;
+  padding: 1rem;
+  color: skyblue;
+}
+.backButton {
+  position: fixed;
+  top: 10vh;
+  left: 2rem;
 }

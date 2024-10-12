@@ -56,6 +56,7 @@ function Groups(props) {
       roomId: roomId,
     }); 
     props.setRoomId(roomId)
+    props.setChatingState(true);
   };
   return (
     <div className={styles.group_page}>

@@ -3,12 +3,13 @@
   position:fixed;
   top: 10vh;
   overflow-y: auto;
-  height: 100vh;
+  height: 90vh;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   color: white;
+  padding: 5%;
 }
 
 
@@ -70,7 +71,7 @@
 }
 
 .featuringCard img {
-  width: 4rem;
+  width:2.5rem;
   height: 4rem;
   border-radius: 50%;
 }
@@ -96,6 +97,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 80%;
 }
 
 .introCard ul{
@@ -109,14 +111,11 @@
 
 .introCard img{
   flex: 1 1 auto;
-  width: 35rem;
+  width: 30rem;
+  height: 30rem;
   border-radius: 5rem;
 }
 
-.introCard img:hover{
-  width: 36rem;
-  transition: all ease-in 0.5s;
-}
 .introCard p{
   align-self: start;
 }
@@ -127,4 +126,8 @@
 
 .lastImage{
   height: 35rem;
+}
+
+.pageCard{
+  margin-bottom: 20px;
 }

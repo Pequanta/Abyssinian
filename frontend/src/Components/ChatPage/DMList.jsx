@@ -5,7 +5,7 @@ import pic from "../../assets/bp2.png";
 function DMList(props) {
   const [userList, setUserList] = useState([]);
   const [tempHolder, setTempHolder] = useState([]);
-
+  const [screenWidth, setScreenWidth] = useState();
   useEffect(function fetchDMList() {
     const fetchData = async () => {
       const response = await fetch(
@@ -22,6 +22,11 @@ function DMList(props) {
         console.log("user not found");
       } 
       console.log()
+      function handleResize(){
+        setScreenWidth(window.innerWidth);
+      }
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
     };
     fetchData();
   }, []);
@@ -43,6 +48,7 @@ function DMList(props) {
       roomId: groupId,
     });
     props.setRoomId(groupId)
+    props.setChatingState(true);
   };
 
   const handleInputChange = (event) =>{

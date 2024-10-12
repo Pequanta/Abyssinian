@@ -39,20 +39,28 @@ button {
   align-items: center;
 }
 
-.main_header a:hover {
-  transition: all 0.3s;
-  box-shadow: 1px 3px 10px rgb(171, 172, 111);
-  background-color: rgb(214, 238, 182);
-  color: rgb(39, 36, 36);
-  border-radius: 10px;
+.main_header a{
   font-size: 2rem;
 }
+
+.main_header a:hover {
+  box-shadow: 1px 3px 10rem rgb(171, 172, 111);
+  color: rgb(150, 246, 253);
+  border-radius: 10px;
+}
 .main_header nav {
-  width: 95%;
+  width: 50%;
+  display: flex;
+  justify-content: space-around;
 }
 .container .main_header ul {
   display: flex;
   justify-content: space-around;
+  gap: 2rem;   
+}
+
+.main_header .logoDivMain{
+  width: 50%;
 }
 
 .main_header img {

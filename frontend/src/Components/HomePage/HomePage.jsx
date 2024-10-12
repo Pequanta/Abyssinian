@@ -6,7 +6,7 @@ import imga from "../../assets/a.jpg"
 import imgb from "../../assets/sudo_it.png"
 import imgc from "../../assets/asdf.png"
 import imgf from "../../assets/f.jpg"
-import logo from "../../assets/cover3.png"
+
 
 function HomePage(props) {
   const [trendList, setTrendsList] = useState();
@@ -17,10 +17,9 @@ function HomePage(props) {
           {method: "get"}
         );
         const result = response.json();
+        console.log(result)
         result.then(content =>{
-          let trendsTemp = content["message"]
-          setTrendsList(...trendsTemp.slice(0, 4))
-          console.log(trendList)
+          setTrendsList(content["message"].slice(0, 4))
 
         })
       }
@@ -28,23 +27,24 @@ function HomePage(props) {
     },[])
   const [mainPage, setMainPage] = useState(true);
   const [readPage, setReadPage] = useState(false);
-  const openPostFunction = (event) => {
+  const openPostFunction = (event, trend) => {
     setMainPage(false);
     setReadPage(true);
+
+    setTrendDisplayed(trend)
+    console.log(trend)
   };
 
-  const backFromTrend = (event) => {
+  const backFromTrend = (event, trend) => {
     setMainPage(true);
     setReadPage(false);
   };
+
   return (
     <div className={styles.mainHomePage}>
       {mainPage && (
         <>
         <div className={styles.welcomeDiv}>
-        <div className={styles.logoCard}>
-          <img alt={"logo"} src={logo}/>
-        </div>
         <span className={styles.welcomeText}>Welcome to እዚSefer</span>
         </div>
         <div className={styles.introCard}>

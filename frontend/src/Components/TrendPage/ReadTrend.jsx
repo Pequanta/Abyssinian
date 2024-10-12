@@ -6,7 +6,7 @@ function ReadTrend(props) {
   const [commentToSend, setCommentToSend] = useState({
     author_username: props.currentActiveUser,
     content: "",
-    root_trend_id: props.trend._id
+    root_trend_id: props.trend["_id"]
   });
   const handleCommentInput = (event) =>{
     const comment = event.target.value;
